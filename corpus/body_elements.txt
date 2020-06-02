@@ -8,7 +8,7 @@ I'm another paragraph
 
 ---
 
-(source_file
+(document
   (paragraph)
   (paragraph))
 
@@ -26,12 +26,48 @@ Bullet lists
 
 ---
 
-(source_file
-  (bullet_list
+(document
+  (list
     (list_item)
     (list_item))
-  (bullet_list
+  (list
     (list_item)
     (list_item))
-  (bullet_list
+  (list
+    (list_item)))
+
+================
+Enumerated lists
+================
+
+1. One
+2. Two
+3. Three
+
+#. One
+#. Two
+
+10. One
+11. Two
+I. Three
+V. Four
+a. Five
+Z. Six
+
+---
+
+(document
+  (list
+    (list_item)
+    (list_item)
+    (list_item))
+  (list
+    (list_item)
+    (list_item))
+  (list
+    (list_item)
+    (list_item)
+    (list_item)
+    (list_item)
+    (list_item)
     (list_item)))

@@ -1,7 +1,7 @@
 {
   "name": "rst",
   "rules": {
-    "source_file": {
+    "document": {
       "type": "REPEAT",
       "content": {
         "type": "SYMBOL",
@@ -13,15 +13,15 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "bullet_list"
-        },
-        {
-          "type": "SYMBOL",
           "name": "paragraph"
         },
         {
           "type": "SYMBOL",
-          "name": "_emptyline"
+          "name": "list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_blank_line"
         }
       ]
     },
@@ -32,14 +32,45 @@
         "name": "_line"
       }
     },
-    "bullet_list": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "SYMBOL",
-        "name": "list_item"
-      }
+    "list": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_bullet_list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_enumerated_list"
+        }
+      ]
     },
     "list_item": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_bullet_list_item"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_enumerated_list_item"
+        }
+      ]
+    },
+    "_bullet_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "ALIAS",
+        "content": {
+          "type": "SYMBOL",
+          "name": "_bullet_list_item"
+        },
+        "named": true,
+        "value": "list_item"
+      }
+    },
+    "_bullet_list_item": {
       "type": "SEQ",
       "members": [
         {
@@ -47,11 +78,8 @@
           "name": "_bullet"
         },
         {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_whitespace"
-          }
+          "type": "SYMBOL",
+          "name": "_whitespace"
         },
         {
           "type": "SYMBOL",
@@ -61,25 +89,110 @@
     },
     "_bullet": {
       "type": "PATTERN",
-      "value": "\\*|\\+|\\-"
+      "value": "\\*|\\+|-|•|‣|⁃"
     },
-    "_line": {
+    "_enumerated_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "ALIAS",
+        "content": {
+          "type": "SYMBOL",
+          "name": "_enumerated_list_item"
+        },
+        "named": true,
+        "value": "list_item"
+      }
+    },
+    "_enumerated_list_item": {
       "type": "SEQ",
       "members": [
         {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_char"
-          }
+          "type": "SYMBOL",
+          "name": "_numeric_bullet"
         },
         {
           "type": "SYMBOL",
-          "name": "_eol"
+          "name": "_whitespace"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_line"
         }
       ]
     },
-    "_emptyline": {
+    "_numeric_bullet": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_numeric_bullet_seq"
+            },
+            {
+              "type": "STRING",
+              "value": "."
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "("
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_numeric_bullet_seq"
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_numeric_bullet_seq"
+            },
+            {
+              "type": "STRING",
+              "value": ")"
+            }
+          ]
+        }
+      ]
+    },
+    "_numeric_bullet_seq": {
+      "type": "PATTERN",
+      "value": "[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#"
+    },
+    "_line": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_char"
+            }
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_eol"
+          }
+        ]
+      }
+    },
+    "_blank_line": {
       "type": "SEQ",
       "members": [
         {
@@ -107,7 +220,7 @@
   "extras": [],
   "conflicts": [
     [
-      "bullet_list"
+      "list"
     ],
     [
       "paragraph"

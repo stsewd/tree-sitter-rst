@@ -1,6 +1,25 @@
 [
   {
-    "type": "bullet_list",
+    "type": "document",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "paragraph",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "list",
     "named": true,
     "fields": {},
     "children": {
@@ -25,22 +44,15 @@
     "fields": {}
   },
   {
-    "type": "source_file",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "bullet_list",
-          "named": true
-        },
-        {
-          "type": "paragraph",
-          "named": true
-        }
-      ]
-    }
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": ".",
+    "named": false
   }
 ]
