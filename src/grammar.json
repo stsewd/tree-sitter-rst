@@ -124,73 +124,74 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_numeric_bullet_seq"
-            },
-            {
-              "type": "STRING",
-              "value": "."
-            }
-          ]
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#"
+              },
+              {
+                "type": "STRING",
+                "value": "."
+              }
+            ]
+          }
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "("
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_numeric_bullet_seq"
-            },
-            {
-              "type": "STRING",
-              "value": ")"
-            }
-          ]
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "("
+              },
+              {
+                "type": "PATTERN",
+                "value": "[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#"
+              },
+              {
+                "type": "STRING",
+                "value": ")"
+              }
+            ]
+          }
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_numeric_bullet_seq"
-            },
-            {
-              "type": "STRING",
-              "value": ")"
-            }
-          ]
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#"
+              },
+              {
+                "type": "STRING",
+                "value": ")"
+              }
+            ]
+          }
         }
       ]
     },
-    "_numeric_bullet_seq": {
-      "type": "PATTERN",
-      "value": "[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#"
-    },
     "_line": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "REPEAT1",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_char"
-            }
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_eol"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "PATTERN",
+            "value": "."
           }
-        ]
-      }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_eol"
+        }
+      ]
     },
     "_blank_line": {
       "type": "SEQ",
@@ -207,10 +208,6 @@
           "name": "_eol"
         }
       ]
-    },
-    "_char": {
-      "type": "PATTERN",
-      "value": "."
     },
     "_whitespace": {
       "type": "PATTERN",

@@ -1,5 +1,8 @@
 const PREC = {}
 
+const NUMERIC_BULLETS = /[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#/
+
+
 module.exports = grammar({
   name: 'rst',
 
@@ -46,16 +49,14 @@ module.exports = grammar({
     _enumerated_list: $ => repeat1(alias($._enumerated_list_item, $.list_item)),
     _enumerated_list_item: $ => seq($._numeric_bullet, $._whitespace, $._line),
     _numeric_bullet: $ => choice(
-      seq($._numeric_bullet_seq, '.'),
-      seq('(', $._numeric_bullet_seq, ')'),
-      seq($._numeric_bullet_seq, ')'),
+      token(seq(NUMERIC_BULLETS, '.')),
+      token(seq('(', NUMERIC_BULLETS, ')')),
+      token(seq(NUMERIC_BULLETS, ')')),
     ),
-    _numeric_bullet_seq: $ => /[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#/,
 
 
-    _line: $ => seq(repeat1($._char), $._eol),
+    _line: $ => seq(repeat1(/./), $._eol),
     _blank_line: $ => seq(repeat($._whitespace), $._eol),
-    _char: $ => /./,
     _whitespace: $ => /\s/,
   },
 });
