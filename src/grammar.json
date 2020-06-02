@@ -1,0 +1,125 @@
+{
+  "name": "rst",
+  "rules": {
+    "source_file": {
+      "type": "REPEAT",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_body_elements"
+      }
+    },
+    "_body_elements": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "bullet_list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "paragraph"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_emptyline"
+        }
+      ]
+    },
+    "paragraph": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_line"
+      }
+    },
+    "bullet_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "list_item"
+      }
+    },
+    "list_item": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_bullet"
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_whitespace"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_line"
+        }
+      ]
+    },
+    "_bullet": {
+      "type": "PATTERN",
+      "value": "\\*|\\+|\\-"
+    },
+    "_line": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_char"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_eol"
+        }
+      ]
+    },
+    "_emptyline": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_whitespace"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_eol"
+        }
+      ]
+    },
+    "_char": {
+      "type": "PATTERN",
+      "value": "."
+    },
+    "_whitespace": {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  },
+  "extras": [],
+  "conflicts": [
+    [
+      "bullet_list"
+    ],
+    [
+      "paragraph"
+    ]
+  ],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "_eol"
+    }
+  ],
+  "inline": [],
+  "supertypes": []
+}
+

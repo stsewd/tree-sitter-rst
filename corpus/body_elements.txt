@@ -1,0 +1,37 @@
+==========
+Paragraphs
+==========
+
+Hello, I'm a reStructuredText file.
+
+I'm another paragraph
+
+---
+
+(source_file
+  (paragraph)
+  (paragraph))
+
+============
+Bullet lists
+============
+
+- One
+- Two
+
++ Another
+* Other one
+
++ Just me
+
+---
+
+(source_file
+  (bullet_list
+    (list_item)
+    (list_item))
+  (bullet_list
+    (list_item)
+    (list_item))
+  (bullet_list
+    (list_item)))
