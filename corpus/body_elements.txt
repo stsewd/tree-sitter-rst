@@ -6,9 +6,12 @@ Hello, I'm a reStructuredText file.
 
 I'm another paragraph
 
+-I'm not a list
+
 ---
 
 (document
+  (paragraph)
   (paragraph)
   (paragraph))
 

@@ -79,17 +79,25 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_whitespace"
-        },
-        {
-          "type": "SYMBOL",
           "name": "_line"
         }
       ]
     },
     "_bullet": {
-      "type": "PATTERN",
-      "value": "\\*|\\+|-|•|‣|⁃"
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "\\*|\\+|-|•|‣|⁃"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\s"
+          }
+        ]
+      }
     },
     "_enumerated_list": {
       "type": "REPEAT1",
@@ -112,10 +120,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_whitespace"
-        },
-        {
-          "type": "SYMBOL",
           "name": "_line"
         }
       ]
@@ -135,6 +139,10 @@
               {
                 "type": "STRING",
                 "value": "."
+              },
+              {
+                "type": "PATTERN",
+                "value": "\\s"
               }
             ]
           }
@@ -155,6 +163,10 @@
               {
                 "type": "STRING",
                 "value": ")"
+              },
+              {
+                "type": "PATTERN",
+                "value": "\\s"
               }
             ]
           }
@@ -171,6 +183,10 @@
               {
                 "type": "STRING",
                 "value": ")"
+              },
+              {
+                "type": "PATTERN",
+                "value": "\\s"
               }
             ]
           }

@@ -43,15 +43,15 @@ module.exports = grammar({
     ),
 
     _bullet_list: $ => repeat1(alias($._bullet_list_item, $.list_item)),
-    _bullet_list_item: $ => seq($._bullet, $._whitespace, $._line),
-    _bullet: $ => /\*|\+|-|•|‣|⁃/,
+    _bullet_list_item: $ => seq($._bullet, $._line),
+    _bullet: $ => token(seq(/\*|\+|-|•|‣|⁃/, /\s/)),
 
     _enumerated_list: $ => repeat1(alias($._enumerated_list_item, $.list_item)),
-    _enumerated_list_item: $ => seq($._numeric_bullet, $._whitespace, $._line),
+    _enumerated_list_item: $ => seq($._numeric_bullet, $._line),
     _numeric_bullet: $ => choice(
-      token(seq(NUMERIC_BULLETS, '.')),
-      token(seq('(', NUMERIC_BULLETS, ')')),
-      token(seq(NUMERIC_BULLETS, ')')),
+      token(seq(NUMERIC_BULLETS, '.', /\s/)),
+      token(seq('(', NUMERIC_BULLETS, ')', /\s/)),
+      token(seq(NUMERIC_BULLETS, ')', /\s/)),
     ),
 
 
