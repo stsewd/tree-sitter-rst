@@ -1,3 +1,4 @@
+// tree-sitter web-ui
 const PREC = {}
 
 const NUMERIC_BULLETS = /[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#/
@@ -17,6 +18,10 @@ module.exports = grammar({
 
   externals: $ => [
     $._eol,
+  ],
+
+  supertypes: $ => [
+    $._list,
   ],
 
   rules: {
@@ -42,13 +47,23 @@ module.exports = grammar({
       $._bullet_list_item,
       $._enumerated_list_item,
     ),
+    list_bullet: $ => choice(
+      $._bullet,
+      $._numeric_bullet,
+    ),
 
     bullet_list: $ => repeat1(alias($._bullet_list_item, $.list_item)),
-    _bullet_list_item: $ => seq($._bullet, $._line),
+    _bullet_list_item: $ => seq(
+      alias($._bullet, $.list_bullet),
+      $._line,
+    ),
     _bullet: $ => token(seq(/\*|\+|-|•|‣|⁃/, /\s/)),
 
     enumerated_list: $ => repeat1(alias($._enumerated_list_item, $.list_item)),
-    _enumerated_list_item: $ => seq($._numeric_bullet, $._line),
+    _enumerated_list_item: $ => seq(
+      alias($._numeric_bullet, $.list_bullet),
+      $._line,
+    ),
     _numeric_bullet: $ => choice(
       token(seq(NUMERIC_BULLETS, '.', /\s/)),
       token(seq('(', NUMERIC_BULLETS, ')', /\s/)),
