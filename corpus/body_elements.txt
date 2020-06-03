@@ -30,13 +30,13 @@ Bullet lists
 ---
 
 (document
-  (list
+  (bullet_list
     (list_item)
     (list_item))
-  (list
+  (bullet_list
     (list_item)
     (list_item))
-  (list
+  (bullet_list
     (list_item)))
 
 ================
@@ -60,17 +60,56 @@ Z. Six
 ---
 
 (document
-  (list
+  (enumerated_list
     (list_item)
     (list_item)
     (list_item))
-  (list
+  (enumerated_list
     (list_item)
     (list_item))
-  (list
+  (enumerated_list
     (list_item)
     (list_item)
     (list_item)
     (list_item)
     (list_item)
     (list_item)))
+
+================
+Definition lists
+================
+
+term 1
+    Definition 1.
+
+term 2
+    Definition 2, paragraph 1.
+
+    Definition 2, paragraph 2.
+
+term 3 : classifier
+    Definition 3.
+
+term 4 : classifier one : classifier two
+    Definition 4.
+
+---
+
+(document
+  (definition_list
+    (definition_list_item
+      (term)
+      (classifier)
+      (definition))
+    (definition_list_item
+      (term)
+      (classifier)
+      (definition))
+    (definition_list_item
+      (term)
+      (classifier)
+      (definition))
+    (definition_list_item
+      (term)
+      (classifier)
+      (definition))))
