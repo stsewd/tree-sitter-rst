@@ -792,6 +792,10 @@
         {
           "type": "SYMBOL",
           "name": "_substitution_definition_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_comment_block"
         }
       ]
     },
@@ -1526,12 +1530,80 @@
         }
       ]
     },
-    "_line": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "PATTERN",
-        "value": "."
-      }
+    "_comment_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "comment"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_eol"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "comment"
+        }
+      ]
+    },
+    "comment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": ".."
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": " "
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "\t"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "\u000b"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "\f"
+                    }
+                  ]
+                },
+                {
+                  "type": "REPEAT1",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "."
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
     }
   },
   "extras": [

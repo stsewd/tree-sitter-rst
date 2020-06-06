@@ -77,7 +77,6 @@ module.exports = grammar({
         $.line_block,
         $._markup_blocks,
       ),
-      //$._comment_block,
       $._blank_line,
     ),
 
@@ -187,6 +186,7 @@ module.exports = grammar({
       $._anoynymous_hyperlink_target_block,
       $._directive_block,
       $._substitution_definition_block,
+      $._comment_block,
     ),
 
     // Footnotes
@@ -271,24 +271,13 @@ module.exports = grammar({
     // Comments
     // --------
 
-    /*
     _comment_block: $ => seq(
       repeat(seq($.comment, $._eol)),
       $.comment,
     ),
-    comment: $ => token(seq(
+    comment: $ => seq(
       '..',
-      WHITE_SPACE,
-      choice(/[^|].*[^|]/),
-    )),
-    */
-
-
-    // ==============
-    // General tokens
-    // ==============
-
-    // TODO: this should be body
-    _line: $ => repeat1(/./),
+      optional(seq(WHITE_SPACE, BODY)),
+    ),
   },
 });
