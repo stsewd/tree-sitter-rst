@@ -1,4 +1,8 @@
-Based on https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html
+# reStructuredText grammar for tree-sitter
+
+![CI](https://github.com/stsewd/tree-sitter-rst/workflows/CI/badge.svg)
+
+Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 
 # TODO
 
