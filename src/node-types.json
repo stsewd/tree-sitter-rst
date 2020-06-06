@@ -27,7 +27,26 @@
           "named": true
         },
         {
+          "type": "enumerated_list",
+          "named": true
+        },
+        {
           "type": "paragraph",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "enumerated_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "list_item",
           "named": true
         }
       ]

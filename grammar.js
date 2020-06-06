@@ -1,7 +1,5 @@
-// tree-sitter web-ui
 const PREC = {}
-
-const NUMERIC_BULLETS = /[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#/
+const WHITE_SPACE = /[ \t\v\f]/
 
 
 module.exports = grammar({
@@ -11,6 +9,7 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$._bullet_list_item],
+    [$._enumerated_list_item],
   ],
 
   externals: $ => [
@@ -28,7 +27,7 @@ module.exports = grammar({
     // =============
     _body_elements: $ => choice(
       $.paragraph,
-      $.bullet_list,
+      $._lists,
       $._blank_line,
     ),
 
@@ -36,40 +35,53 @@ module.exports = grammar({
     // =========
     // Paragraph
     // =========
-    paragraph: $ => prec.right(choice(
-      $._line,
+    paragraph: $ => prec.right(
       seq(
-        repeat1(seq($._line, $._eol)),
+        repeat(seq($._line, $._eol)),
         $._line,
       )
-    )),
+    ),
 
 
     // =====
     // Lists
     // =====
+    _lists: $ => choice(
+      $.bullet_list,
+      $.enumerated_list,
+    ),
+
     list_item: $ => choice(
       $._bullet_list_item,
+      $._enumerated_list_item,
     ),
 
     // Bullet lists
     // ------------
-    bullet_list: $ => choice(
+    bullet_list: $ => seq(
+      repeat(seq(alias($._bullet_list_item, $.list_item), $._eol)),
       alias($._bullet_list_item, $.list_item),
-      seq(
-        repeat1(seq(alias($._bullet_list_item, $.list_item), $._eol)),
-        alias($._bullet_list_item, $.list_item),
-      ),
     ),
+
     _bullet_list_item: $ => seq($._char_bullet, $._line),
     _char_bullet: $ => token(seq(
       choice('*', '+', '-', '•', '‣', '⁃'),
-      /\s/,
+      WHITE_SPACE,
     )),
 
     // Enumerated lists
     // ----------------
-    // TODO
+    enumerated_list: $ => seq(
+      repeat(seq(alias($._enumerated_list_item, $.list_item), $._eol)),
+      alias($._enumerated_list_item, $.list_item),
+    ),
+
+    _enumerated_list_item: $ => seq($._numeric_bullet, $._line),
+    _numeric_bullet: $ => token(seq(
+        choice(/[0-9]+\./, /[a-z]\./, /[A-Z]\./, /[IVXLCDM]+\./, /[ivxlcdm]+\./, '#.'),
+        WHITE_SPACE,
+    )),
+
 
     // General tokens
     // ==============
