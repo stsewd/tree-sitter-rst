@@ -35,6 +35,10 @@
           "named": true
         },
         {
+          "type": "option_list",
+          "named": true
+        },
+        {
           "type": "paragraph",
           "named": true
         }
@@ -82,12 +86,56 @@
     "fields": {}
   },
   {
+    "type": "option_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "option_list_item",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "option_list_item",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "paragraph",
     "named": true,
     "fields": {}
   },
   {
+    "type": "\t",
+    "named": false
+  },
+  {
+    "type": "\u000b",
+    "named": false
+  },
+  {
+    "type": "\f",
+    "named": false
+  },
+  {
+    "type": " ",
+    "named": false
+  },
+  {
+    "type": ", ",
+    "named": false
+  },
+  {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": "=",
     "named": false
   }
 ]

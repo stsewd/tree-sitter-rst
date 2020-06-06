@@ -1,5 +1,6 @@
 const PREC = {}
-const WHITE_SPACE = /[ \t\v\f]/
+const WHITE_SPACE = choice(' ', '\t', '\v', '\f')
+const OPTION = /[a-zA-Z0-9][a-zA-Z0-9_-]*/
 
 
 module.exports = grammar({
@@ -10,6 +11,7 @@ module.exports = grammar({
   conflicts: $ => [
     [$.bullet_list],
     [$.enumerated_list],
+    [$._option]
   ],
 
   externals: $ => [
@@ -42,11 +44,9 @@ module.exports = grammar({
     // =========
     // Paragraph
     // =========
-    paragraph: $ => prec.right(
-      seq(
-        repeat(seq($._line, $._eol)),
-        $._line,
-      )
+    paragraph: $ => seq(
+      repeat(seq($._line, $._eol)),
+      $._line,
     ),
 
 
@@ -57,6 +57,7 @@ module.exports = grammar({
       $.bullet_list,
       $.enumerated_list,
       $.field_list,
+      $.option_list,
     ),
 
     list_item: $ => choice(
@@ -112,11 +113,37 @@ module.exports = grammar({
     _field_name: $ => /[^:]+/,
     _field_body: $ => $._line,
 
+    // Option list
+    // -----------
+    option_list: $ => seq(
+      repeat(seq($.option_list_item, $._eol)),
+      $.option_list_item,
+    ),
 
+    option_list_item: $ => seq(
+      seq(repeat(seq($._option, ', ')), $._option),
+      WHITE_SPACE,
+      WHITE_SPACE,
+      $._line,
+    ),
+    _option: $ => seq(
+      $._option_string,
+      optional(
+        seq(choice(' ', '='), $._option_argument),
+      ),
+    ),
+    _option_string: $ => token(choice(
+      seq('-', OPTION),
+      seq('+', OPTION),
+      seq('--', OPTION),
+      seq('/', OPTION),
+    )),
+    _option_argument: $ => OPTION,
 
 
     // General tokens
     // ==============
+    // TODO: this should be body
     _line: $ => repeat1(/./),
   },
 });

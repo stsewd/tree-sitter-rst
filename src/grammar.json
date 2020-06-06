@@ -40,33 +40,29 @@
       ]
     },
     "paragraph": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "REPEAT",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_line"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_eol"
-                }
-              ]
-            }
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_line"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_line"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_eol"
+              }
+            ]
           }
-        ]
-      }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_line"
+        }
+      ]
     },
     "_lists": {
       "type": "CHOICE",
@@ -82,6 +78,10 @@
         {
           "type": "SYMBOL",
           "name": "field_list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "option_list"
         }
       ]
     },
@@ -181,8 +181,25 @@
             ]
           },
           {
-            "type": "PATTERN",
-            "value": "[ \\t\\v\\f]"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": " "
+              },
+              {
+                "type": "STRING",
+                "value": "\t"
+              },
+              {
+                "type": "STRING",
+                "value": "\u000b"
+              },
+              {
+                "type": "STRING",
+                "value": "\f"
+              }
+            ]
           }
         ]
       }
@@ -270,8 +287,25 @@
             ]
           },
           {
-            "type": "PATTERN",
-            "value": "[ \\t\\v\\f]"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": " "
+              },
+              {
+                "type": "STRING",
+                "value": "\t"
+              },
+              {
+                "type": "STRING",
+                "value": "\u000b"
+              },
+              {
+                "type": "STRING",
+                "value": "\f"
+              }
+            ]
           }
         ]
       }
@@ -317,8 +351,25 @@
           "value": ":"
         },
         {
-          "type": "PATTERN",
-          "value": "[ \\t\\v\\f]"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": " "
+            },
+            {
+              "type": "STRING",
+              "value": "\t"
+            },
+            {
+              "type": "STRING",
+              "value": "\u000b"
+            },
+            {
+              "type": "STRING",
+              "value": "\f"
+            }
+          ]
         },
         {
           "type": "SYMBOL",
@@ -333,6 +384,210 @@
     "_field_body": {
       "type": "SYMBOL",
       "name": "_line"
+    },
+    "option_list": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "option_list_item"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_eol"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "option_list_item"
+        }
+      ]
+    },
+    "option_list_item": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_option"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": ", "
+                  }
+                ]
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_option"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": " "
+            },
+            {
+              "type": "STRING",
+              "value": "\t"
+            },
+            {
+              "type": "STRING",
+              "value": "\u000b"
+            },
+            {
+              "type": "STRING",
+              "value": "\f"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": " "
+            },
+            {
+              "type": "STRING",
+              "value": "\t"
+            },
+            {
+              "type": "STRING",
+              "value": "\u000b"
+            },
+            {
+              "type": "STRING",
+              "value": "\f"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_line"
+        }
+      ]
+    },
+    "_option": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_option_string"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": " "
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "="
+                    }
+                  ]
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_option_argument"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "_option_string": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "-"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[a-zA-Z0-9][a-zA-Z0-9_-]*"
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "+"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[a-zA-Z0-9][a-zA-Z0-9_-]*"
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "--"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[a-zA-Z0-9][a-zA-Z0-9_-]*"
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "/"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[a-zA-Z0-9][a-zA-Z0-9_-]*"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "_option_argument": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z0-9][a-zA-Z0-9_-]*"
     },
     "_line": {
       "type": "REPEAT1",
@@ -354,6 +609,9 @@
     ],
     [
       "enumerated_list"
+    ],
+    [
+      "_option"
     ]
   ],
   "externals": [

@@ -139,3 +139,35 @@ Field lists
   (field_list
     (field)
     (field)))
+
+============
+Option lists
+============
+
+-a         Output all.
+-c arg     Output just arg.
+--long     Output all day long.
+
+-p         This option has two paragraphs in the description.
+--very-long-option  A VMS-style option.  Note the adjustment for the required two spaces.
+
+-2, --two  This option has two variants.
+-f FILE, --file=FILE  These two options are synonyms; both have arguments.
+
+/V         A VMS/DOS-style option.
+
+---
+
+(document
+  (option_list
+    (option_list_item)
+    (option_list_item)
+    (option_list_item))
+  (option_list
+    (option_list_item)
+    (option_list_item))
+  (option_list
+    (option_list_item)
+    (option_list_item))
+  (option_list
+    (option_list_item)))
