@@ -170,3 +170,20 @@ Footnotes
   (footnote)
   (footnote)
   (footnote))
+
+=========
+Citations
+=========
+
+.. [CIT2002] This is the citation.  It's just like a footnote.
+.. [foo-bar] This is the citation.  It's just like a footnote.
+.. [foo_bar] This is the citation.  It's just like a footnote.
+.. [foo.bar] This is the citation.  It's just like a footnote.
+
+---
+
+(document
+  (citation)
+  (citation)
+  (citation)
+  (citation))

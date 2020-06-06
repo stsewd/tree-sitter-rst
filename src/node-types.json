@@ -15,6 +15,11 @@
     }
   },
   {
+    "type": "citation",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "document",
     "named": true,
     "fields": {},
@@ -24,6 +29,10 @@
       "types": [
         {
           "type": "bullet_list",
+          "named": true
+        },
+        {
+          "type": "citation",
           "named": true
         },
         {

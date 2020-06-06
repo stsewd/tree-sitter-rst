@@ -167,6 +167,7 @@ module.exports = grammar({
 
     _markup_blocks: $ => choice(
       $._footnote_block,
+      $._citation_block,
     ),
     _markup_start: $ => token(seq('..', WHITE_SPACE)),
 
@@ -191,6 +192,23 @@ module.exports = grammar({
       /#[a-zA-Z0-9][a-zA-Z0-9_]*/,
       '*',
     ),
+
+    // Citations
+    // ---------
+
+    _citation_block: $ => seq(
+      repeat(seq($.citation, $._eol)),
+      $.citation,
+    ),
+    citation: $ => seq(
+      $._markup_start,
+      '[',
+      $._citation_label,
+      ']',
+      WHITE_SPACE,
+      $._line,
+    ),
+    _citation_label: $ => /[a-zA-Z0-9]+([a-zA-Z0-9._-]+[a-zA-Z0-9])?/,
 
 
     // ==============
