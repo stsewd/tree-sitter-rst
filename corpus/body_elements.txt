@@ -198,9 +198,14 @@ Hyperlink targets
 .. _hyperlink?name: link-block
 .. _hyperlink name: link-block
 
+.. _hyperlink-one:
+.. _hyperlink-two:
+
 ---
 
 (document
+  (target)
+  (target)
   (target)
   (target)
   (target)
@@ -214,10 +219,12 @@ __ foo
 __ I'm anonymouse
 
 __ Bar
+__
 
 ---
 
 (document
+  (target)
   (target)
   (target)
   (target))

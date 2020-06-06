@@ -226,8 +226,7 @@ module.exports = grammar({
         '__',
       ),
       ':',
-      WHITE_SPACE,
-      $._line,
+      optional(seq(WHITE_SPACE, $._line)),
     ),
     _reference_name: $ => /[^_:]([^:]+[^_:])?/,
 
@@ -238,7 +237,10 @@ module.exports = grammar({
       repeat(seq(alias($._anonymous_target, $.target), $._eol)),
       alias($._anonymous_target, $.target),
     ),
-    _anonymous_target: $ => seq('__', WHITE_SPACE, $._line),
+    _anonymous_target: $ => seq(
+      '__',
+      optional(seq(WHITE_SPACE, $._line)),
+    ),
 
 
     // ==============

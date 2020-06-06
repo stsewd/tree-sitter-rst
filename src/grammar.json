@@ -1024,26 +1024,39 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": " "
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": " "
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "\t"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "\u000b"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "\f"
+                    }
+                  ]
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_line"
+                }
+              ]
             },
             {
-              "type": "STRING",
-              "value": "\t"
-            },
-            {
-              "type": "STRING",
-              "value": "\u000b"
-            },
-            {
-              "type": "STRING",
-              "value": "\f"
+              "type": "BLANK"
             }
           ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_line"
         }
       ]
     },
@@ -1097,26 +1110,39 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": " "
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": " "
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "\t"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "\u000b"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "\f"
+                    }
+                  ]
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_line"
+                }
+              ]
             },
             {
-              "type": "STRING",
-              "value": "\t"
-            },
-            {
-              "type": "STRING",
-              "value": "\u000b"
-            },
-            {
-              "type": "STRING",
-              "value": "\f"
+              "type": "BLANK"
             }
           ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_line"
         }
       ]
     },
