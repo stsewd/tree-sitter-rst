@@ -763,6 +763,10 @@
         {
           "type": "SYMBOL",
           "name": "_directive_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_substitution_definition_block"
         }
       ]
     },
@@ -1200,6 +1204,15 @@
         },
         {
           "type": "SYMBOL",
+          "name": "_embed_directive"
+        }
+      ]
+    },
+    "_embed_directive": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
           "name": "_type"
         },
         {
@@ -1249,6 +1262,85 @@
     "_type": {
       "type": "PATTERN",
       "value": "[a-zA-Z0-9]+([a-z-A-Z0-9-_+:.]+[a-zA-Z0-9])?"
+    },
+    "_substitution_definition_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "substitution_definition"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_eol"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "substitution_definition"
+        }
+      ]
+    },
+    "substitution_definition": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_markup_start"
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "|"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[^\\s]+(.+[^\\s])?"
+              },
+              {
+                "type": "STRING",
+                "value": "|"
+              }
+            ]
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": " "
+            },
+            {
+              "type": "STRING",
+              "value": "\t"
+            },
+            {
+              "type": "STRING",
+              "value": "\u000b"
+            },
+            {
+              "type": "STRING",
+              "value": "\f"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_embed_directive"
+        }
+      ]
     },
     "_line": {
       "type": "REPEAT1",

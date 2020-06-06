@@ -69,6 +69,10 @@
           "named": true
         },
         {
+          "type": "substitution_definition",
+          "named": true
+        },
+        {
           "type": "target",
           "named": true
         }
@@ -147,6 +151,11 @@
   },
   {
     "type": "paragraph",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "substitution_definition",
     "named": true,
     "fields": {}
   },

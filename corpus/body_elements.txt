@@ -248,3 +248,22 @@ Directives
   (directive)
   (directive)
   (directive))
+
+========================
+Substitution definitions
+========================
+
+.. |reST| replace:: reStructuredText
+
+.. |biohazard| image:: biohazard.png
+.. |bio-hazard| image:: biohazard.png
+
+.. |bio hazard| image:: biohazard.png
+
+---
+
+(document
+  (substitution_definition)
+  (substitution_definition)
+  (substitution_definition)
+  (substitution_definition))

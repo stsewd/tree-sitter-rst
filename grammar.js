@@ -171,6 +171,7 @@ module.exports = grammar({
       $._hyperlink_target_block,
       $._anoynymous_hyperlink_target_block,
       $._directive_block,
+      $._substitution_definition_block,
     ),
     _markup_start: $ => token(seq('..', WHITE_SPACE)),
 
@@ -256,12 +257,29 @@ module.exports = grammar({
     ),
     directive: $ => seq(
       $._markup_start,
+      $._embed_directive,
+    ),
+    _embed_directive: $ => seq(
       $._type,
       '::',
       optional(seq(WHITE_SPACE, $._line)),
     ),
 
     _type: $ => /[a-zA-Z0-9]+([a-z-A-Z0-9-_+:.]+[a-zA-Z0-9])?/,
+
+    // Substitution definition
+    // -----------------------
+
+    _substitution_definition_block: $ => seq(
+      repeat(seq($.substitution_definition, $._eol)),
+      $.substitution_definition,
+    ),
+    substitution_definition: $ => seq(
+      $._markup_start,
+      token(seq('|', /[^\s]+(.+[^\s])?/, '|')),
+      WHITE_SPACE,
+      $._embed_directive,
+    ),
 
 
     // ==============
