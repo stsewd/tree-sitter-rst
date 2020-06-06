@@ -48,10 +48,6 @@
           "named": true
         },
         {
-          "type": "hyperlink_target",
-          "named": true
-        },
-        {
           "type": "line_block",
           "named": true
         },
@@ -61,6 +57,10 @@
         },
         {
           "type": "paragraph",
+          "named": true
+        },
+        {
+          "type": "target",
           "named": true
         }
       ]
@@ -107,11 +107,6 @@
     "fields": {}
   },
   {
-    "type": "hyperlink_target",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "line_block",
     "named": true,
     "fields": {}
@@ -143,6 +138,11 @@
   },
   {
     "type": "paragraph",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "target",
     "named": true,
     "fields": {}
   },
@@ -184,6 +184,10 @@
   },
   {
     "type": "_",
+    "named": false
+  },
+  {
+    "type": "__",
     "named": false
   },
   {

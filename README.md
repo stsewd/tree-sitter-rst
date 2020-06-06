@@ -14,3 +14,4 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 - Lists can be grouped with blank-lines
 - Multi-line bodies
 - Escape characters
+- Empty lines with white-spaces

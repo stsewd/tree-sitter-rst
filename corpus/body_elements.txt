@@ -196,10 +196,28 @@ Hyperlink targets
 .. _hyperlink_name: link-block
 
 .. _hyperlink?name: link-block
+.. _hyperlink name: link-block
 
 ---
 
 (document
-  (hyperlink_target)
-  (hyperlink_target)
-  (hyperlink_target))
+  (target)
+  (target)
+  (target)
+  (target))
+
+===========================
+Anonymous hyperlink targets
+===========================
+
+__ foo
+__ I'm anonymouse
+
+__ Bar
+
+---
+
+(document
+  (target)
+  (target)
+  (target))

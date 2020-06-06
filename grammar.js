@@ -169,6 +169,7 @@ module.exports = grammar({
       $._footnote_block,
       $._citation_block,
       $._hyperlink_target_block,
+      $._anoynymous_hyperlink_target_block,
     ),
     _markup_start: $ => token(seq('..', WHITE_SPACE)),
 
@@ -215,18 +216,29 @@ module.exports = grammar({
     // -----------------
 
     _hyperlink_target_block: $ => seq(
-      repeat(seq($.hyperlink_target, $._eol)),
-      $.hyperlink_target,
+      repeat(seq($.target, $._eol)),
+      $.target,
     ),
-    hyperlink_target: $ => seq(
+    target: $ => seq(
       $._markup_start,
-      '_',
-      $._reference_name,
+      choice(
+        seq('_', $._reference_name),
+        '__',
+      ),
       ':',
       WHITE_SPACE,
       $._line,
     ),
     _reference_name: $ => /[^_:]([^:]+[^_:])?/,
+
+    // Anonymous hyperlink targets
+    // ---------------------------
+
+    _anoynymous_hyperlink_target_block: $ => seq(
+      repeat(seq(alias($._anonymous_target, $.target), $._eol)),
+      alias($._anonymous_target, $.target),
+    ),
+    _anonymous_target: $ => seq('__', WHITE_SPACE, $._line),
 
 
     // ==============
