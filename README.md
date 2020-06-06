@@ -1,7 +1,8 @@
-# reStructuredText grammar for tree-sitter
+# tree-sitter-rst 
 
 ![CI](https://github.com/stsewd/tree-sitter-rst/workflows/CI/badge.svg)
 
+reStructuredText grammar for tree-sitter.
 Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 
 # TODO
