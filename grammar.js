@@ -228,7 +228,10 @@ module.exports = grammar({
       ':',
       optional(seq(WHITE_SPACE, $._line)),
     ),
-    _reference_name: $ => /[^_:]([^:]+[^_:])?/,
+    _reference_name: $ => choice(
+      /[^_:]([^:]+[^_:])?/,
+      /`[^`]+`/,
+    ),
 
     // Anonymous hyperlink targets
     // ---------------------------

@@ -1061,8 +1061,17 @@
       ]
     },
     "_reference_name": {
-      "type": "PATTERN",
-      "value": "[^_:]([^:]+[^_:])?"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[^_:]([^:]+[^_:])?"
+        },
+        {
+          "type": "PATTERN",
+          "value": "`[^`]+`"
+        }
+      ]
     },
     "_anoynymous_hyperlink_target_block": {
       "type": "SEQ",
