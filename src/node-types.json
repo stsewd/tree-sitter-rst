@@ -20,6 +20,11 @@
     "fields": {}
   },
   {
+    "type": "directive",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "document",
     "named": true,
     "fields": {},
@@ -33,6 +38,10 @@
         },
         {
           "type": "citation",
+          "named": true
+        },
+        {
+          "type": "directive",
           "named": true
         },
         {
@@ -172,6 +181,10 @@
   },
   {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": "::",
     "named": false
   },
   {

@@ -229,3 +229,22 @@ __
   (target)
   (target)
   (target))
+
+==========
+Directives
+==========
+
+.. note::
+
+.. image:: mylogo.jpeg
+
+.. note:: This is a paragraph
+.. warning:: Modify at your own risk!
+
+---
+
+(document
+  (directive)
+  (directive)
+  (directive)
+  (directive))

@@ -170,6 +170,7 @@ module.exports = grammar({
       $._citation_block,
       $._hyperlink_target_block,
       $._anoynymous_hyperlink_target_block,
+      $._directive_block,
     ),
     _markup_start: $ => token(seq('..', WHITE_SPACE)),
 
@@ -226,12 +227,13 @@ module.exports = grammar({
         '__',
       ),
       ':',
-      optional(seq(WHITE_SPACE, $._line)),
+      optional(seq(WHITE_SPACE, $._link)),
     ),
     _reference_name: $ => choice(
       /[^_:]([^:]+[^_:])?/,
       /`[^`]+`/,
     ),
+    _link: $ => repeat1(/./),
 
     // Anonymous hyperlink targets
     // ---------------------------
@@ -242,8 +244,24 @@ module.exports = grammar({
     ),
     _anonymous_target: $ => seq(
       '__',
+      optional(seq(WHITE_SPACE, $._link)),
+    ),
+
+    // Directives
+    // ----------
+
+    _directive_block: $ => seq(
+      repeat(seq($.directive, $._eol)),
+      $.directive,
+    ),
+    directive: $ => seq(
+      $._markup_start,
+      $._type,
+      '::',
       optional(seq(WHITE_SPACE, $._line)),
     ),
+
+    _type: $ => /[a-zA-Z0-9]+([a-z-A-Z0-9-_+:.]+[a-zA-Z0-9])?/,
 
 
     // ==============
