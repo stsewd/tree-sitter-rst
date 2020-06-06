@@ -31,6 +31,10 @@
           "named": true
         },
         {
+          "type": "field_list",
+          "named": true
+        },
+        {
           "type": "paragraph",
           "named": true
         }
@@ -53,6 +57,26 @@
     }
   },
   {
+    "type": "field",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "field_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "field",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "list_item",
     "named": true,
     "fields": {}
@@ -61,5 +85,9 @@
     "type": "paragraph",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": ":",
+    "named": false
   }
 ]

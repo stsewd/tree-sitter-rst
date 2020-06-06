@@ -113,3 +113,29 @@ term 4 : classifier one : classifier two
       (term)
       (classifier)
       (definition))))
+
+===========
+Field lists
+===========
+
+:Date: 2001-08-16
+:Version: 1
+:Authors: Me
+:Indentation: Since the field marker may be quite long, the second.
+:Parameter i: integer
+
+:something with Space: -Is this real?
+:BASIC: YES
+
+---
+
+(document
+  (field_list
+    (field)
+    (field)
+    (field)
+    (field)
+    (field))
+  (field_list
+    (field)
+    (field)))

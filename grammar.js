@@ -56,6 +56,7 @@ module.exports = grammar({
     _lists: $ => choice(
       $.bullet_list,
       $.enumerated_list,
+      $.field_list,
     ),
 
     list_item: $ => choice(
@@ -88,6 +89,30 @@ module.exports = grammar({
       choice(/[0-9]+\./, /[a-z]\./, /[A-Z]\./, /[IVXLCDM]+\./, /[ivxlcdm]+\./, '#.'),
       WHITE_SPACE,
     )),
+
+    // Definition list
+    // ---------------
+    // TODO
+
+    // Field list
+    // ----------
+    field_list: $ => seq(
+      repeat(seq($.field, $._eol)),
+      $.field,
+    ),
+
+    field: $ => seq(
+      ':',
+      $._field_name,
+      ':',
+      WHITE_SPACE,
+      $._field_body,
+    ),
+
+    _field_name: $ => /[^:]+/,
+    _field_body: $ => $._line,
+
+
 
 
     // General tokens

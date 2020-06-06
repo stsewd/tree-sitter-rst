@@ -78,6 +78,10 @@
         {
           "type": "SYMBOL",
           "name": "enumerated_list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "field_list"
         }
       ]
     },
@@ -271,6 +275,64 @@
           }
         ]
       }
+    },
+    "field_list": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "field"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_eol"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "field"
+        }
+      ]
+    },
+    "field": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_field_name"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[ \\t\\v\\f]"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_field_body"
+        }
+      ]
+    },
+    "_field_name": {
+      "type": "PATTERN",
+      "value": "[^:]+"
+    },
+    "_field_body": {
+      "type": "SYMBOL",
+      "name": "_line"
     },
     "_line": {
       "type": "REPEAT1",
