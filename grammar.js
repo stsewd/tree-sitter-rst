@@ -1,6 +1,18 @@
-const PREC = {}
 const WHITE_SPACE = choice(' ', '\t', '\v', '\f')
+
 const OPTION = /[a-zA-Z0-9][a-zA-Z0-9_-]*/
+const OPTION_STRING = choice(
+  seq('-', OPTION),
+  seq('+', OPTION),
+  seq('--', OPTION),
+  seq('/', OPTION),
+)
+const OPTION_GROUP = seq(
+  OPTION_STRING,
+  optional(
+    seq(choice(' ', '='), OPTION),
+  ),
+)
 
 
 module.exports = grammar({
@@ -8,11 +20,7 @@ module.exports = grammar({
 
   extras: $ => [$._eol],
 
-  conflicts: $ => [
-    [$.bullet_list],
-    [$.enumerated_list],
-    [$._option]
-  ],
+  conflicts: $ => [],
 
   externals: $ => [
     $._eol,
@@ -36,6 +44,7 @@ module.exports = grammar({
       choice(
         $.paragraph,
         $._lists,
+        $.line_block,
       ),
       $._blank_line,
     ),
@@ -121,24 +130,28 @@ module.exports = grammar({
     ),
 
     option_list_item: $ => seq(
-      seq(repeat(seq($._option, ', ')), $._option),
-      WHITE_SPACE,
-      WHITE_SPACE,
+      token(
+        seq(
+          repeat(seq(OPTION_GROUP, ', ')),
+          OPTION_GROUP,
+          WHITE_SPACE,
+          WHITE_SPACE,
+        ),
+      ),
       $._line,
     ),
-    _option: $ => seq(
-      $._option_string,
-      optional(
-        seq(choice(' ', '='), $._option_argument),
-      ),
+
+    // ==========
+    // Line block
+    // ==========
+    line_block: $ => seq(
+      repeat(seq($._single_line_block, $._eol)),
+      $._single_line_block,
     ),
-    _option_string: $ => token(choice(
-      seq('-', OPTION),
-      seq('+', OPTION),
-      seq('--', OPTION),
-      seq('/', OPTION),
-    )),
-    _option_argument: $ => OPTION,
+    _single_line_block: $ => choice(
+      '|',
+      seq('|', WHITE_SPACE, $._line),
+    ),
 
 
     // General tokens

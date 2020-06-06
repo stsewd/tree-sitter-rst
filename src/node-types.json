@@ -35,6 +35,10 @@
           "named": true
         },
         {
+          "type": "line_block",
+          "named": true
+        },
+        {
           "type": "option_list",
           "named": true
         },
@@ -79,6 +83,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "line_block",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "list_item",
@@ -127,15 +136,11 @@
     "named": false
   },
   {
-    "type": ", ",
-    "named": false
-  },
-  {
     "type": ":",
     "named": false
   },
   {
-    "type": "=",
+    "type": "|",
     "named": false
   }
 ]

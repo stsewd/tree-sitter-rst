@@ -75,45 +75,6 @@ Z. Six
     (list_item)
     (list_item)))
 
-================
-Definition lists
-================
-
-term 1
-    Definition 1.
-
-term 2
-    Definition 2, paragraph 1.
-
-    Definition 2, paragraph 2.
-
-term 3 : classifier
-    Definition 3.
-
-term 4 : classifier one : classifier two
-    Definition 4.
-
----
-
-(document
-  (definition_list
-    (definition_list_item
-      (term)
-      (classifier)
-      (definition))
-    (definition_list_item
-      (term)
-      (classifier)
-      (definition))
-    (definition_list_item
-      (term)
-      (classifier)
-      (definition))
-    (definition_list_item
-      (term)
-      (classifier)
-      (definition))))
-
 ===========
 Field lists
 ===========
@@ -171,3 +132,21 @@ Option lists
     (option_list_item))
   (option_list
     (option_list_item)))
+
+===========
+Line blocks
+===========
+
+| I'm a line block
+
+| Me too
+| With two lines!
+
+|
+
+---
+
+(document
+  (line_block)
+  (line_block)
+  (line_block))
