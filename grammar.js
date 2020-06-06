@@ -1,6 +1,16 @@
 const WHITE_SPACE = choice(' ', '\t', '\v', '\f')
+const BODY = repeat1(/./)
 
-
+const CHAR_BULLET = choice('*', '+', '-', '•', '‣', '⁃')
+const NUMERIC_BULLET = choice(
+  /[0-9]+\./,
+  /[a-z]\./,
+  /[A-Z]\./,
+  /[IVXLCDM]+\./,
+  /[ivxlcdm]+\./,
+  '#.',
+)
+const FIELD_NAME = /[^:]+/
 const OPTION = /[a-zA-Z0-9][a-zA-Z0-9_-]*/
 const OPTION_STRING = choice(
   seq('-', OPTION),
@@ -30,6 +40,8 @@ const REFERENCE_NAME = choice(
 )
 const TYPE = /[a-zA-Z0-9]+([a-z-A-Z0-9-_+:.]+[a-zA-Z0-9])?/
 const SUBSTITUTION_TEXT = /[^\s]+(.+[^\s])?/
+
+const LINK = repeat1(/./)
 
 
 module.exports = grammar({
@@ -65,6 +77,7 @@ module.exports = grammar({
         $.line_block,
         $._markup_blocks,
       ),
+      //$._comment_block,
       $._blank_line,
     ),
 
@@ -73,8 +86,8 @@ module.exports = grammar({
     // =========
 
     paragraph: $ => seq(
-      repeat(seq($._line, $._eol)),
-      $._line,
+      repeat(seq(BODY, $._eol)),
+      BODY,
     ),
 
 
@@ -101,11 +114,8 @@ module.exports = grammar({
       alias($._bullet_list_item, $.list_item),
     ),
 
-    _bullet_list_item: $ => seq($._char_bullet, $._line),
-    _char_bullet: $ => token(seq(
-      choice('*', '+', '-', '•', '‣', '⁃'),
-      WHITE_SPACE,
-    )),
+    _bullet_list_item: $ => seq($._char_bullet, BODY),
+    _char_bullet: $ => token(seq(CHAR_BULLET, WHITE_SPACE)),
 
     // Enumerated lists
     // ----------------
@@ -114,12 +124,7 @@ module.exports = grammar({
       repeat(seq(alias($._enumerated_list_item, $.list_item), $._eol)),
       alias($._enumerated_list_item, $.list_item),
     ),
-
-    _enumerated_list_item: $ => seq($._numeric_bullet, $._line),
-    _numeric_bullet: $ => token(seq(
-      choice(/[0-9]+\./, /[a-z]\./, /[A-Z]\./, /[IVXLCDM]+\./, /[ivxlcdm]+\./, '#.'),
-      WHITE_SPACE,
-    )),
+    _enumerated_list_item: $ => seq(token(seq(NUMERIC_BULLET, WHITE_SPACE)), BODY),
 
     // Definition list
     // ---------------
@@ -133,17 +138,10 @@ module.exports = grammar({
       repeat(seq($.field, $._eol)),
       $.field,
     ),
-
     field: $ => seq(
-      ':',
-      $._field_name,
-      ':',
-      WHITE_SPACE,
-      $._field_body,
+      token(seq(':', FIELD_NAME, ':', WHITE_SPACE)),
+      BODY,
     ),
-
-    _field_name: $ => /[^:]+/,
-    _field_body: $ => $._line,
 
     // Option list
     // -----------
@@ -162,7 +160,7 @@ module.exports = grammar({
           WHITE_SPACE,
         ),
       ),
-      $._line,
+      BODY,
     ),
 
 
@@ -175,7 +173,7 @@ module.exports = grammar({
     ),
     _single_line_block: $ => choice(
       '|',
-      seq('|', WHITE_SPACE, $._line),
+      seq(token(seq('|', WHITE_SPACE)), BODY),
     ),
 
 
@@ -200,7 +198,7 @@ module.exports = grammar({
     ),
     footnote: $ => seq(
       token(seq(MARKUP_START, '[', LABEL, ']', WHITE_SPACE)),
-      $._line,
+      BODY,
     ),
 
     // Citations
@@ -212,7 +210,7 @@ module.exports = grammar({
     ),
     citation: $ => seq(
       token(seq(MARKUP_START, '[', CITATION_LABEL, ']', WHITE_SPACE)),
-      $._line,
+      BODY,
     ),
 
     // Hyperlink targets
@@ -224,9 +222,8 @@ module.exports = grammar({
     ),
     target: $ => seq(
       token(seq(MARKUP_START, seq('_', REFERENCE_NAME), ':')),
-      optional(seq(WHITE_SPACE, $._link)),
+      optional(token(seq(WHITE_SPACE, LINK))),
     ),
-    _link: $ => repeat1(/./),
 
     // Anonymous hyperlink targets
     // ---------------------------
@@ -237,7 +234,7 @@ module.exports = grammar({
     ),
     _anonymous_target: $ => seq(
       '__',
-      optional(seq(WHITE_SPACE, $._link)),
+      optional(token(seq(WHITE_SPACE, LINK))),
     ),
 
     // Directives
@@ -249,7 +246,7 @@ module.exports = grammar({
     ),
     directive: $ => seq(
       token(seq(MARKUP_START, TYPE, '::')),
-      optional(seq(WHITE_SPACE, $._line)),
+      optional(seq(WHITE_SPACE, BODY)),
     ),
 
 
@@ -267,13 +264,24 @@ module.exports = grammar({
     _embed_directive: $ => seq(
       TYPE,
       '::',
-      seq(WHITE_SPACE, $._line),
+      seq(WHITE_SPACE, BODY),
     ),
 
 
     // Comments
     // --------
-    //comment: $ => prec(1, /\.\..*/),
+
+    /*
+    _comment_block: $ => seq(
+      repeat(seq($.comment, $._eol)),
+      $.comment,
+    ),
+    comment: $ => token(seq(
+      '..',
+      WHITE_SPACE,
+      choice(/[^|].*[^|]/),
+    )),
+    */
 
 
     // ==============
