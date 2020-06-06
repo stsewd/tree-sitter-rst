@@ -168,6 +168,7 @@ module.exports = grammar({
     _markup_blocks: $ => choice(
       $._footnote_block,
       $._citation_block,
+      $._hyperlink_target_block,
     ),
     _markup_start: $ => token(seq('..', WHITE_SPACE)),
 
@@ -209,6 +210,23 @@ module.exports = grammar({
       $._line,
     ),
     _citation_label: $ => /[a-zA-Z0-9]+([a-zA-Z0-9._-]+[a-zA-Z0-9])?/,
+
+    // Hyperlink targets
+    // -----------------
+
+    _hyperlink_target_block: $ => seq(
+      repeat(seq($.hyperlink_target, $._eol)),
+      $.hyperlink_target,
+    ),
+    hyperlink_target: $ => seq(
+      $._markup_start,
+      '_',
+      $._reference_name,
+      ':',
+      WHITE_SPACE,
+      $._line,
+    ),
+    _reference_name: $ => /[^_:]([^:]+[^_:])?/,
 
 
     // ==============

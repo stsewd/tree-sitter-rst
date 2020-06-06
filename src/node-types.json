@@ -48,6 +48,10 @@
           "named": true
         },
         {
+          "type": "hyperlink_target",
+          "named": true
+        },
+        {
           "type": "line_block",
           "named": true
         },
@@ -99,6 +103,11 @@
   },
   {
     "type": "footnote",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "hyperlink_target",
     "named": true,
     "fields": {}
   },
@@ -171,6 +180,10 @@
   },
   {
     "type": "]",
+    "named": false
+  },
+  {
+    "type": "_",
     "named": false
   },
   {

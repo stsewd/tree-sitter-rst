@@ -187,3 +187,19 @@ Citations
   (citation)
   (citation)
   (citation))
+
+=================
+Hyperlink targets
+=================
+
+.. _hyperlink-name: link-block
+.. _hyperlink_name: link-block
+
+.. _hyperlink?name: link-block
+
+---
+
+(document
+  (hyperlink_target)
+  (hyperlink_target)
+  (hyperlink_target))

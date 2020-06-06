@@ -751,6 +751,10 @@
         {
           "type": "SYMBOL",
           "name": "_citation_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_hyperlink_target_block"
         }
       ]
     },
@@ -953,6 +957,81 @@
     "_citation_label": {
       "type": "PATTERN",
       "value": "[a-zA-Z0-9]+([a-zA-Z0-9._-]+[a-zA-Z0-9])?"
+    },
+    "_hyperlink_target_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "hyperlink_target"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_eol"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "hyperlink_target"
+        }
+      ]
+    },
+    "hyperlink_target": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_markup_start"
+        },
+        {
+          "type": "STRING",
+          "value": "_"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_reference_name"
+        },
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": " "
+            },
+            {
+              "type": "STRING",
+              "value": "\t"
+            },
+            {
+              "type": "STRING",
+              "value": "\u000b"
+            },
+            {
+              "type": "STRING",
+              "value": "\f"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_line"
+        }
+      ]
+    },
+    "_reference_name": {
+      "type": "PATTERN",
+      "value": "[^_:]([^:]+[^_:])?"
     },
     "_line": {
       "type": "REPEAT1",
