@@ -259,10 +259,12 @@ Substitution definitions
 .. |bio-hazard| image:: biohazard.png
 
 .. |bio hazard| image:: biohazard.png
+.. |bio|hazard| image:: biohazard.png
 
 ---
 
 (document
+  (substitution_definition)
   (substitution_definition)
   (substitution_definition)
   (substitution_definition)
