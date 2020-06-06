@@ -8,8 +8,8 @@ module.exports = grammar({
   extras: $ => [$._eol],
 
   conflicts: $ => [
-    [$._bullet_list_item],
-    [$._enumerated_list_item],
+    [$.bullet_list],
+    [$.enumerated_list],
   ],
 
   externals: $ => [
@@ -20,14 +20,21 @@ module.exports = grammar({
   supertypes: $ => [],
 
   rules: {
-    document: $ => repeat($._body_elements),
+    document: $ => repeat(
+      choice(
+        $._body_elements,
+        $._blank_line,
+      )
+    ),
 
     // =============
     // Body elements
     // =============
-    _body_elements: $ => choice(
-      $.paragraph,
-      $._lists,
+    _body_elements: $ => seq(
+      choice(
+        $.paragraph,
+        $._lists,
+      ),
       $._blank_line,
     ),
 
@@ -78,8 +85,8 @@ module.exports = grammar({
 
     _enumerated_list_item: $ => seq($._numeric_bullet, $._line),
     _numeric_bullet: $ => token(seq(
-        choice(/[0-9]+\./, /[a-z]\./, /[A-Z]\./, /[IVXLCDM]+\./, /[ivxlcdm]+\./, '#.'),
-        WHITE_SPACE,
+      choice(/[0-9]+\./, /[a-z]\./, /[A-Z]\./, /[IVXLCDM]+\./, /[ivxlcdm]+\./, '#.'),
+      WHITE_SPACE,
     )),
 
 

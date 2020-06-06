@@ -4,20 +4,34 @@
     "document": {
       "type": "REPEAT",
       "content": {
-        "type": "SYMBOL",
-        "name": "_body_elements"
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_body_elements"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_blank_line"
+          }
+        ]
       }
     },
     "_body_elements": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "paragraph"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_lists"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "paragraph"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_lists"
+            }
+          ]
         },
         {
           "type": "SYMBOL",
@@ -274,10 +288,10 @@
   ],
   "conflicts": [
     [
-      "_bullet_list_item"
+      "bullet_list"
     ],
     [
-      "_enumerated_list_item"
+      "enumerated_list"
     ]
   ],
   "externals": [
