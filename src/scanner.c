@@ -7,6 +7,7 @@
 
 enum TokenType {
   T_EOL,
+  T_BLANK_LINE,
 };
 
 typedef struct {
@@ -70,17 +71,21 @@ bool tree_sitter_rst_external_scanner_scan(
     TSLexer *lexer,
     const bool *valid_symbols
 ) {
-  bool is_eof = lexer->eof(lexer);
-  if (is_eof) {
-    return false;
-  }
-  if (valid_symbols[T_EOL]) {
-    if (lexer->lookahead == '\n') {
-      lexer->result_symbol = T_EOL;
+  char lookahead = lexer->lookahead;
+  if (
+      (valid_symbols[T_BLANK_LINE] || valid_symbols[T_EOL])
+      && (lookahead == '\n' || lookahead == '\r')
+  ) {
+    lexer->advance(lexer, false);
+    lookahead = lexer->lookahead;
+    if (lookahead == '\0' || lookahead == '\n') {
+      lexer->result_symbol = T_BLANK_LINE;
       lexer->advance(lexer, false);
-      lexer->mark_end(lexer);
-      return true;
+    } else {
+      lexer->result_symbol = T_EOL;
     }
+    lexer->mark_end(lexer);
+    return true;
   }
   return false;
 }

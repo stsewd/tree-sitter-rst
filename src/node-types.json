@@ -1,19 +1,5 @@
 [
   {
-    "type": "_list",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "bullet_list",
-        "named": true
-      },
-      {
-        "type": "enumerated_list",
-        "named": true
-      }
-    ]
-  },
-  {
     "type": "bullet_list",
     "named": true,
     "fields": {},
@@ -37,7 +23,7 @@
       "required": false,
       "types": [
         {
-          "type": "_list",
+          "type": "bullet_list",
           "named": true
         },
         {
@@ -48,62 +34,13 @@
     }
   },
   {
-    "type": "enumerated_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "list_item",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "line",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "list_bullet",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "list_item",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "line",
-          "named": true
-        },
-        {
-          "type": "list_bullet",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "paragraph",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "line",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   }
 ]

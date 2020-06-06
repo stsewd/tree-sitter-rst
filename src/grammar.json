@@ -17,7 +17,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_list"
+          "name": "bullet_list"
         },
         {
           "type": "SYMBOL",
@@ -26,24 +26,42 @@
       ]
     },
     "paragraph": {
-      "type": "REPEAT1",
+      "type": "PREC_RIGHT",
+      "value": 0,
       "content": {
-        "type": "SYMBOL",
-        "name": "line"
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_line"
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_line"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "_eol"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_line"
+              }
+            ]
+          }
+        ]
       }
-    },
-    "_list": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "bullet_list"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "enumerated_list"
-        }
-      ]
     },
     "list_item": {
       "type": "CHOICE",
@@ -51,64 +69,104 @@
         {
           "type": "SYMBOL",
           "name": "_bullet_list_item"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_enumerated_list_item"
-        }
-      ]
-    },
-    "list_bullet": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_bullet"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_numeric_bullet"
         }
       ]
     },
     "bullet_list": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "ALIAS",
-        "content": {
-          "type": "SYMBOL",
-          "name": "_bullet_list_item"
-        },
-        "named": true,
-        "value": "list_item"
-      }
-    },
-    "_bullet_list_item": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "_bullet"
+            "name": "_bullet_list_item"
           },
           "named": true,
-          "value": "list_bullet"
+          "value": "list_item"
         },
         {
-          "type": "SYMBOL",
-          "name": "line"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "REPEAT1",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_bullet_list_item"
+                    },
+                    "named": true,
+                    "value": "list_item"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_eol"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_bullet_list_item"
+              },
+              "named": true,
+              "value": "list_item"
+            }
+          ]
         }
       ]
     },
-    "_bullet": {
+    "_bullet_list_item": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_char_bullet"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_line"
+        }
+      ]
+    },
+    "_char_bullet": {
       "type": "TOKEN",
       "content": {
         "type": "SEQ",
         "members": [
           {
-            "type": "PATTERN",
-            "value": "\\*|\\+|-|•|‣|⁃"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "*"
+              },
+              {
+                "type": "STRING",
+                "value": "+"
+              },
+              {
+                "type": "STRING",
+                "value": "-"
+              },
+              {
+                "type": "STRING",
+                "value": "•"
+              },
+              {
+                "type": "STRING",
+                "value": "‣"
+              },
+              {
+                "type": "STRING",
+                "value": "⁃"
+              }
+            ]
           },
           {
             "type": "PATTERN",
@@ -117,163 +175,36 @@
         ]
       }
     },
-    "enumerated_list": {
+    "_line": {
       "type": "REPEAT1",
       "content": {
-        "type": "ALIAS",
-        "content": {
-          "type": "SYMBOL",
-          "name": "_enumerated_list_item"
-        },
-        "named": true,
-        "value": "list_item"
+        "type": "PATTERN",
+        "value": "."
       }
-    },
-    "_enumerated_list_item": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_numeric_bullet"
-          },
-          "named": true,
-          "value": "list_bullet"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "line"
-        }
-      ]
-    },
-    "_numeric_bullet": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "PATTERN",
-                "value": "[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#"
-              },
-              {
-                "type": "STRING",
-                "value": "."
-              },
-              {
-                "type": "PATTERN",
-                "value": "\\s"
-              }
-            ]
-          }
-        },
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "("
-              },
-              {
-                "type": "PATTERN",
-                "value": "[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#"
-              },
-              {
-                "type": "STRING",
-                "value": ")"
-              },
-              {
-                "type": "PATTERN",
-                "value": "\\s"
-              }
-            ]
-          }
-        },
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "PATTERN",
-                "value": "[0-9]+|[a-z]|[A-Z]|[IVXLCDM]+|[ivxlcdm]+|#"
-              },
-              {
-                "type": "STRING",
-                "value": ")"
-              },
-              {
-                "type": "PATTERN",
-                "value": "\\s"
-              }
-            ]
-          }
-        }
-      ]
-    },
-    "line": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "PATTERN",
-            "value": "."
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_eol"
-        }
-      ]
-    },
-    "_blank_line": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_whitespace"
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_eol"
-        }
-      ]
-    },
-    "_whitespace": {
-      "type": "PATTERN",
-      "value": "\\s"
     }
   },
-  "extras": [],
+  "extras": [
+    {
+      "type": "SYMBOL",
+      "name": "_eol"
+    }
+  ],
   "conflicts": [
     [
-      "bullet_list"
-    ],
-    [
-      "enumerated_list"
-    ],
-    [
-      "paragraph"
+      "_bullet_list_item"
     ]
   ],
   "externals": [
     {
       "type": "SYMBOL",
       "name": "_eol"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_blank_line"
     }
   ],
   "inline": [],
-  "supertypes": [
-    "_list"
-  ]
+  "supertypes": []
 }
 
