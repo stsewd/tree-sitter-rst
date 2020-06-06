@@ -269,3 +269,22 @@ Substitution definitions
   (substitution_definition)
   (substitution_definition)
   (substitution_definition))
+
+========
+Comments
+========
+
+.. This is a comment
+
+.. I'm anothe comment
+.. Me too
+
+..
+
+---
+
+(document
+  (comment)
+  (comment)
+  (comment)
+  (comment))

@@ -1,5 +1,6 @@
 const WHITE_SPACE = choice(' ', '\t', '\v', '\f')
 
+
 const OPTION = /[a-zA-Z0-9][a-zA-Z0-9_-]*/
 const OPTION_STRING = choice(
   seq('-', OPTION),
@@ -13,6 +14,22 @@ const OPTION_GROUP = seq(
     seq(choice(' ', '='), OPTION),
   ),
 )
+
+const MARKUP_START = seq('..', WHITE_SPACE)
+const LABEL = choice(
+  /[0-9]+/,
+  '#',
+  /#[a-zA-Z0-9][a-zA-Z0-9_]*/,
+  '*',
+)
+const CITATION_LABEL = /[a-zA-Z0-9]+([a-zA-Z0-9._-]+[a-zA-Z0-9])?/
+const REFERENCE_NAME = choice(
+  '_',
+  /[^_:]([^:]+[^_:])?/,
+  /`[^`]+`/,
+)
+const TYPE = /[a-zA-Z0-9]+([a-z-A-Z0-9-_+:.]+[a-zA-Z0-9])?/
+const SUBSTITUTION_TEXT = /[^\s]+(.+[^\s])?/
 
 
 module.exports = grammar({
@@ -173,7 +190,6 @@ module.exports = grammar({
       $._directive_block,
       $._substitution_definition_block,
     ),
-    _markup_start: $ => token(seq('..', WHITE_SPACE)),
 
     // Footnotes
     // ---------
@@ -183,18 +199,8 @@ module.exports = grammar({
       $.footnote,
     ),
     footnote: $ => seq(
-      $._markup_start,
-      '[',
-      $._label,
-      ']',
-      WHITE_SPACE,
+      token(seq(MARKUP_START, '[', LABEL, ']', WHITE_SPACE)),
       $._line,
-    ),
-    _label: $ => choice(
-      /[0-9]+/,
-      '#',
-      /#[a-zA-Z0-9][a-zA-Z0-9_]*/,
-      '*',
     ),
 
     // Citations
@@ -205,14 +211,9 @@ module.exports = grammar({
       $.citation,
     ),
     citation: $ => seq(
-      $._markup_start,
-      '[',
-      $._citation_label,
-      ']',
-      WHITE_SPACE,
+      token(seq(MARKUP_START, '[', CITATION_LABEL, ']', WHITE_SPACE)),
       $._line,
     ),
-    _citation_label: $ => /[a-zA-Z0-9]+([a-zA-Z0-9._-]+[a-zA-Z0-9])?/,
 
     // Hyperlink targets
     // -----------------
@@ -222,17 +223,8 @@ module.exports = grammar({
       $.target,
     ),
     target: $ => seq(
-      $._markup_start,
-      choice(
-        seq('_', $._reference_name),
-        '__',
-      ),
-      ':',
+      token(seq(MARKUP_START, seq('_', REFERENCE_NAME), ':')),
       optional(seq(WHITE_SPACE, $._link)),
-    ),
-    _reference_name: $ => choice(
-      /[^_:]([^:]+[^_:])?/,
-      /`[^`]+`/,
     ),
     _link: $ => repeat1(/./),
 
@@ -256,16 +248,10 @@ module.exports = grammar({
       $.directive,
     ),
     directive: $ => seq(
-      $._markup_start,
-      $._embed_directive,
-    ),
-    _embed_directive: $ => seq(
-      $._type,
-      '::',
+      token(seq(MARKUP_START, TYPE, '::')),
       optional(seq(WHITE_SPACE, $._line)),
     ),
 
-    _type: $ => /[a-zA-Z0-9]+([a-z-A-Z0-9-_+:.]+[a-zA-Z0-9])?/,
 
     // Substitution definition
     // -----------------------
@@ -275,11 +261,19 @@ module.exports = grammar({
       $.substitution_definition,
     ),
     substitution_definition: $ => seq(
-      $._markup_start,
-      token(seq('|', /[^\s]+(.+[^\s])?/, '|')),
-      WHITE_SPACE,
+      token(seq(MARKUP_START, '|', SUBSTITUTION_TEXT, '|', WHITE_SPACE)),
       $._embed_directive,
     ),
+    _embed_directive: $ => seq(
+      TYPE,
+      '::',
+      seq(WHITE_SPACE, $._line),
+    ),
+
+
+    // Comments
+    // --------
+    //comment: $ => prec(1, /\.\..*/),
 
 
     // ==============

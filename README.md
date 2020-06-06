@@ -15,3 +15,4 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 - Multi-line bodies
 - Escape characters
 - Empty lines with white-spaces
+- Allow to group different markup blocks

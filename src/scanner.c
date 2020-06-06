@@ -78,7 +78,7 @@ bool tree_sitter_rst_external_scanner_scan(
   ) {
     lexer->advance(lexer, false);
     lookahead = lexer->lookahead;
-    if (lookahead == '\0' || lookahead == '\n') {
+    if (lookahead == '\0' || lookahead == '\n' || lookahead == '\r') {
       lexer->result_symbol = T_BLANK_LINE;
       lexer->advance(lexer, false);
     } else {
