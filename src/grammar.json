@@ -34,6 +34,10 @@
             {
               "type": "SYMBOL",
               "name": "line_block"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_markup_blocks"
             }
           ]
         },
@@ -734,6 +738,140 @@
               "name": "_line"
             }
           ]
+        }
+      ]
+    },
+    "_markup_blocks": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_footnote_block"
+        }
+      ]
+    },
+    "_markup_start": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": ".."
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": " "
+              },
+              {
+                "type": "STRING",
+                "value": "\t"
+              },
+              {
+                "type": "STRING",
+                "value": "\u000b"
+              },
+              {
+                "type": "STRING",
+                "value": "\f"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "_footnote_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "footnote"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_eol"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "footnote"
+        }
+      ]
+    },
+    "footnote": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_markup_start"
+        },
+        {
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_label"
+        },
+        {
+          "type": "STRING",
+          "value": "]"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": " "
+            },
+            {
+              "type": "STRING",
+              "value": "\t"
+            },
+            {
+              "type": "STRING",
+              "value": "\u000b"
+            },
+            {
+              "type": "STRING",
+              "value": "\f"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_line"
+        }
+      ]
+    },
+    "_label": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[0-9]+"
+        },
+        {
+          "type": "STRING",
+          "value": "#"
+        },
+        {
+          "type": "PATTERN",
+          "value": "#[a-zA-Z0-9][a-zA-Z0-9_]*"
+        },
+        {
+          "type": "STRING",
+          "value": "*"
         }
       ]
     },

@@ -7,7 +7,10 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 
 # TODO
 
+- Sections (maybe implemented without validations?)
+- Tables (maybe implemented without validations?)
 - Indentation
 - Validate for lists of the same kind
 - Lists can be grouped with blank-lines
 - Multi-line bodies
+- Escape characters

@@ -46,6 +46,7 @@ module.exports = grammar({
         $.paragraph,
         $._lists,
         $.line_block,
+        $._markup_blocks,
       ),
       $._blank_line,
     ),
@@ -158,6 +159,37 @@ module.exports = grammar({
     _single_line_block: $ => choice(
       '|',
       seq('|', WHITE_SPACE, $._line),
+    ),
+
+
+    // Markup blocks
+    // =============
+
+    _markup_blocks: $ => choice(
+      $._footnote_block,
+    ),
+    _markup_start: $ => token(seq('..', WHITE_SPACE)),
+
+    // Footnotes
+    // ---------
+
+    _footnote_block: $ => seq(
+      repeat(seq($.footnote, $._eol)),
+      $.footnote,
+    ),
+    footnote: $ => seq(
+      $._markup_start,
+      '[',
+      $._label,
+      ']',
+      WHITE_SPACE,
+      $._line,
+    ),
+    _label: $ => choice(
+      /[0-9]+/,
+      '#',
+      /#[a-zA-Z0-9][a-zA-Z0-9_]*/,
+      '*',
     ),
 
 

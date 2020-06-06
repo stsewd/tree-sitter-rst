@@ -150,3 +150,23 @@ Line blocks
   (line_block)
   (line_block)
   (line_block))
+
+
+=========
+Footnotes
+=========
+
+.. [1] Body elements go here.
+.. [#] Body elements go here.
+.. [#foo] Body elements go here.
+.. [#another_label] Body elements go here.
+.. [*] Body elements go here.
+
+---
+
+(document
+  (footnote)
+  (footnote)
+  (footnote)
+  (footnote)
+  (footnote))

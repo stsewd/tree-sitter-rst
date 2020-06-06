@@ -35,6 +35,10 @@
           "named": true
         },
         {
+          "type": "footnote",
+          "named": true
+        },
+        {
           "type": "line_block",
           "named": true
         },
@@ -83,6 +87,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "footnote",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "line_block",
@@ -136,7 +145,23 @@
     "named": false
   },
   {
+    "type": "#",
+    "named": false
+  },
+  {
+    "type": "*",
+    "named": false
+  },
+  {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
     "named": false
   },
   {
