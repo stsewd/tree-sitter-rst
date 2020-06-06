@@ -40,6 +40,7 @@ module.exports = grammar({
     // =============
     // Body elements
     // =============
+
     _body_elements: $ => seq(
       choice(
         $.paragraph,
@@ -50,18 +51,18 @@ module.exports = grammar({
     ),
 
 
-    // =========
     // Paragraph
     // =========
+
     paragraph: $ => seq(
       repeat(seq($._line, $._eol)),
       $._line,
     ),
 
 
-    // =====
     // Lists
     // =====
+
     _lists: $ => choice(
       $.bullet_list,
       $.enumerated_list,
@@ -76,6 +77,7 @@ module.exports = grammar({
 
     // Bullet lists
     // ------------
+
     bullet_list: $ => seq(
       repeat(seq(alias($._bullet_list_item, $.list_item), $._eol)),
       alias($._bullet_list_item, $.list_item),
@@ -89,6 +91,7 @@ module.exports = grammar({
 
     // Enumerated lists
     // ----------------
+
     enumerated_list: $ => seq(
       repeat(seq(alias($._enumerated_list_item, $.list_item), $._eol)),
       alias($._enumerated_list_item, $.list_item),
@@ -102,10 +105,12 @@ module.exports = grammar({
 
     // Definition list
     // ---------------
+
     // TODO
 
     // Field list
     // ----------
+
     field_list: $ => seq(
       repeat(seq($.field, $._eol)),
       $.field,
@@ -124,6 +129,7 @@ module.exports = grammar({
 
     // Option list
     // -----------
+
     option_list: $ => seq(
       repeat(seq($.option_list_item, $._eol)),
       $.option_list_item,
@@ -141,9 +147,10 @@ module.exports = grammar({
       $._line,
     ),
 
-    // ==========
+
     // Line block
     // ==========
+
     line_block: $ => seq(
       repeat(seq($._single_line_block, $._eol)),
       $._single_line_block,
@@ -154,8 +161,10 @@ module.exports = grammar({
     ),
 
 
+    // ==============
     // General tokens
     // ==============
+
     // TODO: this should be body
     _line: $ => repeat1(/./),
   },
