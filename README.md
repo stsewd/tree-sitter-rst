@@ -17,3 +17,5 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 - Escape characters
 - Allow to group different markup blocks
 - Group all chars as text
+- Handle inline markup at the beginning of a text
+- Handle nested chars inside inline markup

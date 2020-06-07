@@ -89,11 +89,6 @@
     }
   },
   {
-    "type": "emphasis",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "enumerated_list",
     "named": true,
     "fields": {},
@@ -174,9 +169,42 @@
         {
           "type": "emphasis",
           "named": true
+        },
+        {
+          "type": "footnote_reference",
+          "named": true
+        },
+        {
+          "type": "interpreted_text",
+          "named": true
+        },
+        {
+          "type": "literal",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "strong",
+          "named": true
+        },
+        {
+          "type": "substitution_reference",
+          "named": true
+        },
+        {
+          "type": "target",
+          "named": true
         }
       ]
     }
+  },
+  {
+    "type": "reference",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "substitution_definition",
@@ -222,10 +250,6 @@
   },
   {
     "type": ")",
-    "named": false
-  },
-  {
-    "type": "*",
     "named": false
   },
   {
@@ -287,6 +311,30 @@
   {
     "type": "__",
     "named": false
+  },
+  {
+    "type": "emphasis",
+    "named": true
+  },
+  {
+    "type": "footnote_reference",
+    "named": true
+  },
+  {
+    "type": "interpreted_text",
+    "named": true
+  },
+  {
+    "type": "literal",
+    "named": true
+  },
+  {
+    "type": "strong",
+    "named": true
+  },
+  {
+    "type": "substitution_reference",
+    "named": true
   },
   {
     "type": "{",

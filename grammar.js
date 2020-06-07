@@ -305,12 +305,63 @@ module.exports = grammar({
 
     _inline_markup: $ => choice(
       $.emphasis,
+      $.strong,
+      $.interpreted_text,
+      $.literal,
+      $.substitution_reference,
+      alias($._inline_target, $.target),
+      $.footnote_reference,
+      $.reference,
     ),
 
 
     // Emphasis
     // ========
 
-    emphasis: $ => seq('*', /[^*\S]+([^*]+[^*\S])?/, '*'),
+    emphasis: $ => token(seq('*', /[^*\S]+([^*]+[^*\S])?/, '*')),
+
+    // Strong emphasis
+    // ===============
+
+    strong: $ => token(seq('**', /[^*\S]+([^*]+[^*\S])?/, '**')),
+
+    // Interpreted text (anonymous role)
+    // =================================
+
+    interpreted_text: $ => token(seq('`', /[^`\S]+([^`]+[^`\S])?/, '`')),
+
+    // Inline literals
+    // ===============
+
+    literal: $ => token(seq('``', /[^`\S]+([^`]+[^`\S])?/, '``')),
+
+    // Substitution references
+    // =======================
+
+    substitution_reference: $ => token(seq('|', /[^|\S]+([^|]+[^|\S])?/, '|')),
+
+    // Inline internal targets
+    // =======================
+
+    _inline_target: $ => token(seq('_`', /[^`\S]+([^`]+[^`\S])?/, '`')),
+
+    // Footnote references
+    // ===================
+
+    footnote_reference: $ => token(seq('[', /[^\[\]\S]+([^\[\]]+[^\[\]\S])?/, ']_')),
+
+    // Hyperlink references
+    // ====================
+
+    reference: $ => choice(
+      token(seq(/[^\S]*[^\S_]/, '_')),
+      token(seq(/[^\S]*[^\S_]/, '__')),
+      token(seq('`', /[^`\S]+([^`]+[^`\S])?/, '`_')),
+    )
+
+    // Standalone hyperlinks
+    // =====================
+
+    // TODO
   },
 });

@@ -1928,23 +1928,236 @@
         {
           "type": "SYMBOL",
           "name": "emphasis"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "strong"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "interpreted_text"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "literal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "substitution_reference"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_inline_target"
+          },
+          "named": true,
+          "value": "target"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "footnote_reference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "reference"
         }
       ]
     },
     "emphasis": {
-      "type": "SEQ",
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "*"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^*\\S]+([^*]+[^*\\S])?"
+          },
+          {
+            "type": "STRING",
+            "value": "*"
+          }
+        ]
+      }
+    },
+    "strong": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "**"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^*\\S]+([^*]+[^*\\S])?"
+          },
+          {
+            "type": "STRING",
+            "value": "**"
+          }
+        ]
+      }
+    },
+    "interpreted_text": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "`"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^`\\S]+([^`]+[^`\\S])?"
+          },
+          {
+            "type": "STRING",
+            "value": "`"
+          }
+        ]
+      }
+    },
+    "literal": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "``"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^`\\S]+([^`]+[^`\\S])?"
+          },
+          {
+            "type": "STRING",
+            "value": "``"
+          }
+        ]
+      }
+    },
+    "substitution_reference": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "|"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^|\\S]+([^|]+[^|\\S])?"
+          },
+          {
+            "type": "STRING",
+            "value": "|"
+          }
+        ]
+      }
+    },
+    "_inline_target": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "_`"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^`\\S]+([^`]+[^`\\S])?"
+          },
+          {
+            "type": "STRING",
+            "value": "`"
+          }
+        ]
+      }
+    },
+    "footnote_reference": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "["
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^\\[\\]\\S]+([^\\[\\]]+[^\\[\\]\\S])?"
+          },
+          {
+            "type": "STRING",
+            "value": "]_"
+          }
+        ]
+      }
+    },
+    "reference": {
+      "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "*"
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[^\\S]*[^\\S_]"
+              },
+              {
+                "type": "STRING",
+                "value": "_"
+              }
+            ]
+          }
         },
         {
-          "type": "PATTERN",
-          "value": "[^*\\S]+([^*]+[^*\\S])?"
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[^\\S]*[^\\S_]"
+              },
+              {
+                "type": "STRING",
+                "value": "__"
+              }
+            ]
+          }
         },
         {
-          "type": "STRING",
-          "value": "*"
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "`"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[^`\\S]+([^`]+[^`\\S])?"
+              },
+              {
+                "type": "STRING",
+                "value": "`_"
+              }
+            ]
+          }
         }
       ]
     }

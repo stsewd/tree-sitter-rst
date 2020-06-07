@@ -12,3 +12,108 @@ Something *in the middle* here.
     (emphasis)
     (emphasis)
     (emphasis)))
+
+===============
+Strong emphasis
+===============
+
+Hello **world**. **Hello world**.
+Something **in the middle** here.
+
+---
+
+(document
+  (paragraph
+    (strong)
+    (strong)
+    (strong)))
+
+================
+Interpreted text
+================
+
+Hello `world`. `Hello world`.
+Something `in the middle` here.
+
+---
+
+(document
+  (paragraph
+    (interpreted_text)
+    (interpreted_text)
+    (interpreted_text)))
+
+===============
+Inline literals
+===============
+
+Hello ``world``. ``Hello world``.
+Something ``in the middle`` here.
+
+---
+
+(document
+  (paragraph
+    (literal)
+    (literal)
+    (literal)))
+
+=======================
+Substitution references
+=======================
+
+Hello |world|. |Hello world|.
+Something |in the middle| here.
+
+---
+
+(document
+  (paragraph
+    (substitution_reference)
+    (substitution_reference)
+    (substitution_reference)))
+
+=======================
+Inline internal targets
+=======================
+
+Hello _`world`. _`Hello world`.
+Something _`in the middle` here.
+
+---
+
+(document
+  (paragraph
+    (target)
+    (target)
+    (target)))
+
+===================
+Footnote references
+===================
+
+Please read the manual [1]_.
+It was on monday [#monday]_, and tuesday [#]_.
+
+---
+
+(document
+  (paragraph
+    (footnote_reference)
+    (footnote_reference)
+    (footnote_reference)))
+
+====================
+Hyperlink references
+====================
+
+Please the manual_.
+It was `on monday`_, and `tuesday`_.
+
+---
+
+(document
+  (paragraph
+    (reference)
+    (reference)
+    (reference)))
