@@ -43,6 +43,9 @@ const SUBSTITUTION_TEXT = /[^\s]+(.+[^\s])?/
 
 const LINK = repeat1(/./)
 
+const START_CHAR = choice('-', ':', '/', '\'', '"', '<', '(', '[', '{')
+const END_CHAR = choice('-', '.', ',', ':', ';', '!', '?', '\\', '/', '\'', '"', ')', ']', '}', '>')
+
 
 module.exports = grammar({
   name: 'rst',
@@ -85,8 +88,8 @@ module.exports = grammar({
     // =========
 
     paragraph: $ => seq(
-      repeat(seq(BODY, $._eol)),
-      BODY,
+      repeat(seq($._text_body, $._eol)),
+      $._text_body,
     ),
 
 
@@ -279,5 +282,35 @@ module.exports = grammar({
       '..',
       optional(seq(WHITE_SPACE, BODY)),
     ),
+
+
+    // =============
+    // Inline markup
+    // =============
+
+    _text_body: $ => repeat1(
+      choice(
+        $._inline_markup_block,
+        $._char,
+      ),
+    ),
+
+    _char: $ => choice(WHITE_SPACE, START_CHAR, END_CHAR, /\S/),
+
+    _inline_markup_block: $ => seq(
+      choice(WHITE_SPACE, START_CHAR),
+      $._inline_markup,
+      (choice(WHITE_SPACE, END_CHAR, $._eol)),
+    ),
+
+    _inline_markup: $ => choice(
+      $.emphasis,
+    ),
+
+
+    // Emphasis
+    // ========
+
+    emphasis: $ => seq('*', /[^*\S]+([^*]+[^*\S])?/, '*'),
   },
 });

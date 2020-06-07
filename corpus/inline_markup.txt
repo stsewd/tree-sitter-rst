@@ -1,0 +1,14 @@
+========
+Emphasis
+========
+
+Hello *world*. *Hello world*.
+Something *in the middle* here.
+
+---
+
+(document
+  (paragraph
+    (emphasis)
+    (emphasis)
+    (emphasis)))
