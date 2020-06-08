@@ -10,6 +10,7 @@ I'm in the *mid*\dle.
 I'm a *text*
 
 *I'm* a text
+*I'm not\* an emphasis.
 
 ---
 
@@ -32,12 +33,21 @@ Strong emphasis
 Hello **world**. **Hello world**.
 Something **in the middle** here.
 
+I'm a **text**
+
+**I'm** a text
+**I'm not\** a strong emphasis.
+
 ---
 
 (document
   (paragraph
     (strong)
     (strong)
+    (strong))
+  (paragraph
+    (strong))
+  (paragraph
     (strong)))
 
 ================
@@ -47,12 +57,21 @@ Interpreted text
 Hello `world`. `Hello world`.
 Something `in the middle` here.
 
+I'm a `text`
+
+`I'm` a text
+`I'm not\` an emphasis.
+
 ---
 
 (document
   (paragraph
     (interpreted_text)
     (interpreted_text)
+    (interpreted_text))
+  (paragraph
+    (interpreted_text))
+  (paragraph
     (interpreted_text)))
 
 ===============
@@ -62,13 +81,23 @@ Inline literals
 Hello ``world``. ``Hello world``.
 Something ``in the middle`` here.
 
+I'm a ``text``
+
+``I'm`` a text
+``I'm an valid\`` emphasis.
+
 ---
 
 (document
-  (paragraph
-    (literal)
-    (literal)
-    (literal)))
+ (paragraph
+  (literal)
+  (literal)
+  (literal))
+ (paragraph
+  (literal))
+ (paragraph
+  (literal)
+  (literal)))
 
 =======================
 Substitution references
@@ -77,13 +106,22 @@ Substitution references
 Hello |world|. |Hello world|.
 Something |in the middle| here.
 
+I'm a |text|
+
+|I'm| a text
+|I'm not\| an reference.
+
 ---
 
 (document
-  (paragraph
-    (substitution_reference)
-    (substitution_reference)
-    (substitution_reference)))
+ (paragraph
+  (substitution_reference)
+  (substitution_reference)
+  (substitution_reference))
+ (paragraph
+  (substitution_reference))
+ (paragraph
+  (substitution_reference)))
 
 =======================
 Inline internal targets
@@ -92,12 +130,21 @@ Inline internal targets
 Hello _`world`. _`Hello world`.
 Something _`in the middle` here.
 
+I'm a _`text`
+
+_`I'm` a text
+_`I'm not\` a target.
+
 ---
 
 (document
   (paragraph
     (target)
     (target)
+    (target))
+  (paragraph
+    (target))
+  (paragraph
     (target)))
 
 ===================
@@ -107,12 +154,21 @@ Footnote references
 Please read the manual [1]_.
 It was on monday [#monday]_, and tuesday [#]_.
 
+I'm a [1]_
+
+[1]_ a text
+[1\] a footnote.
+
 ---
 
 (document
   (paragraph
     (footnote_reference)
     (footnote_reference)
+    (footnote_reference))
+  (paragraph
+    (footnote_reference))
+  (paragraph
     (footnote_reference)))
 
 ====================
@@ -123,6 +179,12 @@ Please read the manual_.
 See our new_book_.
 It was `on monday`_, and `tuesday`_.
 
+I'm a text_
+I'm a text__
+
+`I'm`__ a text
+`I'm not\`_ a reference.
+
 ---
 
 (document
@@ -130,4 +192,9 @@ It was `on monday`_, and `tuesday`_.
     (reference)
     (reference)
     (reference)
+    (reference))
+  (paragraph
+    (reference)
+    (reference))
+  (paragraph
     (reference)))
