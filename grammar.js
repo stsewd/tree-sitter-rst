@@ -43,8 +43,9 @@ const SUBSTITUTION_TEXT = /[^\s]+(.+[^\s])?/
 
 const LINK = repeat1(/./)
 
-const START_CHAR = choice('-', ':', '/', '\'', '"', '<', '(', '[', '{')
-const END_CHAR = choice('-', '.', ',', ':', ';', '!', '?', '\\', '/', '\'', '"', ')', ']', '}', '>')
+const ESCAPED_CHAR = /\\./
+const START_CHAR = choice(WHITE_SPACE, '-', ':', '/', '\'', '"', '<', '(', '[', '{')
+const END_CHAR = choice(ESCAPED_CHAR, WHITE_SPACE, '-', '.', ',', ':', ';', '!', '?', '\\', '/', '\'', '"', ')', ']', '}', '>')
 
 
 module.exports = grammar({
@@ -76,9 +77,9 @@ module.exports = grammar({
     _body_elements: $ => seq(
       choice(
         $.paragraph,
-        $._lists,
+        $._list,
         $.line_block,
-        $._markup_blocks,
+        $._markup_block,
       ),
       $._blank_line,
     ),
@@ -88,15 +89,15 @@ module.exports = grammar({
     // =========
 
     paragraph: $ => seq(
-      repeat(seq($._text_body, $._eol)),
-      $._text_body,
+      repeat(seq($._line, $._eol)),
+      $._line,
     ),
 
 
     // Lists
     // =====
 
-    _lists: $ => choice(
+    _list: $ => choice(
       $.bullet_list,
       $.enumerated_list,
       $.field_list,
@@ -182,7 +183,7 @@ module.exports = grammar({
     // Markup blocks
     // =============
 
-    _markup_blocks: $ => choice(
+    _markup_block: $ => choice(
       $._footnote_block,
       $._citation_block,
       $._hyperlink_target_block,
@@ -288,19 +289,18 @@ module.exports = grammar({
     // Inline markup
     // =============
 
-    _text_body: $ => repeat1(
-      choice(
-        $._inline_markup_block,
-        $._char,
-      ),
+    _line: $ => seq(
+      optional(seq($._inline_markup, END_CHAR)),
+      repeat1(choice($._inline_markup_block, $._char)),
+      optional(seq(START_CHAR, $._inline_markup)),
     ),
 
-    _char: $ => choice(WHITE_SPACE, START_CHAR, END_CHAR, /\S/),
+    _char: $ => choice(START_CHAR, END_CHAR, /\S/),
 
     _inline_markup_block: $ => seq(
-      choice(WHITE_SPACE, START_CHAR),
+      START_CHAR,
       $._inline_markup,
-      (choice(WHITE_SPACE, END_CHAR, $._eol)),
+      END_CHAR,
     ),
 
     _inline_markup: $ => choice(

@@ -5,12 +5,24 @@ Emphasis
 Hello *world*. *Hello world*.
 Something *in the middle* here.
 
+I'm in the *mid*\dle.
+
+I'm a *text*
+
+*I'm* a text
+
 ---
 
 (document
   (paragraph
     (emphasis)
     (emphasis)
+    (emphasis))
+  (paragraph
+    (emphasis))
+  (paragraph
+    (emphasis))
+  (paragraph
     (emphasis)))
 
 ===============
@@ -107,13 +119,15 @@ It was on monday [#monday]_, and tuesday [#]_.
 Hyperlink references
 ====================
 
-Please the manual_.
+Please read the manual_.
+See our new_book_.
 It was `on monday`_, and `tuesday`_.
 
 ---
 
 (document
   (paragraph
+    (reference)
     (reference)
     (reference)
     (reference)))
