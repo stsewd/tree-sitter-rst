@@ -6,8 +6,8 @@
 
 
 enum TokenType {
-  T_EOL,
-  T_BLANK_LINE,
+  T_NEWLINE,
+  T_BLANKLINE,
 };
 
 typedef struct {
@@ -73,16 +73,16 @@ bool tree_sitter_rst_external_scanner_scan(
 ) {
   char lookahead = lexer->lookahead;
   if (
-      (valid_symbols[T_BLANK_LINE] || valid_symbols[T_EOL])
+      (valid_symbols[T_BLANKLINE] || valid_symbols[T_NEWLINE])
       && (lookahead == '\n' || lookahead == '\r')
   ) {
     lexer->advance(lexer, false);
     lookahead = lexer->lookahead;
     if (lookahead == '\0' || lookahead == '\n' || lookahead == '\r') {
-      lexer->result_symbol = T_BLANK_LINE;
+      lexer->result_symbol = T_BLANKLINE;
       lexer->advance(lexer, false);
     } else {
-      lexer->result_symbol = T_EOL;
+      lexer->result_symbol = T_NEWLINE;
     }
     lexer->mark_end(lexer);
     return true;

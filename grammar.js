@@ -51,22 +51,25 @@ const END_CHAR = choice(ESCAPED_CHAR, WHITE_SPACE, '-', '.', ',', ':', ';', '!',
 module.exports = grammar({
   name: 'rst',
 
-  extras: $ => [$._eol],
+  extras: $ => [$._newline],
 
   conflicts: $ => [],
 
   externals: $ => [
-    $._eol,
-    $._blank_line,
+    $._newline,
+    $._blankline,
   ],
 
-  supertypes: $ => [],
+  supertypes: $ => [
+    $._list,
+    $._inline_markup,
+  ],
 
   rules: {
     document: $ => repeat(
       choice(
         $._body_elements,
-        $._blank_line,
+        $._blankline,
       )
     ),
 
@@ -81,7 +84,7 @@ module.exports = grammar({
         $.line_block,
         $._markup_block,
       ),
-      $._blank_line,
+      $._blankline,
     ),
 
 
@@ -89,7 +92,7 @@ module.exports = grammar({
     // =========
 
     paragraph: $ => seq(
-      repeat(seq($._line, $._eol)),
+      repeat(seq($._line, $._newline)),
       $._line,
     ),
 
@@ -104,16 +107,11 @@ module.exports = grammar({
       $.option_list,
     ),
 
-    list_item: $ => choice(
-      $._bullet_list_item,
-      $._enumerated_list_item,
-    ),
-
     // Bullet lists
     // ------------
 
     bullet_list: $ => seq(
-      repeat(seq(alias($._bullet_list_item, $.list_item), $._eol)),
+      repeat(seq(alias($._bullet_list_item, $.list_item), $._newline)),
       alias($._bullet_list_item, $.list_item),
     ),
 
@@ -124,7 +122,7 @@ module.exports = grammar({
     // ----------------
 
     enumerated_list: $ => seq(
-      repeat(seq(alias($._enumerated_list_item, $.list_item), $._eol)),
+      repeat(seq(alias($._enumerated_list_item, $.list_item), $._newline)),
       alias($._enumerated_list_item, $.list_item),
     ),
     _enumerated_list_item: $ => seq(token(seq(NUMERIC_BULLET, WHITE_SPACE)), BODY),
@@ -138,7 +136,7 @@ module.exports = grammar({
     // ----------
 
     field_list: $ => seq(
-      repeat(seq($.field, $._eol)),
+      repeat(seq($.field, $._newline)),
       $.field,
     ),
     field: $ => seq(
@@ -150,7 +148,7 @@ module.exports = grammar({
     // -----------
 
     option_list: $ => seq(
-      repeat(seq($.option_list_item, $._eol)),
+      repeat(seq($.option_list_item, $._newline)),
       $.option_list_item,
     ),
 
@@ -171,7 +169,7 @@ module.exports = grammar({
     // ==========
 
     line_block: $ => seq(
-      repeat(seq($._single_line_block, $._eol)),
+      repeat(seq($._single_line_block, $._newline)),
       $._single_line_block,
     ),
     _single_line_block: $ => choice(
@@ -197,7 +195,7 @@ module.exports = grammar({
     // ---------
 
     _footnote_block: $ => seq(
-      repeat(seq($.footnote, $._eol)),
+      repeat(seq($.footnote, $._newline)),
       $.footnote,
     ),
     footnote: $ => seq(
@@ -209,7 +207,7 @@ module.exports = grammar({
     // ---------
 
     _citation_block: $ => seq(
-      repeat(seq($.citation, $._eol)),
+      repeat(seq($.citation, $._newline)),
       $.citation,
     ),
     citation: $ => seq(
@@ -221,7 +219,7 @@ module.exports = grammar({
     // -----------------
 
     _hyperlink_target_block: $ => seq(
-      repeat(seq($.target, $._eol)),
+      repeat(seq($.target, $._newline)),
       $.target,
     ),
     target: $ => seq(
@@ -233,7 +231,7 @@ module.exports = grammar({
     // ---------------------------
 
     _anoynymous_hyperlink_target_block: $ => seq(
-      repeat(seq(alias($._anonymous_target, $.target), $._eol)),
+      repeat(seq(alias($._anonymous_target, $.target), $._newline)),
       alias($._anonymous_target, $.target),
     ),
     _anonymous_target: $ => seq(
@@ -245,7 +243,7 @@ module.exports = grammar({
     // ----------
 
     _directive_block: $ => seq(
-      repeat(seq($.directive, $._eol)),
+      repeat(seq($.directive, $._newline)),
       $.directive,
     ),
     directive: $ => seq(
@@ -258,7 +256,7 @@ module.exports = grammar({
     // -----------------------
 
     _substitution_definition_block: $ => seq(
-      repeat(seq($.substitution_definition, $._eol)),
+      repeat(seq($.substitution_definition, $._newline)),
       $.substitution_definition,
     ),
     substitution_definition: $ => seq(
@@ -276,7 +274,7 @@ module.exports = grammar({
     // --------
 
     _comment_block: $ => seq(
-      repeat(seq($.comment, $._eol)),
+      repeat(seq($.comment, $._newline)),
       $.comment,
     ),
     comment: $ => seq(
@@ -291,17 +289,18 @@ module.exports = grammar({
 
     _line: $ => seq(
       optional(seq($._inline_markup, END_CHAR)),
-      repeat1(choice($._inline_markup_block, $._char)),
+      repeat1(choice(seq(START_CHAR, $._inline_markup, END_CHAR), $._char)),
       optional(seq(START_CHAR, $._inline_markup)),
     ),
 
     _char: $ => choice(START_CHAR, END_CHAR, /\S/),
 
-    _inline_markup_block: $ => seq(
-      START_CHAR,
+    /*
+    _inline_markup_group: $ => seq(
+      repeat(seq($._inline_markup, WHITE_SPACE)),
       $._inline_markup,
-      END_CHAR,
     ),
+    */
 
     _inline_markup: $ => choice(
       $.emphasis,
@@ -318,44 +317,44 @@ module.exports = grammar({
     // Emphasis
     // ========
 
-    emphasis: $ => token(seq('*', /[^*\S]([^*]*[^*\S\\])?/, '*')),
+    emphasis: $ => token(seq('*', /[^*\s]([^*]*[^*\s\\])?/, '*')),
 
     // Strong emphasis
     // ===============
 
-    strong: $ => token(seq('**', /[^*\S]([^*]*[^*\S\\])?/, '**')),
+    strong: $ => token(seq('**', /[^*\s]([^*]*[^*\s\\])?/, '**')),
 
     // Interpreted text (anonymous role)
     // =================================
 
-    interpreted_text: $ => token(seq('`', /[^`\S]([^`]*[^`\S\\])?/, '`')),
+    interpreted_text: $ => token(seq('`', /[^`\s]([^`]*[^`\s\\])?/, '`')),
 
     // Inline literals
     // ===============
 
-    literal: $ => token(seq('``', /[^`\S]([^`]*[^`\S])?/, '``')),
+    literal: $ => token(seq('``', /[^`\s]([^`]*[^`\s])?/, '``')),
 
     // Substitution references
     // =======================
 
-    substitution_reference: $ => token(seq('|', /[^|\S]([^|]*[^|\S\\])?/, '|')),
+    substitution_reference: $ => token(seq('|', /[^|\s]([^|]*[^|\s\\])?/, '|')),
 
     // Inline internal targets
     // =======================
 
-    _inline_target: $ => token(seq('_`', /[^`\S]([^`]*[^`\S\\])?/, '`')),
+    _inline_target: $ => token(seq('_`', /[^`\s]([^`]*[^`\s\\])?/, '`')),
 
     // Footnote references
     // ===================
 
-    footnote_reference: $ => token(seq('[', /[^\[\]\S]([^\[\]]*[^\[\]\S\\])?/, ']_')),
+    footnote_reference: $ => token(seq('[', /[^\[\]\s]([^\[\]]*[^\[\]\s\\])?/, ']_')),
 
     // Hyperlink references
     // ====================
 
     reference: $ => choice(
-      token(seq(/[^`\S]*[^`\S_]/, /__?/)),
-      token(seq('`', /[^`\S]([^`]*[^`\S\\])?/, '`', /__?/)),
+      token(seq(/[^`\s]([^`\s]*[^`\s_])?/, /__?/)),
+      token(seq('`', /[^`\s]([^`]*[^`\s\\])?/, '`', /__?/)),
     )
 
     // Standalone hyperlinks
