@@ -39,7 +39,7 @@ const REFERENCE_NAME = choice(
   /`[^`]+`/,
 )
 const TYPE = /[a-zA-Z0-9]+([a-z-A-Z0-9-_+:.]+[a-zA-Z0-9])?/
-const SUBSTITUTION_TEXT = /[^\s]+(.+[^\s])?/
+const SUBSTITUTION_TEXT = /[^\s](.+[^\s])?/
 
 const LINK = repeat1(/./)
 
@@ -317,45 +317,63 @@ module.exports = grammar({
     // Emphasis
     // ========
 
-    emphasis: $ => token(seq('*', /[^*\s]([^*]*[^*\s\\])?/, '*')),
+    // This is *emphasis*.
+    emphasis: $ => token(seq(
+      '*',
+      /[^*\s]/,
+      optional(/[^*]*[^*\s\\]/),
+      '*'
+    )),
 
     // Strong emphasis
     // ===============
 
+    // This is **strong emphasis**.
     strong: $ => token(seq('**', /[^*\s]([^*]*[^*\s\\])?/, '**')),
 
     // Interpreted text (anonymous role)
     // =================================
 
+    // This is an `interpreted text`.
     interpreted_text: $ => token(seq('`', /[^`\s]([^`]*[^`\s\\])?/, '`')),
 
     // Inline literals
     // ===============
 
+    // Thi is an ``inline literal``.
     literal: $ => token(seq('``', /[^`\s]([^`]*[^`\s])?/, '``')),
 
     // Substitution references
     // =======================
 
+    // This is a |substitution|.
     substitution_reference: $ => token(seq('|', /[^|\s]([^|]*[^|\s\\])?/, '|')),
 
     // Inline internal targets
     // =======================
 
+    // This is an _`inline targe`.
     _inline_target: $ => token(seq('_`', /[^`\s]([^`]*[^`\s\\])?/, '`')),
 
     // Footnote references
     // ===================
 
-    footnote_reference: $ => token(seq('[', /[^\[\]\s]([^\[\]]*[^\[\]\s\\])?/, ']_')),
+    // This is a footnote [1]_.
+    // This is a footnote [#]_.
+    // This is a footnote [cite-required]_.
+    footnote_reference: $ => token(seq('[', choice(LABEL, CITATION_LABEL), ']_')),
 
     // Hyperlink references
     // ====================
 
+    // This is a reference_.
+    // This is a reference__.
+    // This is `a reference`_.
+    // This is `a reference`__.
     reference: $ => choice(
       token(seq(/[^`\s]([^`\s]*[^`\s_])?/, /__?/)),
       token(seq('`', /[^`\s]([^`]*[^`\s\\])?/, '`', /__?/)),
-    )
+    ),
 
     // Standalone hyperlinks
     // =====================

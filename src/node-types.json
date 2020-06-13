@@ -1,5 +1,65 @@
 [
   {
+    "type": "_inline_markup",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "emphasis",
+        "named": true
+      },
+      {
+        "type": "footnote_reference",
+        "named": true
+      },
+      {
+        "type": "interpreted_text",
+        "named": true
+      },
+      {
+        "type": "literal",
+        "named": true
+      },
+      {
+        "type": "reference",
+        "named": true
+      },
+      {
+        "type": "strong",
+        "named": true
+      },
+      {
+        "type": "substitution_reference",
+        "named": true
+      },
+      {
+        "type": "target",
+        "named": true
+      }
+    ]
+  },
+  {
+    "type": "_list",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "bullet_list",
+        "named": true
+      },
+      {
+        "type": "enumerated_list",
+        "named": true
+      },
+      {
+        "type": "field_list",
+        "named": true
+      },
+      {
+        "type": "option_list",
+        "named": true
+      }
+    ]
+  },
+  {
     "type": "bullet_list",
     "named": true,
     "fields": {},
@@ -38,7 +98,7 @@
       "required": false,
       "types": [
         {
-          "type": "bullet_list",
+          "type": "_list",
           "named": true
         },
         {
@@ -54,23 +114,11 @@
           "named": true
         },
         {
-          "type": "enumerated_list",
-          "named": true
-        },
-        {
-          "type": "field_list",
-          "named": true
-        },
-        {
           "type": "footnote",
           "named": true
         },
         {
           "type": "line_block",
-          "named": true
-        },
-        {
-          "type": "option_list",
           "named": true
         },
         {
@@ -167,35 +215,7 @@
       "required": false,
       "types": [
         {
-          "type": "emphasis",
-          "named": true
-        },
-        {
-          "type": "footnote_reference",
-          "named": true
-        },
-        {
-          "type": "interpreted_text",
-          "named": true
-        },
-        {
-          "type": "literal",
-          "named": true
-        },
-        {
-          "type": "reference",
-          "named": true
-        },
-        {
-          "type": "strong",
-          "named": true
-        },
-        {
-          "type": "substitution_reference",
-          "named": true
-        },
-        {
-          "type": "target",
+          "type": "_inline_markup",
           "named": true
         }
       ]
