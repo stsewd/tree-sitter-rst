@@ -136,71 +136,31 @@
           "name": "_char_bullet"
         },
         {
-          "type": "REPEAT1",
-          "content": {
-            "type": "PATTERN",
-            "value": "."
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": " "
+            },
+            {
+              "type": "STRING",
+              "value": "\t"
+            },
+            {
+              "type": "STRING",
+              "value": "\u000b"
+            },
+            {
+              "type": "STRING",
+              "value": "\f"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_line"
         }
       ]
-    },
-    "_char_bullet": {
-      "type": "TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "*"
-              },
-              {
-                "type": "STRING",
-                "value": "+"
-              },
-              {
-                "type": "STRING",
-                "value": "-"
-              },
-              {
-                "type": "STRING",
-                "value": "•"
-              },
-              {
-                "type": "STRING",
-                "value": "‣"
-              },
-              {
-                "type": "STRING",
-                "value": "⁃"
-              }
-            ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": " "
-              },
-              {
-                "type": "STRING",
-                "value": "\t"
-              },
-              {
-                "type": "STRING",
-                "value": "\u000b"
-              },
-              {
-                "type": "STRING",
-                "value": "\f"
-              }
-            ]
-          }
-        ]
-      }
     },
     "enumerated_list": {
       "type": "SEQ",
@@ -1654,6 +1614,10 @@
     {
       "type": "SYMBOL",
       "name": "_blankline"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_char_bullet"
     },
     {
       "type": "SYMBOL",

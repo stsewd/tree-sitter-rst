@@ -1,7 +1,6 @@
 const WHITE_SPACE = choice(' ', '\t', '\v', '\f')
 const BODY = repeat1(/./)
 
-const CHAR_BULLET = choice('*', '+', '-', '•', '‣', '⁃')
 const NUMERIC_BULLET = choice(
   /[0-9]+\./,
   /[a-z]\./,
@@ -43,10 +42,6 @@ const SUBSTITUTION_TEXT = /[^\s](.+[^\s])?/
 
 const LINK = repeat1(/./)
 
-const ESCAPED_CHAR = /\\./
-const START_CHAR = choice(WHITE_SPACE, '-', ':', '/', '\'', '"', '<', '(', '[', '{')
-const END_CHAR = choice(ESCAPED_CHAR, WHITE_SPACE, '-', '.', ',', ':', ';', '!', '?', '\\', '/', '\'', '"', ')', ']', '}', '>')
-
 
 module.exports = grammar({
   name: 'rst',
@@ -58,6 +53,8 @@ module.exports = grammar({
   externals: $ => [
     $._newline,
     $._blankline,
+
+    $._char_bullet,
 
     $._text,
     $.emphasis,
@@ -118,8 +115,7 @@ module.exports = grammar({
       alias($._bullet_list_item, $.list_item),
     ),
 
-    _bullet_list_item: $ => seq($._char_bullet, BODY),
-    _char_bullet: $ => token(seq(CHAR_BULLET, WHITE_SPACE)),
+    _bullet_list_item: $ => seq($._char_bullet, WHITE_SPACE, $._line),
 
     // Enumerated lists
     // ----------------

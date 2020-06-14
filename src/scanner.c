@@ -5,13 +5,14 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "./tree_sitter_rst/utils.c"
-
+#include "tree_sitter_rst/utils.c"
 
 
 enum TokenType {
   T_NEWLINE,
   T_BLANKLINE,
+
+  T_CHAR_BULLET,
 
   T_TEXT,
   T_EMPHASIS,
@@ -98,12 +99,35 @@ bool tree_sitter_rst_external_scanner_scan(
     return true;
   }
 
-  if ((valid_symbols[T_TEXT] || valid_symbols[T_EMPHASIS]) && current == '*') {
+  if (
+      valid_symbols[T_CHAR_BULLET]
+      // This case is managed below
+      && current != '*'
+      && is_char_bullet(current)
+  ) {
+    lexer->advance(lexer, false);
+    current = lexer->lookahead;
+    if (isspace(current) || is_newline(current)) {
+      lexer->mark_end(lexer);
+      lexer->result_symbol = T_CHAR_BULLET;
+      return true;
+    }
+  }
+
+  if (
+      current == '*'
+      && (valid_symbols[T_TEXT] || valid_symbols[T_EMPHASIS] || valid_symbols[T_CHAR_BULLET])
+  ) {
 
     // First character can't be a white space
     lexer->advance(lexer, false);
     current = lexer->lookahead;
     if (isspace(current) || is_newline(current)) {
+      if (valid_symbols[T_CHAR_BULLET]) {
+        lexer->result_symbol = T_CHAR_BULLET;
+        lexer->mark_end(lexer);
+        return true;
+      }
       if (valid_symbols[T_TEXT]) {
         lexer->result_symbol = T_TEXT;
         lexer->mark_end(lexer);

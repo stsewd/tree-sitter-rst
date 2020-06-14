@@ -156,7 +156,17 @@
   {
     "type": "list_item",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "option_list",
