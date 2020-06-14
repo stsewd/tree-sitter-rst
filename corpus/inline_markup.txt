@@ -11,6 +11,7 @@ I'm a *text*
 
 *I'm* a text
 *I'm not\* an emphasis.
+*I'm*.*but not me*.
 
 *Lonely*
 
@@ -26,6 +27,7 @@ I'm a *text*
   (paragraph
     (emphasis))
   (paragraph
+    (emphasis)
     (emphasis))
   (paragraph
     (emphasis)))
