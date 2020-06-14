@@ -184,7 +184,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "_inline_markup",
@@ -220,43 +220,11 @@
     "named": false
   },
   {
-    "type": "\"",
-    "named": false
-  },
-  {
-    "type": "'",
-    "named": false
-  },
-  {
-    "type": "(",
-    "named": false
-  },
-  {
-    "type": "-",
-    "named": false
-  },
-  {
     "type": "..",
     "named": false
   },
   {
-    "type": "/",
-    "named": false
-  },
-  {
-    "type": ":",
-    "named": false
-  },
-  {
     "type": "::",
-    "named": false
-  },
-  {
-    "type": "<",
-    "named": false
-  },
-  {
-    "type": "[",
     "named": false
   },
   {
@@ -266,10 +234,6 @@
   {
     "type": "emphasis",
     "named": true
-  },
-  {
-    "type": "{",
-    "named": false
   },
   {
     "type": "|",

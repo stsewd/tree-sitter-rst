@@ -12,12 +12,16 @@ I'm a *text*
 *I'm* a text
 *I'm not\* an emphasis.
 
+*Lonely*
+
 ---
 
 (document
   (paragraph
     (emphasis)
     (emphasis)
+    (emphasis))
+  (paragraph
     (emphasis))
   (paragraph
     (emphasis))

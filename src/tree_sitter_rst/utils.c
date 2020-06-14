@@ -15,6 +15,19 @@ bool is_newline(int32_t c) {
 }
 
 
+#define START_CHARS_LENGHT 9
+const int32_t START_CHARS[START_CHARS_LENGHT] = {'-', ':', '/', '\'', '"', '<', '(', '[', '{'};
+
+bool is_start_char(int32_t c) {
+  for (int i = 0; i < START_CHARS_LENGHT; i++) {
+    if (c == START_CHARS[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 #define END_CHARS_LENGHT 15
 const int32_t END_CHARS[END_CHARS_LENGHT] = {
   '-', '.', ',', ':', ';', '!', '?', '\\', '/', '\'', '"', ')', ']', '}', '>',

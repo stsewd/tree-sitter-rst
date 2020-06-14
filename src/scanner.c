@@ -122,11 +122,22 @@ bool tree_sitter_rst_external_scanner_scan(
         lexer->mark_end(lexer);
       }
 
+      if (!word_found && is_start_char(current)) {
+        word_found = true;
+        lexer->advance(lexer, false);
+        lexer->mark_end(lexer);
+
+        previous = current;
+        current = lexer->lookahead;
+        consumed_chars++;
+      }
+
+
       // Take a peak to the next char
       lexer->advance(lexer, false);
 
       // Check if it's a terminal *
-      if (valid_symbols[T_EMPHASIS] && consumed_chars > 0 && current == '*' && !isspace(previous)) {
+      if (valid_symbols[T_EMPHASIS] && consumed_chars > 0 && current == '*' && !isspace(previous) && previous != '\\') {
         current = lexer->lookahead;
         if (is_newline(current) || isspace(current) || is_end_char(current)) {
           lexer->result_symbol = T_EMPHASIS;
@@ -150,13 +161,20 @@ bool tree_sitter_rst_external_scanner_scan(
   }
 
   if (valid_symbols[T_TEXT] && !is_newline(current) && !isspace(current)) {
+    int consumed_chars = 0;
     while (!is_newline(current) && !isspace(current)) {
       lexer->advance(lexer, false);
       lexer->mark_end(lexer);
+      consumed_chars ++;
+      if (is_start_char(current)) {
+        break;
+      }
       current = lexer->lookahead;
     }
-    lexer->result_symbol = T_TEXT;
-    return true;
+    if (consumed_chars > 0) {
+      lexer->result_symbol = T_TEXT;
+      return true;
+    }
   }
 
   return false;
