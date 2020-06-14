@@ -291,9 +291,26 @@ module.exports = grammar({
     // =============
 
     _line: $ => seq(
-      repeat(seq($._inline_markup, repeat1(WHITE_SPACE))),
+      optional(
+        seq(repeat(WHITE_SPACE), START_CHAR),
+      ),
+      repeat(
+        seq(
+          $._inline_markup,
+          choice(
+            token(repeat1(WHITE_SPACE)),
+            token(
+              seq(
+                END_CHAR,
+                repeat(WHITE_SPACE),
+                START_CHAR,
+              ),
+            ),
+          ),
+        ),
+      ),
       $._inline_markup,
-      repeat(WHITE_SPACE),
+      optional(token(seq(END_CHAR, repeat(WHITE_SPACE)))),
     ),
 
     _inline_markup: $ => choice(
