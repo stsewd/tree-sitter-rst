@@ -114,12 +114,26 @@ bool tree_sitter_rst_external_scanner_scan(
 
     int consumed_chars = 0;
     bool word_found = false;
+    bool is_escaped = false;
 
     while (!is_newline(current)) {
       // Mark the end of the word
       if (!word_found && isspace(current)) {
         word_found = true;
         lexer->mark_end(lexer);
+      }
+
+      // Skip escaped chars
+      if (current == '\\') {
+        is_escaped = true;
+        lexer->advance(lexer, false);
+        previous = current;
+        current = lexer->lookahead;
+        if (is_newline(current)) {
+          break;
+        }
+      } else {
+        is_escaped = false;
       }
 
       if (!word_found && is_start_char(current)) {
@@ -137,7 +151,7 @@ bool tree_sitter_rst_external_scanner_scan(
       lexer->advance(lexer, false);
 
       // Check if it's a terminal *
-      if (valid_symbols[T_EMPHASIS] && consumed_chars > 0 && current == '*' && !isspace(previous) && previous != '\\') {
+      if (valid_symbols[T_EMPHASIS] && consumed_chars > 0 && current == '*' && !isspace(previous) && !is_escaped) {
         current = lexer->lookahead;
         if (is_newline(current) || isspace(current) || is_end_char(current)) {
           lexer->result_symbol = T_EMPHASIS;

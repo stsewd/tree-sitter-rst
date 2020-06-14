@@ -10,6 +10,7 @@ I'm in the *mid*\dle.
 I'm a *text*
 
 *I'm* a text
+I'm *valid\\*
 *I'm not\* an emphasis.
 *I'm*.*but not me*.
 
@@ -27,6 +28,7 @@ I'm a *text*
   (paragraph
     (emphasis))
   (paragraph
+    (emphasis)
     (emphasis)
     (emphasis))
   (paragraph
