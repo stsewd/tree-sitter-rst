@@ -58,6 +58,9 @@ module.exports = grammar({
   externals: $ => [
     $._newline,
     $._blankline,
+
+    $._text,
+    $.emphasis,
   ],
 
   supertypes: $ => [
@@ -288,96 +291,14 @@ module.exports = grammar({
     // =============
 
     _line: $ => seq(
-      optional(seq($._inline_markup, END_CHAR)),
-      repeat1(choice(seq(START_CHAR, $._inline_markup, END_CHAR), $._char)),
-      optional(seq(START_CHAR, $._inline_markup)),
-    ),
-
-    _char: $ => choice(START_CHAR, END_CHAR, /\S/),
-
-    /*
-    _inline_markup_group: $ => seq(
-      repeat(seq($._inline_markup, WHITE_SPACE)),
+      repeat(seq($._inline_markup, repeat1(WHITE_SPACE))),
       $._inline_markup,
+      repeat(WHITE_SPACE),
     ),
-    */
 
     _inline_markup: $ => choice(
+      $._text,
       $.emphasis,
-      $.strong,
-      $.interpreted_text,
-      $.literal,
-      $.substitution_reference,
-      alias($._inline_target, $.target),
-      $.footnote_reference,
-      $.reference,
     ),
-
-
-    // Emphasis
-    // ========
-
-    // This is *emphasis*.
-    emphasis: $ => token(seq(
-      '*',
-      /[^*\s]/,
-      optional(/[^*]*[^*\s\\]/),
-      '*'
-    )),
-
-    // Strong emphasis
-    // ===============
-
-    // This is **strong emphasis**.
-    strong: $ => token(seq('**', /[^*\s]([^*]*[^*\s\\])?/, '**')),
-
-    // Interpreted text (anonymous role)
-    // =================================
-
-    // This is an `interpreted text`.
-    interpreted_text: $ => token(seq('`', /[^`\s]([^`]*[^`\s\\])?/, '`')),
-
-    // Inline literals
-    // ===============
-
-    // Thi is an ``inline literal``.
-    literal: $ => token(seq('``', /[^`\s]([^`]*[^`\s])?/, '``')),
-
-    // Substitution references
-    // =======================
-
-    // This is a |substitution|.
-    substitution_reference: $ => token(seq('|', /[^|\s]([^|]*[^|\s\\])?/, '|')),
-
-    // Inline internal targets
-    // =======================
-
-    // This is an _`inline targe`.
-    _inline_target: $ => token(seq('_`', /[^`\s]([^`]*[^`\s\\])?/, '`')),
-
-    // Footnote references
-    // ===================
-
-    // This is a footnote [1]_.
-    // This is a footnote [#]_.
-    // This is a footnote [cite-required]_.
-    footnote_reference: $ => token(seq('[', choice(LABEL, CITATION_LABEL), ']_')),
-
-    // Hyperlink references
-    // ====================
-
-    // This is a reference_.
-    // This is a reference__.
-    // This is `a reference`_.
-    // This is `a reference`__.
-    reference: $ => choice(
-      token(seq(/[^`\s]([^`\s]*[^`\s_])?/, /__?/)),
-      token(seq('`', /[^`\s]([^`]*[^`\s\\])?/, '`', /__?/)),
-    ),
-
-    // Standalone hyperlinks
-    // =====================
-
-    // TODO
   },
 });

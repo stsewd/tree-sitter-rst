@@ -1,13 +1,20 @@
 #include <tree_sitter/parser.h>
 
+#include <ctype.h>
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
+
+#include "./tree_sitter_rst/utils.c"
+
 
 
 enum TokenType {
   T_NEWLINE,
   T_BLANKLINE,
+
+  T_TEXT,
+  T_EMPHASIS,
 };
 
 typedef struct {
@@ -71,14 +78,17 @@ bool tree_sitter_rst_external_scanner_scan(
     TSLexer *lexer,
     const bool *valid_symbols
 ) {
-  char lookahead = lexer->lookahead;
+  int32_t current = lexer->lookahead;
+  int32_t previous = current;
+
   if (
       (valid_symbols[T_BLANKLINE] || valid_symbols[T_NEWLINE])
-      && (lookahead == '\n' || lookahead == '\r')
+      && (current == '\n' || current == '\r')
   ) {
     lexer->advance(lexer, false);
-    lookahead = lexer->lookahead;
-    if (lookahead == '\0' || lookahead == '\n' || lookahead == '\r') {
+    current = lexer->lookahead;
+
+    if (is_newline(current)) {
       lexer->result_symbol = T_BLANKLINE;
       lexer->advance(lexer, false);
     } else {
@@ -87,5 +97,67 @@ bool tree_sitter_rst_external_scanner_scan(
     lexer->mark_end(lexer);
     return true;
   }
+
+  if ((valid_symbols[T_TEXT] || valid_symbols[T_EMPHASIS]) && current == '*') {
+
+    // First character can't be a white space
+    lexer->advance(lexer, false);
+    current = lexer->lookahead;
+    if (isspace(current) || is_newline(current)) {
+      if (valid_symbols[T_TEXT]) {
+        lexer->result_symbol = T_TEXT;
+        lexer->mark_end(lexer);
+        return true;
+      }
+      return false;
+    }
+
+    int consumed_chars = 0;
+    bool word_found = false;
+
+    while (!is_newline(current)) {
+      // Mark the end of the word
+      if (!word_found && isspace(current)) {
+        word_found = true;
+        lexer->mark_end(lexer);
+      }
+
+      // Take a peak to the next char
+      lexer->advance(lexer, false);
+
+      // Check if it's a terminal *
+      if (valid_symbols[T_EMPHASIS] && consumed_chars > 0 && current == '*' && !isspace(previous)) {
+        current = lexer->lookahead;
+        if (is_newline(current) || isspace(current) || is_end_char(current)) {
+          lexer->result_symbol = T_EMPHASIS;
+          lexer->mark_end(lexer);
+          return true;
+        }
+      }
+
+      previous = current;
+      current = lexer->lookahead;
+      consumed_chars++;
+    }
+
+    if (valid_symbols[T_TEXT]) {
+      lexer->result_symbol = T_TEXT;
+      if (!word_found && is_newline(current)) {
+        lexer->mark_end(lexer);
+      }
+      return true;
+    }
+  }
+
+  if (valid_symbols[T_TEXT] && !is_newline(current) && !isspace(current)) {
+    while (!is_newline(current) && !isspace(current)) {
+      lexer->advance(lexer, false);
+      lexer->mark_end(lexer);
+      current = lexer->lookahead;
+    }
+    lexer->result_symbol = T_TEXT;
+    return true;
+  }
+
   return false;
 }

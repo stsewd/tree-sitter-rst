@@ -6,34 +6,6 @@
       {
         "type": "emphasis",
         "named": true
-      },
-      {
-        "type": "footnote_reference",
-        "named": true
-      },
-      {
-        "type": "interpreted_text",
-        "named": true
-      },
-      {
-        "type": "literal",
-        "named": true
-      },
-      {
-        "type": "reference",
-        "named": true
-      },
-      {
-        "type": "strong",
-        "named": true
-      },
-      {
-        "type": "substitution_reference",
-        "named": true
-      },
-      {
-        "type": "target",
-        "named": true
       }
     ]
   },
@@ -212,7 +184,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "_inline_markup",
@@ -220,11 +192,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "reference",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "substitution_definition",
@@ -253,79 +220,11 @@
     "named": false
   },
   {
-    "type": "!",
-    "named": false
-  },
-  {
-    "type": "\"",
-    "named": false
-  },
-  {
-    "type": "'",
-    "named": false
-  },
-  {
-    "type": "(",
-    "named": false
-  },
-  {
-    "type": ")",
-    "named": false
-  },
-  {
-    "type": ",",
-    "named": false
-  },
-  {
-    "type": "-",
-    "named": false
-  },
-  {
-    "type": ".",
-    "named": false
-  },
-  {
     "type": "..",
     "named": false
   },
   {
-    "type": "/",
-    "named": false
-  },
-  {
-    "type": ":",
-    "named": false
-  },
-  {
     "type": "::",
-    "named": false
-  },
-  {
-    "type": ";",
-    "named": false
-  },
-  {
-    "type": "<",
-    "named": false
-  },
-  {
-    "type": ">",
-    "named": false
-  },
-  {
-    "type": "?",
-    "named": false
-  },
-  {
-    "type": "[",
-    "named": false
-  },
-  {
-    "type": "\\",
-    "named": false
-  },
-  {
-    "type": "]",
     "named": false
   },
   {
@@ -337,35 +236,7 @@
     "named": true
   },
   {
-    "type": "footnote_reference",
-    "named": true
-  },
-  {
-    "type": "interpreted_text",
-    "named": true
-  },
-  {
-    "type": "literal",
-    "named": true
-  },
-  {
-    "type": "strong",
-    "named": true
-  },
-  {
-    "type": "substitution_reference",
-    "named": true
-  },
-  {
-    "type": "{",
-    "named": false
-  },
-  {
     "type": "|",
-    "named": false
-  },
-  {
-    "type": "}",
     "named": false
   }
 ]
