@@ -17,6 +17,7 @@ enum TokenType {
 
   T_TEXT,
   T_EMPHASIS,
+  T_STRONG,
 };
 
 typedef struct {
@@ -161,11 +162,15 @@ bool tree_sitter_rst_external_scanner_scan(
 
   if (
       current == '*'
-      && (valid_symbols[T_TEXT] || valid_symbols[T_EMPHASIS] || valid_symbols[T_CHAR_BULLET])
+      && (valid_symbols[T_TEXT]
+         || valid_symbols[T_EMPHASIS]
+         || valid_symbols[T_STRONG]
+         || valid_symbols[T_CHAR_BULLET])
   ) {
 
     // First character can't be a white space
     lexer->advance(lexer, false);
+    previous = current;
     current = lexer->lookahead;
     if (isspace(current) || is_newline(current)) {
       if (valid_symbols[T_CHAR_BULLET]) {
@@ -179,6 +184,15 @@ bool tree_sitter_rst_external_scanner_scan(
         return true;
       }
       return false;
+    }
+
+    bool is_strong = false;
+
+    if (current == '*' && valid_symbols[T_STRONG]) {
+      is_strong = true;
+      lexer->advance(lexer, false);
+      previous = current;
+      current = lexer->lookahead;
     }
 
     int consumed_chars = 0;
@@ -220,12 +234,30 @@ bool tree_sitter_rst_external_scanner_scan(
       lexer->advance(lexer, false);
 
       // Check if it's a terminal *
-      if (valid_symbols[T_EMPHASIS] && consumed_chars > 0 && current == '*' && !isspace(previous) && !is_escaped) {
+      if (
+          (valid_symbols[T_EMPHASIS] || valid_symbols[T_STRONG])
+          && consumed_chars > 0 && current == '*' && !isspace(previous) && !is_escaped
+      ) {
+        previous = current;
         current = lexer->lookahead;
-        if (is_newline(current) || isspace(current) || is_end_char(current)) {
-          lexer->result_symbol = T_EMPHASIS;
-          lexer->mark_end(lexer);
-          return true;
+        if (is_strong) {
+          if (current == '*') {
+            lexer->advance(lexer, false);
+            previous = current;
+            current = lexer->lookahead;
+            consumed_chars++;
+            if (is_newline(current) || isspace(current) || is_end_char(current)) {
+              lexer->result_symbol = T_STRONG;
+              lexer->mark_end(lexer);
+              return true;
+            }
+          }
+        } else if (valid_symbols[T_EMPHASIS]) {
+          if (is_newline(current) || isspace(current) || is_end_char(current)) {
+            lexer->result_symbol = T_EMPHASIS;
+            lexer->mark_end(lexer);
+            return true;
+          }
         }
       }
 

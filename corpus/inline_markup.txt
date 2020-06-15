@@ -45,6 +45,10 @@ I'm a **text**
 
 **I'm** a text
 **I'm not\** a strong emphasis.
+I'm **valid\\**
+**I'm**.**but not me**.
+
+**Lonely**
 
 ---
 
@@ -54,6 +58,10 @@ I'm a **text**
     (strong)
     (strong))
   (paragraph
+    (strong))
+  (paragraph
+    (strong)
+    (strong)
     (strong))
   (paragraph
     (strong)))

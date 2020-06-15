@@ -6,6 +6,10 @@
       {
         "type": "emphasis",
         "named": true
+      },
+      {
+        "type": "strong",
+        "named": true
       }
     ]
   },
@@ -243,6 +247,10 @@
   },
   {
     "type": "emphasis",
+    "named": true
+  },
+  {
+    "type": "strong",
     "named": true
   },
   {

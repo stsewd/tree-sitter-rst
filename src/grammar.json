@@ -1559,6 +1559,10 @@
         {
           "type": "SYMBOL",
           "name": "emphasis"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "strong"
         }
       ]
     }
@@ -1594,6 +1598,10 @@
     {
       "type": "SYMBOL",
       "name": "emphasis"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "strong"
     }
   ],
   "inline": [],

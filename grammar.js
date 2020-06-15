@@ -1,14 +1,6 @@
 const WHITE_SPACE = choice(' ', '\t', '\v', '\f')
 const BODY = repeat1(/./)
 
-const NUMERIC_BULLET = choice(
-  /[0-9]+\./,
-  /[a-z]\./,
-  /[A-Z]\./,
-  /[IVXLCDM]+\./,
-  /[ivxlcdm]+\./,
-  '#.',
-)
 const FIELD_NAME = /[^:]+/
 const OPTION = /[a-zA-Z0-9][a-zA-Z0-9_-]*/
 const OPTION_STRING = choice(
@@ -59,6 +51,7 @@ module.exports = grammar({
 
     $._text,
     $.emphasis,
+    $.strong,
   ],
 
   supertypes: $ => [
@@ -297,6 +290,7 @@ module.exports = grammar({
     _inline_markup: $ => choice(
       $._text,
       $.emphasis,
+      $.strong,
     ),
   },
 });
