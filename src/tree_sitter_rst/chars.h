@@ -29,7 +29,12 @@ const int32_t END_CHARS[END_CHARS_LENGTH] = {
 
 #define CHAR_BULLETS_LENGTH 6
 const int32_t CHAR_BULLETS[CHAR_BULLETS_LENGTH] = {
-  '*', '+', '-', '•', '‣', '⁃',
+  '*',
+  '+',
+  '-',
+  8226,  // '•'
+  8227,  // '‣'
+  8259,  // '⁃'
 };
 
 #define ROMAN_NUMERS_LENGTH 7
