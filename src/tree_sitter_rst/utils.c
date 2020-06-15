@@ -41,3 +41,59 @@ bool is_char_bullet(int32_t c) {
   }
   return false;
 }
+
+
+bool is_numeric_bullet(int32_t c) {
+  return (
+    is_numeric_bullet_simple(c)
+    || is_numeric_bullet_roman_lower(c)
+    || is_numeric_bullet_roman_upper(c)
+    || is_numeric_bullet_abc_lower(c)
+    || is_numeric_bullet_abc_upper(c)
+  );
+}
+
+bool is_numeric_bullet_simple(int32_t c) {
+  for (int i = 0; i < NUMERIC_BULLETS_SIMPLE_LENGTH; i++) {
+    if (c == NUMERIC_BULLETS_SIMPLE[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool is_numeric_bullet_roman_lower(int32_t c) {
+  for (int i = 0; i < ROMAN_NUMERS_LENGTH; i++) {
+    if (c == ROMAN_NUMERS_LOWERCASE[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool is_numeric_bullet_roman_upper(int32_t c) {
+  for (int i = 0; i < ROMAN_NUMERS_LENGTH; i++) {
+    if (c == ROMAN_NUMERS_UPPPERCASE[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool is_numeric_bullet_abc_lower(int32_t c) {
+  for (int i = 0; i < ABC_LENGTH; i++) {
+    if (c == ABC_LOWERCASE[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool is_numeric_bullet_abc_upper(int32_t c) {
+  for (int i = 0; i < ABC_LENGTH; i++) {
+    if (c == ABC_UPPERCASE[i]) {
+      return true;
+    }
+  }
+  return false;
+}

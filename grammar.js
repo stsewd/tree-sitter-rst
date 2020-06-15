@@ -55,6 +55,7 @@ module.exports = grammar({
     $._blankline,
 
     $._char_bullet,
+    $._numeric_bullet,
 
     $._text,
     $.emphasis,
@@ -121,10 +122,10 @@ module.exports = grammar({
     // ----------------
 
     enumerated_list: $ => seq(
-      repeat(seq(alias($._enumerated_list_item, $.list_item), $._newline)),
-      alias($._enumerated_list_item, $.list_item),
+      repeat(seq(alias($._numeric_list_item, $.list_item), $._newline)),
+      alias($._numeric_list_item, $.list_item),
     ),
-    _enumerated_list_item: $ => seq(token(seq(NUMERIC_BULLET, WHITE_SPACE)), BODY),
+    _numeric_list_item: $ => seq($._numeric_bullet, WHITE_SPACE, $._line),
 
     // Definition list
     // ---------------

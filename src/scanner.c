@@ -13,6 +13,7 @@ enum TokenType {
   T_BLANKLINE,
 
   T_CHAR_BULLET,
+  T_NUMERIC_BULLET,
 
   T_TEXT,
   T_EMPHASIS,
@@ -97,6 +98,50 @@ bool tree_sitter_rst_external_scanner_scan(
     }
     lexer->mark_end(lexer);
     return true;
+  }
+
+  if (is_numeric_bullet(current) && valid_symbols[T_NUMERIC_BULLET]) {
+    lexer->advance(lexer, false);
+    previous = current;
+    current = lexer->lookahead;
+
+    if (is_numeric_bullet_simple(previous)) {
+      while (is_numeric_bullet_simple(current) && current != '#') {
+        lexer->advance(lexer, false);
+        previous = current;
+        current = lexer->lookahead;
+      }
+    } else if (is_numeric_bullet_abc_lower(previous)) {
+      if (is_numeric_bullet_roman_lower(previous)) {
+        while (is_numeric_bullet_roman_lower(current)) {
+          lexer->advance(lexer, false);
+          previous = current;
+          current = lexer->lookahead;
+        }
+      }
+    } else if (is_numeric_bullet_abc_upper(previous)) {
+      if (is_numeric_bullet_roman_upper(previous)) {
+        while (is_numeric_bullet_roman_upper(current)) {
+          lexer->advance(lexer, false);
+          previous = current;
+          current = lexer->lookahead;
+        }
+      }
+    } else {
+      return false;
+    }
+
+    if (current == '.' || current == ')') {
+      lexer->advance(lexer, false);
+      previous = current;
+      current = lexer->lookahead;
+      if (isspace(current) || is_newline(current)) {
+        lexer->result_symbol = T_NUMERIC_BULLET;
+        lexer->mark_end(lexer);
+        return true;
+      }
+    }
+    return false;
   }
 
   if (
