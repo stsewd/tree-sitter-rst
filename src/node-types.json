@@ -8,7 +8,35 @@
         "named": true
       },
       {
+        "type": "footnote_reference",
+        "named": true
+      },
+      {
+        "type": "interpreted_text",
+        "named": true
+      },
+      {
+        "type": "literal",
+        "named": true
+      },
+      {
+        "type": "reference",
+        "named": true
+      },
+      {
+        "type": "standalone_hyperlink",
+        "named": true
+      },
+      {
         "type": "strong",
+        "named": true
+      },
+      {
+        "type": "substitution_reference",
+        "named": true
+      },
+      {
+        "type": "target",
         "named": true
       }
     ]
@@ -250,7 +278,31 @@
     "named": true
   },
   {
+    "type": "footnote_reference",
+    "named": true
+  },
+  {
+    "type": "interpreted_text",
+    "named": true
+  },
+  {
+    "type": "literal",
+    "named": true
+  },
+  {
+    "type": "reference",
+    "named": true
+  },
+  {
+    "type": "standalone_hyperlink",
+    "named": true
+  },
+  {
     "type": "strong",
+    "named": true
+  },
+  {
+    "type": "substitution_reference",
     "named": true
   },
   {

@@ -1563,6 +1563,39 @@
         {
           "type": "SYMBOL",
           "name": "strong"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "interpreted_text"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "literal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "substitution_reference"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_inline_target"
+          },
+          "named": true,
+          "value": "target"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "footnote_reference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "reference"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "standalone_hyperlink"
         }
       ]
     }
@@ -1602,6 +1635,34 @@
     {
       "type": "SYMBOL",
       "name": "strong"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "interpreted_text"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "literal"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "substitution_reference"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_inline_target"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "footnote_reference"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "reference"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "standalone_hyperlink"
     }
   ],
   "inline": [],

@@ -76,7 +76,10 @@ Something `in the middle` here.
 I'm a `text`
 
 `I'm` a text
-`I'm not\` an emphasis.
+`I'm\\` a interpreted text, `I'm not\`
+`I'm`.`I'm not`
+
+`lonely`
 
 ---
 
@@ -86,6 +89,10 @@ I'm a `text`
     (interpreted_text)
     (interpreted_text))
   (paragraph
+    (interpreted_text))
+  (paragraph
+    (interpreted_text)
+    (interpreted_text)
     (interpreted_text))
   (paragraph
     (interpreted_text)))

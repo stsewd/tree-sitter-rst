@@ -8,9 +8,12 @@ I'm another paragraph
 
 -I'm not a list
 
+*I'm not a list or strong emphasis.
+
 ---
 
 (document
+  (paragraph)
   (paragraph)
   (paragraph)
   (paragraph))

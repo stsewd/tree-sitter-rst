@@ -52,6 +52,13 @@ module.exports = grammar({
     $._text,
     $.emphasis,
     $.strong,
+    $.interpreted_text,
+    $.literal,
+    $.substitution_reference,
+    $._inline_target,
+    $.footnote_reference,
+    $.reference,
+    $.standalone_hyperlink,
   ],
 
   supertypes: $ => [
@@ -291,6 +298,13 @@ module.exports = grammar({
       $._text,
       $.emphasis,
       $.strong,
+      $.interpreted_text,
+      $.literal,
+      $.substitution_reference,
+      alias($._inline_target, $.target),
+      $.footnote_reference,
+      $.reference,
+      $.standalone_hyperlink,
     ),
   },
 });

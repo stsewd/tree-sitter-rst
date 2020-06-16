@@ -12,12 +12,21 @@ enum TokenType {
   T_NEWLINE,
   T_BLANKLINE,
 
+  // Body Elements
   T_CHAR_BULLET,
   T_NUMERIC_BULLET,
 
+  // Inline Markup
   T_TEXT,
   T_EMPHASIS,
   T_STRONG,
+  T_INTERPRETED_TEXT,
+  T_LITERAL,
+  T_SUBSTITUTION_REFERENCE,
+  T_INLINE_TARGET,
+  T_FOOTNOTE_REFERENCE,
+  T_REFERENCE,
+  T_STANDALONE_HYPERLINK,
 };
 
 typedef struct {
@@ -145,12 +154,7 @@ bool tree_sitter_rst_external_scanner_scan(
     return false;
   }
 
-  if (
-      valid_symbols[T_CHAR_BULLET]
-      // This case is managed below
-      && current != '*'
-      && is_char_bullet(current)
-  ) {
+  if (valid_symbols[T_CHAR_BULLET] && is_char_bullet(current)) {
     lexer->advance(lexer, false);
     current = lexer->lookahead;
     if (isspace(current) || is_newline(current)) {
@@ -158,14 +162,14 @@ bool tree_sitter_rst_external_scanner_scan(
       lexer->result_symbol = T_CHAR_BULLET;
       return true;
     }
+    return false;
   }
 
   if (
       current == '*'
       && (valid_symbols[T_TEXT]
          || valid_symbols[T_EMPHASIS]
-         || valid_symbols[T_STRONG]
-         || valid_symbols[T_CHAR_BULLET])
+         || valid_symbols[T_STRONG])
   ) {
 
     // First character can't be a white space
@@ -173,11 +177,6 @@ bool tree_sitter_rst_external_scanner_scan(
     previous = current;
     current = lexer->lookahead;
     if (isspace(current) || is_newline(current)) {
-      if (valid_symbols[T_CHAR_BULLET]) {
-        lexer->result_symbol = T_CHAR_BULLET;
-        lexer->mark_end(lexer);
-        return true;
-      }
       if (valid_symbols[T_TEXT]) {
         lexer->result_symbol = T_TEXT;
         lexer->mark_end(lexer);
