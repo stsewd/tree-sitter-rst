@@ -165,12 +165,15 @@ bool tree_sitter_rst_external_scanner_scan(
     return false;
   }
 
-  if (
-      current == '*'
-      && (valid_symbols[T_TEXT]
-         || valid_symbols[T_EMPHASIS]
-         || valid_symbols[T_STRONG])
+  if (is_inline_markup_single_char(current)
+      && (valid_symbols[T_EMPHASIS]
+          || valid_symbols[T_STRONG]
+          || valid_symbols[T_INTERPRETED_TEXT]
+          || valid_symbols[T_LITERAL]
+          || valid_symbols[T_SUBSTITUTION_REFERENCE])
   ) {
+
+    int32_t end_char = current;
 
     // First character can't be a white space
     lexer->advance(lexer, false);
@@ -185,10 +188,14 @@ bool tree_sitter_rst_external_scanner_scan(
       return false;
     }
 
-    bool is_strong = false;
+    bool is_double_char = false;
 
-    if (current == '*' && valid_symbols[T_STRONG]) {
-      is_strong = true;
+    if (
+        current == end_char
+        && is_inline_markup_double_char(current)
+        && (valid_symbols[T_STRONG] || valid_symbols[T_LITERAL])
+    ) {
+      is_double_char = true;
       lexer->advance(lexer, false);
       previous = current;
       current = lexer->lookahead;
@@ -228,32 +235,48 @@ bool tree_sitter_rst_external_scanner_scan(
         consumed_chars++;
       }
 
-
       // Take a peak to the next char
       lexer->advance(lexer, false);
 
-      // Check if it's a terminal *
+      // Check if it's a terminal character
       if (
-          (valid_symbols[T_EMPHASIS] || valid_symbols[T_STRONG])
-          && consumed_chars > 0 && current == '*' && !isspace(previous) && !is_escaped
+          consumed_chars > 0
+          && !isspace(previous)
+          && is_inline_markup_single_char(current)
+          // Literal is the only inline markup dot doesn't care if the previous char is '\'
+          && (!is_escaped || (end_char == '`' && is_double_char && valid_symbols[T_LITERAL]))
       ) {
         previous = current;
         current = lexer->lookahead;
-        if (is_strong) {
-          if (current == '*') {
+        if (is_double_char) {
+          if (current == end_char) {
             lexer->advance(lexer, false);
             previous = current;
             current = lexer->lookahead;
             consumed_chars++;
             if (is_newline(current) || isspace(current) || is_end_char(current)) {
-              lexer->result_symbol = T_STRONG;
+              if (previous == '*') {
+                lexer->result_symbol = T_STRONG;
+              } else if (previous == '`') {
+                lexer->result_symbol = T_LITERAL;
+              }
               lexer->mark_end(lexer);
               return true;
             }
           }
-        } else if (valid_symbols[T_EMPHASIS]) {
+        } else if (
+            valid_symbols[T_EMPHASIS]
+            || valid_symbols[T_INTERPRETED_TEXT]
+            || valid_symbols[T_SUBSTITUTION_REFERENCE]
+        ) {
           if (is_newline(current) || isspace(current) || is_end_char(current)) {
-            lexer->result_symbol = T_EMPHASIS;
+            if (previous == '*') {
+              lexer->result_symbol = T_EMPHASIS;
+            } else if (previous == '`') {
+              lexer->result_symbol = T_INTERPRETED_TEXT;
+            } else if (previous == '|') {
+              lexer->result_symbol = T_SUBSTITUTION_REFERENCE;
+            }
             lexer->mark_end(lexer);
             return true;
           }
@@ -272,6 +295,8 @@ bool tree_sitter_rst_external_scanner_scan(
       }
       return true;
     }
+
+    return false;
   }
 
   if (valid_symbols[T_TEXT] && !is_newline(current) && !isspace(current)) {
@@ -289,6 +314,7 @@ bool tree_sitter_rst_external_scanner_scan(
       lexer->result_symbol = T_TEXT;
       return true;
     }
+    return false;
   }
 
   return false;

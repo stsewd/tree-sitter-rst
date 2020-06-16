@@ -33,6 +33,26 @@ bool is_end_char(int32_t c) {
 }
 
 
+bool is_inline_markup_single_char(int32_t c) {
+  for (int i = 0; i < CHARS_INLINE_MARKUP_LENGTH; i++) {
+    if (c == CHARS_INLINE_MARKUP[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+bool is_inline_markup_double_char(int32_t c) {
+  for (int i = 0; i < CHARS_INLINE_MARKUP_DOUBLE_LENGTH; i++) {
+    if (c == CHARS_INLINE_MARKUP_DOUBLE[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 bool is_char_bullet(int32_t c) {
   for (int i = 0; i < CHAR_BULLETS_LENGTH; i++) {
     if (c == CHAR_BULLETS[i]) {

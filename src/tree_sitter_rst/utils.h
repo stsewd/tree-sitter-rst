@@ -6,6 +6,8 @@
 bool is_newline(int32_t c);
 bool is_start_char(int32_t c);
 bool is_end_char(int32_t c);
+bool is_inline_markup_single_char(int32_t c);
+bool is_inline_markup_double_char(int32_t c);
 
 bool is_char_bullet(int32_t c);
 

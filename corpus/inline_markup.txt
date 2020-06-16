@@ -109,6 +109,10 @@ I'm a ``text``
 ``I'm`` a text
 ``I'm an valid\`` emphasis.
 
+``Lonely``
+
+``I'm``.``I'm not``
+
 ---
 
 (document
@@ -120,6 +124,10 @@ I'm a ``text``
   (literal))
  (paragraph
   (literal)
+  (literal))
+ (paragraph
+  (literal))
+ (paragraph
   (literal)))
 
 =======================
@@ -134,12 +142,20 @@ I'm a |text|
 |I'm| a text
 |I'm not\| an reference.
 
+|Lonely|
+
+|I am|.|I'm not|
+
 ---
 
 (document
  (paragraph
   (substitution_reference)
   (substitution_reference)
+  (substitution_reference))
+ (paragraph
+  (substitution_reference))
+ (paragraph
   (substitution_reference))
  (paragraph
   (substitution_reference))
