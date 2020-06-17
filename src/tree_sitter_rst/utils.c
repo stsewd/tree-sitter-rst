@@ -1,3 +1,5 @@
+#include <ctype.h>
+
 #include "tree_sitter_rst/utils.h"
 #include "tree_sitter_rst/chars.h"
 
@@ -12,6 +14,11 @@ bool is_newline(int32_t c) {
 }
 
 
+bool is_space(int32_t c) {
+  return isspace(c) || is_newline(c);
+}
+
+
 bool is_start_char(int32_t c) {
   for (int i = 0; i < START_CHARS_LENGTH; i++) {
     if (c == START_CHARS[i]) {
@@ -20,7 +27,6 @@ bool is_start_char(int32_t c) {
   }
   return false;
 }
-
 
 
 bool is_end_char(int32_t c) {
@@ -73,6 +79,7 @@ bool is_numeric_bullet(int32_t c) {
   );
 }
 
+
 bool is_numeric_bullet_simple(int32_t c) {
   for (int i = 0; i < NUMERIC_BULLETS_SIMPLE_LENGTH; i++) {
     if (c == NUMERIC_BULLETS_SIMPLE[i]) {
@@ -81,6 +88,7 @@ bool is_numeric_bullet_simple(int32_t c) {
   }
   return false;
 }
+
 
 bool is_numeric_bullet_roman_lower(int32_t c) {
   for (int i = 0; i < ROMAN_NUMERS_LENGTH; i++) {
@@ -91,6 +99,7 @@ bool is_numeric_bullet_roman_lower(int32_t c) {
   return false;
 }
 
+
 bool is_numeric_bullet_roman_upper(int32_t c) {
   for (int i = 0; i < ROMAN_NUMERS_LENGTH; i++) {
     if (c == ROMAN_NUMERS_UPPPERCASE[i]) {
@@ -100,6 +109,7 @@ bool is_numeric_bullet_roman_upper(int32_t c) {
   return false;
 }
 
+
 bool is_numeric_bullet_abc_lower(int32_t c) {
   for (int i = 0; i < ABC_LENGTH; i++) {
     if (c == ABC_LOWERCASE[i]) {
@@ -108,6 +118,7 @@ bool is_numeric_bullet_abc_lower(int32_t c) {
   }
   return false;
 }
+
 
 bool is_numeric_bullet_abc_upper(int32_t c) {
   for (int i = 0; i < ABC_LENGTH; i++) {
