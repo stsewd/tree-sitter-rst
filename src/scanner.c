@@ -104,7 +104,10 @@ bool tree_sitter_rst_external_scanner_scan(
           || valid_symbols[T_STRONG]
           || valid_symbols[T_INTERPRETED_TEXT]
           || valid_symbols[T_LITERAL]
-          || valid_symbols[T_SUBSTITUTION_REFERENCE])) {
+          || valid_symbols[T_SUBSTITUTION_REFERENCE]
+          || valid_symbols[T_INLINE_TARGET]
+          || valid_symbols[T_FOOTNOTE_REFERENCE]
+          || valid_symbols[T_REFERENCE])) {
     return parse_inline_markup(lexer, valid_symbols);
   }
 

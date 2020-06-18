@@ -73,6 +73,17 @@ bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
   int32_t previous = current;
   int32_t end_char = current;
 
+  bool is_inline_target = false;
+
+  if (current == '_' && valid_symbols[T_INLINE_TARGET]) {
+    lexer->advance(lexer, false);
+    previous = current;
+    current = lexer->lookahead;
+    if (current == '`') {
+      is_inline_target = true;
+    }
+  }
+
   // First character can't be a white space
   lexer->advance(lexer, false);
   previous = current;
@@ -141,12 +152,18 @@ bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
         consumed_chars > 0
         && !is_space(previous)
         && is_inline_markup_single_char(current)
-        // Literal is the only inline markup dot doesn't care if the previous char is '\'
+        // Literal is the only inline markup that doesn't care if the previous char is '\'
         && (!is_escaped || (end_char == '`' && is_double_char && valid_symbols[T_LITERAL]))
     ) {
       previous = current;
       current = lexer->lookahead;
-      if (is_double_char) {
+      if (is_inline_target) {
+        if (is_space(current) || is_end_char(current)) {
+          lexer->result_symbol = T_INLINE_TARGET;
+          lexer->mark_end(lexer);
+          return true;
+        }
+      } else if (is_double_char) {
         if (current == end_char) {
           lexer->advance(lexer, false);
           previous = current;

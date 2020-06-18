@@ -40,8 +40,16 @@ bool is_end_char(int32_t c) {
 
 
 bool is_inline_markup_single_char(int32_t c) {
-  for (int i = 0; i < CHARS_INLINE_MARKUP_LENGTH; i++) {
-    if (c == CHARS_INLINE_MARKUP[i]) {
+  const int32_t inline_markup_start_chars[] = {
+    '*',  // *emphasis*, and **strong**.
+    '`',  // `interpreted text`, ``literals``, `hyperlink references`_, and `anonymous references`__.
+    '|',  // |substitution references|.
+    '_',  // _`inline internal target`.
+    '[',  // [foot-note]_.
+  };
+  const int length = 5;
+  for (int i = 0; i < length; i++) {
+    if (c == inline_markup_start_chars[i]) {
       return true;
     }
   }

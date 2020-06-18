@@ -174,12 +174,20 @@ I'm a _`text`
 _`I'm` a text
 _`I'm not\` a target.
 
+_`Lonely`
+
+_`I'm`._`I'm not`
+
 ---
 
 (document
   (paragraph
     (target)
     (target)
+    (target))
+  (paragraph
+    (target))
+  (paragraph
     (target))
   (paragraph
     (target))
