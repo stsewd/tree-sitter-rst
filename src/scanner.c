@@ -111,14 +111,8 @@ bool tree_sitter_rst_external_scanner_scan(
     return parse_inline_markup(lexer, valid_symbols);
   }
 
-  /*
-  if (!is_space(current) && valid_symbols[T_REFERENCE]) {
-    return parse_inline_reference(lexer, valid_symbols);
-  }
-  */
-
-  if (!is_space(current) && valid_symbols[T_TEXT]) {
-    return parse_text(lexer, valid_symbols);
+  if (!is_space(current) && (valid_symbols[T_REFERENCE] || valid_symbols[T_TEXT])) {
+    return parse_inline_reference(lexer, valid_symbols) || parse_text(lexer, valid_symbols);
   }
 
   return false;

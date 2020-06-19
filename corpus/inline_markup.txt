@@ -204,7 +204,7 @@ It was on monday [#monday]_, and tuesday [#]_.
 I'm a [1]_
 
 [1]_ a text
-[1\] a footnote.
+[1\] not a footnote.
 
 ---
 
@@ -232,6 +232,10 @@ I'm a text__
 `I'm`__ a text
 `I'm not\`_ a reference.
 
+lonely_
+
+lonely__
+
 ---
 
 (document
@@ -242,6 +246,10 @@ I'm a text__
     (reference))
   (paragraph
     (reference)
+    (reference))
+  (paragraph
+    (reference))
+  (paragraph
     (reference))
   (paragraph
     (reference)))

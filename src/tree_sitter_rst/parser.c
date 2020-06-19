@@ -241,9 +241,6 @@ bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols) {
   lexer->advance(lexer, false);
   int32_t current = lexer->lookahead;
 
-  printf("Previous: %c\n", previous);
-  printf("Current: %c\n", current);
-
   while (1) {
     if (is_space(current) || is_end_char(current)) {
       if (previous == '_') {
