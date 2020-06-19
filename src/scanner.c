@@ -99,7 +99,7 @@ bool tree_sitter_rst_external_scanner_scan(
     return parse_list_bullet(lexer, valid_symbols);
   }
 
-  if (is_inline_markup_single_char(current)
+  if (is_inline_markup_start_char(current)
       && (valid_symbols[T_EMPHASIS]
           || valid_symbols[T_STRONG]
           || valid_symbols[T_INTERPRETED_TEXT]
@@ -110,6 +110,12 @@ bool tree_sitter_rst_external_scanner_scan(
           || valid_symbols[T_REFERENCE])) {
     return parse_inline_markup(lexer, valid_symbols);
   }
+
+  /*
+  if (!is_space(current) && valid_symbols[T_REFERENCE]) {
+    return parse_inline_reference(lexer, valid_symbols);
+  }
+  */
 
   if (!is_space(current) && valid_symbols[T_TEXT]) {
     return parse_text(lexer, valid_symbols);

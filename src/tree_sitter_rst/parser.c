@@ -1,3 +1,5 @@
+#include <ctype.h>
+
 #include "tree_sitter_rst/parser.h"
 
 #include "tree_sitter_rst/tokens.h"
@@ -69,25 +71,43 @@ bool parse_enumerated_list_bullet(TSLexer *lexer, const bool *valid_symbols) {
 
 
 bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
+  int32_t previous = lexer->lookahead;
+  lexer->advance(lexer, false);
   int32_t current = lexer->lookahead;
-  int32_t previous = current;
-  int32_t end_char = current;
 
+  bool is_emphasis = false;
+  bool is_strong = false;
+  bool is_interpreted_text = false;
+  bool is_literal = false;
+  bool is_substitution_reference = false;
   bool is_inline_target = false;
+  bool is_footnote_reference = false;
+  bool is_reference = false;
 
-  if (current == '_' && valid_symbols[T_INLINE_TARGET]) {
+  if (previous == '*' && current == '*' && valid_symbols[T_STRONG]) {
+    is_strong = true;
+  } else if (previous == '*' && valid_symbols[T_EMPHASIS]) {
+    is_emphasis = true;
+  } else if (previous == '`' && current == '`' && valid_symbols[T_LITERAL]) {
+    is_literal = true;
+  } else if (previous == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_REFERENCE])) {
+    is_interpreted_text = true;
+    is_reference = true;
+  } else if (previous == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
+    is_substitution_reference = true;
+  } else if (previous == '_' && current == '`' && valid_symbols[T_INLINE_TARGET]) {
+    is_inline_target = true;
+  } else if (previous == '[' && valid_symbols[T_FOOTNOTE_REFERENCE]) {
+    is_footnote_reference = true;
+  }
+
+  if (is_strong || is_literal || is_inline_target) {
     lexer->advance(lexer, false);
     previous = current;
     current = lexer->lookahead;
-    if (current == '`') {
-      is_inline_target = true;
-    }
   }
 
-  // First character can't be a white space
-  lexer->advance(lexer, false);
-  previous = current;
-  current = lexer->lookahead;
+  // Next character can't be a white space
   if (is_space(current)) {
     if (valid_symbols[T_TEXT]) {
       lexer->result_symbol = T_TEXT;
@@ -95,19 +115,6 @@ bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
       return true;
     }
     return false;
-  }
-
-  bool is_double_char = false;
-
-  if (
-      current == end_char
-      && is_inline_markup_double_char(current)
-      && (valid_symbols[T_STRONG] || valid_symbols[T_LITERAL])
-  ) {
-    is_double_char = true;
-    lexer->advance(lexer, false);
-    previous = current;
-    current = lexer->lookahead;
   }
 
   int consumed_chars = 0;
@@ -151,50 +158,59 @@ bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
     if (
         consumed_chars > 0
         && !is_space(previous)
-        && is_inline_markup_single_char(current)
+        && is_inline_markup_end_char(current)
         // Literal is the only inline markup that doesn't care if the previous char is '\'
-        && (!is_escaped || (end_char == '`' && is_double_char && valid_symbols[T_LITERAL]))
+        && (!is_escaped || is_literal)
     ) {
       previous = current;
       current = lexer->lookahead;
-      if (is_inline_target) {
-        if (is_space(current) || is_end_char(current)) {
-          lexer->result_symbol = T_INLINE_TARGET;
-          lexer->mark_end(lexer);
-          return true;
+
+      bool is_valid = true;
+      bool advance = false;
+
+      if (is_strong && previous == '*' && current == '*') {
+        lexer->result_symbol = T_STRONG;
+        advance = true;
+      } else if (is_emphasis && previous == '*') {
+        lexer->result_symbol = T_EMPHASIS;
+      } else if (is_literal && previous == '`' && current == '`') {
+        lexer->result_symbol = T_LITERAL;
+        advance = true;
+      } else if (is_inline_target && previous == '`') {
+        lexer->result_symbol = T_INLINE_TARGET;
+      } else if (is_reference && previous == '`' && current == '_') {
+        lexer->result_symbol = T_REFERENCE;
+
+        // Check for annonymous references
+        lexer->advance(lexer, false);
+        previous = current;
+        current = lexer->lookahead;
+        consumed_chars++;
+        if (current == '_') {
+          advance = true;
         }
-      } else if (is_double_char) {
-        if (current == end_char) {
-          lexer->advance(lexer, false);
-          previous = current;
-          current = lexer->lookahead;
-          consumed_chars++;
-          if (is_space(current) || is_end_char(current)) {
-            if (previous == '*') {
-              lexer->result_symbol = T_STRONG;
-            } else if (previous == '`') {
-              lexer->result_symbol = T_LITERAL;
-            }
-            lexer->mark_end(lexer);
-            return true;
-          }
-        }
-      } else if (
-          valid_symbols[T_EMPHASIS]
-          || valid_symbols[T_INTERPRETED_TEXT]
-          || valid_symbols[T_SUBSTITUTION_REFERENCE]
-      ) {
-        if (is_space(current) || is_end_char(current)) {
-          if (previous == '*') {
-            lexer->result_symbol = T_EMPHASIS;
-          } else if (previous == '`') {
-            lexer->result_symbol = T_INTERPRETED_TEXT;
-          } else if (previous == '|') {
-            lexer->result_symbol = T_SUBSTITUTION_REFERENCE;
-          }
-          lexer->mark_end(lexer);
-          return true;
-        }
+      } else if (is_interpreted_text && previous == '`') {
+        lexer->result_symbol = T_INTERPRETED_TEXT;
+      } else if (is_footnote_reference && previous == ']' && current == '_') {
+        lexer->result_symbol = T_FOOTNOTE_REFERENCE;
+        advance = true;
+      } else if (is_substitution_reference && previous == '|') {
+        lexer->result_symbol = T_SUBSTITUTION_REFERENCE;
+      } else {
+        is_valid = false;
+      }
+
+      if (advance) {
+        lexer->advance(lexer, false);
+        previous = current;
+        current = lexer->lookahead;
+        consumed_chars++;
+      }
+
+      // check if the next one is whitespace
+      if (is_valid && is_space(current) || is_end_char(current)) {
+        lexer->mark_end(lexer);
+        return true;
       }
     }
 
@@ -215,21 +231,76 @@ bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
 }
 
 
-bool parse_text(TSLexer *lexer, const bool *valid_symbols) {
-  int32_t current = lexer->lookahead;
-  int32_t previous = current;
-  int consumed_chars = 0;
+bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols) {
+  int32_t previous = lexer->lookahead;
 
-  while (!is_space(current)) {
-    lexer->advance(lexer, false);
-    lexer->mark_end(lexer);
-    consumed_chars ++;
-    if (is_start_char(current)) {
+  if (!isalpha(previous) || !valid_symbols[T_REFERENCE]) {
+    return false;
+  }
+
+  lexer->advance(lexer, false);
+  int32_t current = lexer->lookahead;
+
+  printf("Previous: %c\n", previous);
+  printf("Current: %c\n", current);
+
+  while (1) {
+    if (is_space(current) || is_end_char(current)) {
+      if (previous == '_') {
+        lexer->mark_end;
+        lexer->result_symbol = T_REFERENCE;
+        return true;
+      }
       break;
     }
+
+    if (previous == '_' && current == '_') {
+      lexer->advance(lexer, false);
+      previous = current;
+      current = lexer->lookahead;
+      if (is_space(current) || is_end_char(current)) {
+        lexer->mark_end;
+        lexer->result_symbol = T_REFERENCE;
+        return true;
+      }
+      return false;
+    }
+
+    if (
+        is_internal_reference_char(current) && is_internal_reference_char(previous)
+        || (!isalpha(current) && !is_internal_reference_char(current))
+    ) {
+      return false;
+    }
+
+    lexer->advance(lexer, false);
+    previous = current;
     current = lexer->lookahead;
   }
-  if (consumed_chars > 0) {
+
+  if (valid_symbols[T_TEXT]) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = T_TEXT;
+    return true;
+  }
+
+  return false;
+}
+
+
+bool parse_text(TSLexer *lexer, const bool *valid_symbols) {
+  int32_t previous = lexer->lookahead;
+  lexer->advance(lexer, false);
+  int32_t current = lexer->lookahead;
+
+  while (!is_space(current) && !is_start_char(previous)) {
+    lexer->advance(lexer, false);
+    previous = current;
+    current = lexer->lookahead;
+  }
+
+  if (valid_symbols[T_TEXT]) {
+    lexer->mark_end(lexer);
     lexer->result_symbol = T_TEXT;
     return true;
   }

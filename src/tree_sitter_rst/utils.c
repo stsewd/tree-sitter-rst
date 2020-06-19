@@ -39,8 +39,8 @@ bool is_end_char(int32_t c) {
 }
 
 
-bool is_inline_markup_single_char(int32_t c) {
-  const int32_t inline_markup_start_chars[] = {
+bool is_inline_markup_start_char(int32_t c) {
+  const int32_t inline_markup_chars[] = {
     '*',  // *emphasis*, and **strong**.
     '`',  // `interpreted text`, ``literals``, `hyperlink references`_, and `anonymous references`__.
     '|',  // |substitution references|.
@@ -49,7 +49,7 @@ bool is_inline_markup_single_char(int32_t c) {
   };
   const int length = 5;
   for (int i = 0; i < length; i++) {
-    if (c == inline_markup_start_chars[i]) {
+    if (c == inline_markup_chars[i]) {
       return true;
     }
   }
@@ -57,9 +57,17 @@ bool is_inline_markup_single_char(int32_t c) {
 }
 
 
-bool is_inline_markup_double_char(int32_t c) {
-  for (int i = 0; i < CHARS_INLINE_MARKUP_DOUBLE_LENGTH; i++) {
-    if (c == CHARS_INLINE_MARKUP_DOUBLE[i]) {
+bool is_inline_markup_end_char(int32_t c) {
+  const int32_t inline_markup_chars[] = {
+    '*',  // *emphasis*, and **strong**.
+    '`',  // `interpreted text`, ``literals``, _`inline internal target`,
+          // `hyperlink references`_, and `anonymous references`__.
+    '|',  // |substitution references|.
+    ']',  // [foot-note]_.
+  };
+  const int length = 4;
+  for (int i = 0; i < length; i++) {
+    if (c == inline_markup_chars[i]) {
       return true;
     }
   }
@@ -131,6 +139,18 @@ bool is_numeric_bullet_abc_lower(int32_t c) {
 bool is_numeric_bullet_abc_upper(int32_t c) {
   for (int i = 0; i < ABC_LENGTH; i++) {
     if (c == ABC_UPPERCASE[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+bool is_internal_reference_char(int32_t c) {
+  const int32_t internal_chars[] = {'-', '_', '.', ':', '+'};
+  const int length = 5;
+  for (int i = 0; i < length; i++) {
+    if (c == internal_chars[i]) {
       return true;
     }
   }
