@@ -72,23 +72,12 @@ bool tree_sitter_rst_external_scanner_scan(
     const bool *valid_symbols
 ) {
   int32_t current = lexer->lookahead;
-  int32_t previous = current;
 
   if (
-      (valid_symbols[T_BLANKLINE] || valid_symbols[T_NEWLINE])
-      && (current == '\n' || current == '\r')
+      is_newline(current)
+      && (valid_symbols[T_BLANKLINE] || valid_symbols[T_NEWLINE])
   ) {
-    lexer->advance(lexer, false);
-    current = lexer->lookahead;
-
-    if (is_newline(current)) {
-      lexer->result_symbol = T_BLANKLINE;
-      lexer->advance(lexer, false);
-    } else {
-      lexer->result_symbol = T_NEWLINE;
-    }
-    lexer->mark_end(lexer);
-    return true;
+    return parse_line(lexer, valid_symbols);
   }
 
   if (is_numeric_bullet(current) && valid_symbols[T_NUMERIC_BULLET]) {
@@ -99,7 +88,8 @@ bool tree_sitter_rst_external_scanner_scan(
     return parse_list_bullet(lexer, valid_symbols);
   }
 
-  if (is_inline_markup_start_char(current)
+  if (
+      is_inline_markup_start_char(current)
       && (valid_symbols[T_EMPHASIS]
           || valid_symbols[T_STRONG]
           || valid_symbols[T_INTERPRETED_TEXT]
@@ -107,7 +97,8 @@ bool tree_sitter_rst_external_scanner_scan(
           || valid_symbols[T_SUBSTITUTION_REFERENCE]
           || valid_symbols[T_INLINE_TARGET]
           || valid_symbols[T_FOOTNOTE_REFERENCE]
-          || valid_symbols[T_REFERENCE])) {
+          || valid_symbols[T_REFERENCE])
+  ) {
     return parse_inline_markup(lexer, valid_symbols);
   }
 

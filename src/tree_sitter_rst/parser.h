@@ -4,6 +4,7 @@
 #include <tree_sitter/parser.h>
 #include <stdbool.h>
 
+bool parse_line(TSLexer *lexer, const bool *valid_symbols);
 bool parse_list_bullet(TSLexer *lexer, const bool *valid_symbols);
 bool parse_enumerated_list_bullet(TSLexer *lexer, const bool *valid_symbols);
 bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols);

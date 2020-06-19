@@ -18,6 +18,25 @@ I'm another paragraph
   (paragraph)
   (paragraph))
 
+===========
+Blank lines
+===========
+
+One
+                two
+three
+
+Foo
+          
+Bar
+
+---
+
+(document
+  (paragraph)
+  (paragraph)
+  (paragraph))
+
 ============
 Bullet lists
 ============

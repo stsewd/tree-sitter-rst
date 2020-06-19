@@ -9,7 +9,6 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 
 - Enumerated lists that begin with (1)
 - Sections (maybe implemented without validations?)
-- Empty lines with white-spaces
 - Tables (maybe implemented without validations?)
 - Indentation
 - Multi-line bodies

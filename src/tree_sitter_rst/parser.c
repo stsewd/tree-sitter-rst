@@ -6,6 +6,40 @@
 #include "tree_sitter_rst/utils.h"
 
 
+bool parse_line(TSLexer *lexer, const bool *valid_symbols) {
+  int32_t previous = lexer->lookahead;
+  lexer->advance(lexer, false);
+  lexer->mark_end(lexer);
+  int32_t current = lexer->lookahead;
+
+  if (previous == '\0') {
+    return false;
+  }
+
+  while (!is_newline(current)) {
+    if (!is_space(current)) {
+      if (valid_symbols[T_NEWLINE]) {
+        lexer->result_symbol = T_NEWLINE;
+        return true;
+      }
+      return false;
+    }
+    lexer->advance(lexer, false);
+    previous = current;
+    current = lexer->lookahead;
+  }
+
+  if (valid_symbols[T_BLANKLINE]) {
+    lexer->advance(lexer, false);
+    lexer->mark_end(lexer);
+    lexer->result_symbol = T_BLANKLINE;
+    return true;
+  }
+
+  return false;
+}
+
+
 bool parse_list_bullet(TSLexer *lexer, const bool *valid_symbols) {
   int32_t current = lexer->lookahead;
   int32_t previous = current;
