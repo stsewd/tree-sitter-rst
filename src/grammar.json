@@ -49,6 +49,28 @@
               "name": "_underline"
             }
           ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_line"
+              },
+              "named": true,
+              "value": "title"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_newline"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_underline"
+            }
+          ]
         }
       ]
     },

@@ -21,3 +21,4 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 
 - in RST Lists can be started in the same block if they are a different type.
 - In RST lists of the same type can't be separated by an empty line.
+- In RST sections are a big node that contains body elements, here is just a node that contains the title.

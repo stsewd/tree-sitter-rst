@@ -62,3 +62,38 @@ Different
   (paragraph)
   (paragraph)
   (paragraph))
+
+==================
+Underline sections
+==================
+
+Four
+~~~~
+
+A
+--
+
+Subtitle
+^^^^^^^^^^
+
+*Foo*
+~~~~~
+
+Foo **bar**
++++
+
+---
+
+(document
+ (section
+  (title))
+ (section
+  (title))
+ (section
+  (title))
+ (section
+  (title
+   (emphasis)))
+ (section
+  (title
+   (strong))))

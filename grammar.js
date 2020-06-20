@@ -88,12 +88,10 @@ module.exports = grammar({
         alias($._line, $.title), $._newline,
         $._underline,
       ),
-      /*
       seq(
         alias($._line, $.title), $._newline,
-        $._underline, $._newline,
+        $._underline,
       ),
-      */
     ),
 
 
