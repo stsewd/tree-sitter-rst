@@ -1,5 +1,4 @@
 #include "tree_sitter_rst/utils.h"
-#include "tree_sitter_rst/chars.h"
 
 
 bool is_newline(int32_t c) {
@@ -102,8 +101,12 @@ bool is_adornment_char(int32_t c) {
 
 
 bool is_start_char(int32_t c) {
-  for (int i = 0; i < START_CHARS_LENGTH; i++) {
-    if (c == START_CHARS[i]) {
+  const int32_t valid_chars[] = {
+    '-', ':', '/', '\'', '"', '<', '(', '[', '{',
+  };
+  const int length = 9;
+  for (int i = 0; i < length; i++) {
+    if (c == valid_chars[i]) {
       return true;
     }
   }
@@ -112,8 +115,12 @@ bool is_start_char(int32_t c) {
 
 
 bool is_end_char(int32_t c) {
-  for (int i = 0; i < END_CHARS_LENGTH; i++) {
-    if (c == END_CHARS[i]) {
+  const int32_t valid_chars[] = {
+    '-', '.', ',', ':', ';', '!', '?', '\\', '/', '\'', '"', ')', ']', '}', '>',
+  };
+  const int length = 15;
+  for (int i = 0; i < length; i++) {
+    if (c == valid_chars[i]) {
       return true;
     }
   }
@@ -193,8 +200,12 @@ bool is_numeric_bullet_simple(int32_t c) {
 
 
 bool is_numeric_bullet_roman_lower(int32_t c) {
-  for (int i = 0; i < ROMAN_NUMERS_LENGTH; i++) {
-    if (c == ROMAN_NUMERS_LOWERCASE[i]) {
+  const int32_t valid_chars[] = {
+    'i', 'v', 'x', 'l', 'c', 'd', 'm',
+  };
+  const int length = 7;
+  for (int i = 0; i < length; i++) {
+    if (c == valid_chars[i]) {
       return true;
     }
   }
@@ -203,8 +214,12 @@ bool is_numeric_bullet_roman_lower(int32_t c) {
 
 
 bool is_numeric_bullet_roman_upper(int32_t c) {
-  for (int i = 0; i < ROMAN_NUMERS_LENGTH; i++) {
-    if (c == ROMAN_NUMERS_UPPPERCASE[i]) {
+  const int32_t valid_chars[] = {
+    'I', 'V', 'X', 'L', 'C', 'D', 'M',
+  };
+  const int length = 7;
+  for (int i = 0; i < length; i++) {
+    if (c == valid_chars[i]) {
       return true;
     }
   }
