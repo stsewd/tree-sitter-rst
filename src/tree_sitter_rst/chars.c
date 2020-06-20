@@ -1,4 +1,4 @@
-#include "tree_sitter_rst/utils.h"
+#include "tree_sitter_rst/chars.h"
 
 
 bool is_newline(int32_t c) {
@@ -164,6 +164,18 @@ bool is_inline_markup_end_char(int32_t c) {
 }
 
 
+bool is_internal_reference_char(int32_t c) {
+  const int32_t internal_chars[] = {'-', '_', '.', ':', '+'};
+  const int length = 5;
+  for (int i = 0; i < length; i++) {
+    if (c == internal_chars[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 bool is_char_bullet(int32_t c) {
   const int32_t bullets[] = {
     '*',
@@ -234,16 +246,4 @@ bool is_numeric_bullet_abc_lower(int32_t c) {
 
 bool is_numeric_bullet_abc_upper(int32_t c) {
   return is_abc_upper(c);
-}
-
-
-bool is_internal_reference_char(int32_t c) {
-  const int32_t internal_chars[] = {'-', '_', '.', ':', '+'};
-  const int length = 5;
-  for (int i = 0; i < length; i++) {
-    if (c == internal_chars[i]) {
-      return true;
-    }
-  }
-  return false;
 }

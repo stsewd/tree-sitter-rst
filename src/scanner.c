@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "tree_sitter_rst/utils.c"
+#include "tree_sitter_rst/chars.c"
 #include "tree_sitter_rst/parser.c"
 
 #include "tree_sitter_rst/tokens.h"

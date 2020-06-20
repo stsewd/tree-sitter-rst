@@ -1,7 +1,7 @@
 #include "tree_sitter_rst/parser.h"
 
 #include "tree_sitter_rst/tokens.h"
-#include "tree_sitter_rst/utils.h"
+#include "tree_sitter_rst/chars.h"
 
 
 bool parse_line(TSLexer *lexer, const bool *valid_symbols) {
