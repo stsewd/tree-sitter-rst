@@ -48,6 +48,12 @@ bool tree_sitter_rst_external_scanner_scan(
     return parse_line(lexer, valid_symbols);
   }
 
+
+  if (current == '.' && valid_symbols[T_EXPLICIT_MARKUP_START]) {
+    return parse_explict_markup_start(lexer, valid_symbols);
+  }
+
+
   if (is_adornment_char(current) && valid_symbols[T_UNDERLINE]) {
     return parse_underline(lexer, valid_symbols);
   }

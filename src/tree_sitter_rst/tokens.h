@@ -5,6 +5,7 @@ enum TokenType {
   T_NEWLINE,
   T_BLANKLINE,
 
+  // Sections
   T_OVERLINE,
   T_UNDERLINE,
 
@@ -22,7 +23,10 @@ enum TokenType {
   T_INLINE_TARGET,
   T_FOOTNOTE_REFERENCE,
   T_REFERENCE,
-  T_STANDALONE_HYPERLINK,
+  T_STANDALONE_HYPERLINK,  // TODO
+
+  // Markup blocks
+  T_EXPLICIT_MARKUP_START,
 };
 
 #endif /* TREE_SITTER_RST_TOKENS_H_ */

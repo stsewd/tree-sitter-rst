@@ -61,7 +61,9 @@ module.exports = grammar({
     $._inline_target,
     $.footnote_reference,
     $.reference,
-    $.standalone_hyperlink,
+    $.standalone_hyperlink,  // TODO
+
+    $._explicit_markup_start,
   ],
 
   supertypes: $ => [
@@ -104,7 +106,7 @@ module.exports = grammar({
         $.paragraph,
         $._list,
         //$.line_block,
-        //$._markup_block,
+        $._markup_block,
       ),
       $._blankline,
     ),
@@ -220,8 +222,9 @@ module.exports = grammar({
       $.footnote,
     ),
     footnote: $ => seq(
-      token(seq(MARKUP_START, '[', LABEL, ']', WHITE_SPACE)),
-      BODY,
+      $._explicit_markup_start,
+      token(seq(WHITE_SPACE, '[', LABEL, ']', WHITE_SPACE)),
+      $._line,
     ),
 
     // Citations
@@ -232,8 +235,9 @@ module.exports = grammar({
       $.citation,
     ),
     citation: $ => seq(
-      token(seq(MARKUP_START, '[', CITATION_LABEL, ']', WHITE_SPACE)),
-      BODY,
+      $._explicit_markup_start,
+      token(seq(WHITE_SPACE, '[', CITATION_LABEL, ']', WHITE_SPACE)),
+      $._line,
     ),
 
     // Hyperlink targets
@@ -244,7 +248,8 @@ module.exports = grammar({
       $.target,
     ),
     target: $ => seq(
-      token(seq(MARKUP_START, seq('_', REFERENCE_NAME), ':')),
+      $._explicit_markup_start,
+      token(seq(WHITE_SPACE, '_', REFERENCE_NAME, ':')),
       optional(token(seq(WHITE_SPACE, LINK))),
     ),
 
@@ -268,7 +273,8 @@ module.exports = grammar({
       $.directive,
     ),
     directive: $ => seq(
-      token(seq(MARKUP_START, TYPE, '::')),
+      $._explicit_markup_start,
+      token(seq(WHITE_SPACE, TYPE, '::')),
       optional(seq(WHITE_SPACE, BODY)),
     ),
 
@@ -281,7 +287,8 @@ module.exports = grammar({
       $.substitution_definition,
     ),
     substitution_definition: $ => seq(
-      token(seq(MARKUP_START, '|', SUBSTITUTION_TEXT, '|', WHITE_SPACE)),
+      $._explicit_markup_start,
+      token(seq(WHITE_SPACE, '|', SUBSTITUTION_TEXT, '|', WHITE_SPACE)),
       $._embed_directive,
     ),
     _embed_directive: $ => seq(
@@ -299,8 +306,8 @@ module.exports = grammar({
       $.comment,
     ),
     comment: $ => seq(
-      '..',
-      optional(seq(WHITE_SPACE, BODY)),
+      $._explicit_markup_start,
+      optional(seq(WHITE_SPACE, $._line)),
     ),
 
 

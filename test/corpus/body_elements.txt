@@ -26,9 +26,9 @@ One
                 two
 three
 
-Foo
+This has spaces below on purpose
           
-Bar
+This has spaces above on purpose
 
 ---
 

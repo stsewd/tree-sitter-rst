@@ -7,6 +7,8 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 
 # TODO
 
+- Validate names of footnotes and citations https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#footnote-references
+- Parse external hyperlinks
 - Enumerated lists that begin with `(` -> (1)
 - Lists with empty elements
 - Validate length of adornments in sections? (the spec doesn't mention this)

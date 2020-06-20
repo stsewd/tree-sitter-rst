@@ -73,12 +73,32 @@
   {
     "type": "citation",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "comment",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "directive",
@@ -98,11 +118,35 @@
           "named": true
         },
         {
+          "type": "citation",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "footnote",
+          "named": true
+        },
+        {
           "type": "paragraph",
           "named": true
         },
         {
           "type": "section",
+          "named": true
+        },
+        {
+          "type": "substitution_definition",
+          "named": true
+        },
+        {
+          "type": "target",
           "named": true
         }
       ]
@@ -131,7 +175,17 @@
   {
     "type": "footnote",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "list_item",
@@ -222,10 +276,6 @@
   },
   {
     "type": " ",
-    "named": false
-  },
-  {
-    "type": "..",
     "named": false
   },
   {

@@ -434,6 +434,33 @@ bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols) {
 }
 
 
+bool parse_explict_markup_start(TSLexer *lexer, const bool *valid_symbols) {
+  int32_t previous = lexer->lookahead;
+
+  if (previous != '.' || !valid_symbols[T_EXPLICIT_MARKUP_START]) {
+    return false;
+  }
+
+  lexer->advance(lexer, false);
+  int32_t current = lexer->lookahead;
+
+  if (current != '.') {
+    return false;
+  }
+
+  lexer->advance(lexer, false);
+  previous = current;
+  current = lexer->lookahead;
+
+  if (is_space(current)) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = T_EXPLICIT_MARKUP_START;
+    return true;
+  }
+  return false;
+}
+
+
 bool parse_text(TSLexer *lexer, const bool *valid_symbols) {
   int32_t previous = lexer->lookahead;
   lexer->advance(lexer, false);
