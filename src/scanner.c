@@ -48,6 +48,14 @@ bool tree_sitter_rst_external_scanner_scan(
     return parse_line(lexer, valid_symbols);
   }
 
+  if (is_adornment_char(current) && valid_symbols[T_UNDERLINE]) {
+    return parse_underline(lexer, valid_symbols);
+  }
+
+  if (is_adornment_char(current) && valid_symbols[T_OVERLINE]) {
+    return parse_overline(lexer, valid_symbols);
+  }
+
   if (is_numeric_bullet(current) && valid_symbols[T_NUMERIC_BULLET]) {
     return parse_enumerated_list_bullet(lexer, valid_symbols);
   }
@@ -55,6 +63,7 @@ bool tree_sitter_rst_external_scanner_scan(
   if (is_char_bullet(current) && valid_symbols[T_CHAR_BULLET]) {
     return parse_list_bullet(lexer, valid_symbols);
   }
+
 
   if (
       is_inline_markup_start_char(current)
@@ -69,6 +78,7 @@ bool tree_sitter_rst_external_scanner_scan(
   ) {
     return parse_inline_markup(lexer, valid_symbols);
   }
+
 
   if (!is_space(current) && (valid_symbols[T_REFERENCE] || valid_symbols[T_TEXT])) {
     return parse_inline_reference(lexer, valid_symbols) || parse_text(lexer, valid_symbols);

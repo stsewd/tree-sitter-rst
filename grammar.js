@@ -46,6 +46,9 @@ module.exports = grammar({
     $._newline,
     $._blankline,
 
+    $._overline,
+    $._underline,
+
     $._char_bullet,
     $._numeric_bullet,
 
@@ -69,10 +72,30 @@ module.exports = grammar({
   rules: {
     document: $ => repeat(
       choice(
+        $.section,
         $._body_elements,
         $._blankline,
       )
     ),
+
+    // ========
+    // Sections
+    // ========
+
+    section: $ => choice(
+      seq(
+        $._overline,
+        alias($._line, $.title), $._newline,
+        $._underline,
+      ),
+      /*
+      seq(
+        alias($._line, $.title), $._newline,
+        $._underline, $._newline,
+      ),
+      */
+    ),
+
 
     // =============
     // Body elements
@@ -82,8 +105,8 @@ module.exports = grammar({
       choice(
         $.paragraph,
         $._list,
-        $.line_block,
-        $._markup_block,
+        //$.line_block,
+        //$._markup_block,
       ),
       $._blankline,
     ),
@@ -104,8 +127,8 @@ module.exports = grammar({
     _list: $ => choice(
       $.bullet_list,
       $.enumerated_list,
-      $.field_list,
-      $.option_list,
+      //$.field_list,
+      //$.option_list,
     ),
 
     // Bullet lists
@@ -174,7 +197,7 @@ module.exports = grammar({
     ),
     _single_line_block: $ => choice(
       '|',
-      seq(token(seq('|', WHITE_SPACE)), BODY),
+      seq(token(seq('|', WHITE_SPACE)), $._line),
     ),
 
 

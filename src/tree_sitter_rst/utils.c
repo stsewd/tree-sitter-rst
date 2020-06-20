@@ -86,6 +86,21 @@ bool is_alphanumeric(int32_t c) {
 }
 
 
+bool is_adornment_char(int32_t c) {
+  const int32_t adornment_chars[] = {
+    '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':',
+    ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~',
+  };
+  const int length = 32;
+  for (int i = 0; i < length; i++) {
+    if (c == adornment_chars[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 bool is_start_char(int32_t c) {
   for (int i = 0; i < START_CHARS_LENGTH; i++) {
     if (c == START_CHARS[i]) {

@@ -38,9 +38,122 @@ bool parse_line(TSLexer *lexer, const bool *valid_symbols) {
 }
 
 
+bool parse_overline(TSLexer *lexer, const bool *valid_symbols) {
+  int32_t adornment = lexer->lookahead;
+  int32_t current = adornment;
+
+  if (!is_adornment_char(current) || !valid_symbols[T_OVERLINE]) {
+    return false;
+  }
+
+  int overline_length = 0;
+  while (!is_newline(current)) {
+    if (current != adornment) {
+      if (overline_length == 1) {
+        if (is_space(current) && is_char_bullet(adornment) && valid_symbols[T_CHAR_BULLET]) {
+          lexer->mark_end(lexer);
+          lexer->result_symbol = T_CHAR_BULLET;
+          return true;
+        }
+        if ((current == '.' || current == ')') && is_numeric_bullet(adornment) && valid_symbols[T_NUMERIC_BULLET]) {
+          lexer->advance(lexer, false);
+          lexer->mark_end(lexer);
+          lexer->result_symbol = T_NUMERIC_BULLET;
+          return true;
+        }
+      }
+      return false;
+    }
+    lexer->advance(lexer, false);
+    current = lexer->lookahead;
+    overline_length++;
+  }
+  lexer->mark_end(lexer);
+
+
+  lexer->advance(lexer, false);
+  current = lexer->lookahead;
+
+  bool is_empty = true;
+  while (!is_newline(current)) {
+    if (!is_space(current)) {
+      is_empty = false;
+    }
+    lexer->advance(lexer, false);
+    current = lexer->lookahead;
+  }
+
+  if (is_empty) {
+    return false;
+  }
+
+  lexer->advance(lexer, false);
+  current = lexer->lookahead;
+
+  int underline_length = 0;
+
+  while (!is_newline(current)) {
+    if (current != adornment) {
+      return false;
+    }
+    lexer->advance(lexer, false);
+    current = lexer->lookahead;
+    underline_length++;
+  }
+
+  if (overline_length >= 1 && overline_length == underline_length) {
+    lexer->result_symbol = T_OVERLINE;
+    return true;
+  }
+}
+
+
+bool parse_underline(TSLexer *lexer, const bool *valid_symbols) {
+  int32_t adornment = lexer->lookahead;
+  int32_t current = adornment;
+
+  if (!is_adornment_char(current) || !valid_symbols[T_UNDERLINE]) {
+    return false;
+  }
+
+  int underline_length = 0;
+  while (!is_newline(current)) {
+    if (current != adornment) {
+      if (underline_length == 1) {
+        if (is_space(current) && is_char_bullet(adornment) && valid_symbols[T_CHAR_BULLET]) {
+          lexer->mark_end(lexer);
+          lexer->result_symbol = T_CHAR_BULLET;
+          return true;
+        }
+        if (current == '.' && is_numeric_bullet(adornment) && valid_symbols[T_NUMERIC_BULLET]) {
+          lexer->advance(lexer, false);
+          lexer->mark_end(lexer);
+          lexer->result_symbol = T_NUMERIC_BULLET;
+          return true;
+        }
+      }
+      return false;
+    }
+    lexer->advance(lexer, false);
+    current = lexer->lookahead;
+    underline_length++;
+  }
+  if (underline_length >= 1) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = T_UNDERLINE;
+    return true;
+  }
+  return false;
+}
+
+
 bool parse_list_bullet(TSLexer *lexer, const bool *valid_symbols) {
   int32_t current = lexer->lookahead;
   int32_t previous = current;
+
+  if (!is_char_bullet(current) || !valid_symbols[T_CHAR_BULLET]) {
+    return false;
+  }
 
   lexer->advance(lexer, false);
   previous = current;
@@ -57,6 +170,10 @@ bool parse_list_bullet(TSLexer *lexer, const bool *valid_symbols) {
 bool parse_enumerated_list_bullet(TSLexer *lexer, const bool *valid_symbols) {
   int32_t current = lexer->lookahead;
   int32_t previous = current;
+
+  if (!is_numeric_bullet(current) || !valid_symbols[T_NUMERIC_BULLET]) {
+    return false;
+  }
 
   lexer->advance(lexer, false);
   previous = current;

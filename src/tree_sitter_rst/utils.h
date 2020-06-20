@@ -12,6 +12,8 @@ bool is_abc_upper(int32_t c);
 bool is_abc(int32_t c);
 bool is_alphanumeric(int32_t c);
 
+bool is_adornment_char(int32_t c);
+
 bool is_start_char(int32_t c);
 bool is_end_char(int32_t c);
 bool is_inline_markup_start_char(int32_t c);

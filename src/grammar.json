@@ -8,6 +8,10 @@
         "members": [
           {
             "type": "SYMBOL",
+            "name": "section"
+          },
+          {
+            "type": "SYMBOL",
             "name": "_body_elements"
           },
           {
@@ -16,6 +20,37 @@
           }
         ]
       }
+    },
+    "section": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_overline"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_line"
+              },
+              "named": true,
+              "value": "title"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_newline"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_underline"
+            }
+          ]
+        }
+      ]
     },
     "_body_elements": {
       "type": "SEQ",
@@ -30,14 +65,6 @@
             {
               "type": "SYMBOL",
               "name": "_list"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "line_block"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_markup_block"
             }
           ]
         },
@@ -82,14 +109,6 @@
         {
           "type": "SYMBOL",
           "name": "enumerated_list"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "field_list"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "option_list"
         }
       ]
     },
@@ -661,11 +680,8 @@
               }
             },
             {
-              "type": "REPEAT1",
-              "content": {
-                "type": "PATTERN",
-                "value": "."
-              }
+              "type": "SYMBOL",
+              "name": "_line"
             }
           ]
         }
@@ -1615,6 +1631,14 @@
     {
       "type": "SYMBOL",
       "name": "_blankline"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_overline"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_underline"
     },
     {
       "type": "SYMBOL",

@@ -5,6 +5,9 @@ enum TokenType {
   T_NEWLINE,
   T_BLANKLINE,
 
+  T_OVERLINE,
+  T_UNDERLINE,
+
   // Body Elements
   T_CHAR_BULLET,
   T_NUMERIC_BULLET,
