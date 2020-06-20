@@ -1,6 +1,5 @@
 #include <tree_sitter/parser.h>
 
-#include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -10,59 +9,28 @@
 #include "tree_sitter_rst/tokens.h"
 
 
-typedef struct {
-  char *stack;
-} Scanner;
-
-
 void * tree_sitter_rst_external_scanner_create() {
-  Scanner *scanner = malloc(sizeof(Scanner));
-  /*scanner->stack = malloc(sizeof(char)*10);*/
-  /*scanner->stack[0] = '\0';*/
-  return scanner;
+  int *i = malloc(sizeof(int));
+  return i;
 }
 
 
 void tree_sitter_rst_external_scanner_destroy(void *payload) {
-  if (payload != NULL) {
-    /*
-       Scanner *scanner = (Scanner *) payload;
-       if (scanner->stack != NULL) {
-       free(scanner->stack);
-       }
-       */
-    free(payload);
-  }
 }
 
-
 unsigned tree_sitter_rst_external_scanner_serialize(
-    void *payload,
-    char *buffer
+  void *payload,
+  char *buffer
 ) {
-  /*
-     Scanner * scanner = (Scanner *) payload;
-     size_t i = 0;
-     size_t stack_size = strlen(scanner->stack);
-     memcpy(&buffer[i], scanner->stack, stack_size);
-     i += stack_size;
-     return i;
-     */
   return 0;
 }
 
 
 void tree_sitter_rst_external_scanner_deserialize(
-    void *payload,
-    const char *buffer,
-    unsigned length
+  void *payload,
+  const char *buffer,
+  unsigned length
 ) {
-  /*
-     if (length > 0) {
-     Scanner *scanner = (Scanner *) payload;
-     memcpy(scanner->stack, &buffer[0], length);
-     }.
-     */
 }
 
 
