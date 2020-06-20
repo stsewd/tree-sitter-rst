@@ -32,6 +32,60 @@ bool is_space(int32_t c) {
 }
 
 
+bool is_number(int32_t c) {
+  const int32_t numbers[] = {
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+  };
+  const int length = 10;
+  for (int i = 0; i < length; i++) {
+    if (c == numbers[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+bool is_abc_lower(int32_t c) {
+  const int32_t abc[] = {
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+  };
+  const int length = 26;
+  for (int i = 0; i < length; i++) {
+    if (c == abc[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+bool is_abc_upper(int32_t c) {
+  const int32_t abc[] = {
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+  };
+  const int length = 26;
+  for (int i = 0; i < length; i++) {
+    if (c == abc[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+bool is_abc(int32_t c) {
+  return is_abc_lower(c) || is_abc_upper(c);
+}
+
+
+bool is_alphanumeric(int32_t c) {
+  return is_abc(c) || is_number(c);
+}
+
+
 bool is_start_char(int32_t c) {
   for (int i = 0; i < START_CHARS_LENGTH; i++) {
     if (c == START_CHARS[i]) {
@@ -110,12 +164,7 @@ bool is_numeric_bullet(int32_t c) {
 
 
 bool is_numeric_bullet_simple(int32_t c) {
-  for (int i = 0; i < NUMERIC_BULLETS_SIMPLE_LENGTH; i++) {
-    if (c == NUMERIC_BULLETS_SIMPLE[i]) {
-      return true;
-    }
-  }
-  return false;
+  return is_number(c) || c == '#';
 }
 
 
@@ -140,22 +189,12 @@ bool is_numeric_bullet_roman_upper(int32_t c) {
 
 
 bool is_numeric_bullet_abc_lower(int32_t c) {
-  for (int i = 0; i < ABC_LENGTH; i++) {
-    if (c == ABC_LOWERCASE[i]) {
-      return true;
-    }
-  }
-  return false;
+  return is_abc_lower(c);
 }
 
 
 bool is_numeric_bullet_abc_upper(int32_t c) {
-  for (int i = 0; i < ABC_LENGTH; i++) {
-    if (c == ABC_UPPERCASE[i]) {
-      return true;
-    }
-  }
-  return false;
+  return is_abc_upper(c);
 }
 
 

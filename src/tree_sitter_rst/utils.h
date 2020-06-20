@@ -5,6 +5,12 @@
 
 bool is_newline(int32_t c);
 bool is_space(int32_t c);
+bool is_space(int32_t c);
+bool is_number(int32_t c);
+bool is_abc_lower(int32_t c);
+bool is_abc_upper(int32_t c);
+bool is_abc(int32_t c);
+bool is_alphanumeric(int32_t c);
 
 bool is_start_char(int32_t c);
 bool is_end_char(int32_t c);

@@ -1,5 +1,3 @@
-#include <ctype.h>
-
 #include "tree_sitter_rst/parser.h"
 
 #include "tree_sitter_rst/tokens.h"
@@ -268,7 +266,7 @@ bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
 bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols) {
   int32_t previous = lexer->lookahead;
 
-  if (!isalpha(previous) || !valid_symbols[T_REFERENCE]) {
+  if (!is_alphanumeric(previous) || !valid_symbols[T_REFERENCE]) {
     return false;
   }
 
@@ -299,7 +297,7 @@ bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols) {
 
     if (
         is_internal_reference_char(current) && is_internal_reference_char(previous)
-        || (!isalpha(current) && !is_internal_reference_char(current))
+        || (!is_alphanumeric(current) && !is_internal_reference_char(current))
     ) {
       return false;
     }
