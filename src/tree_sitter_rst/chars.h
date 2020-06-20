@@ -5,12 +5,6 @@
  * Inline Markup
  */
 
-#define NEWLINE_CHARS_LENGTH 3
-const int32_t NEWLINE_CHARS[NEWLINE_CHARS_LENGTH] = {
-  '\n', '\r', '\0',
-};
-
-
 #define START_CHARS_LENGTH 9
 const int32_t START_CHARS[START_CHARS_LENGTH] = {
   '-', ':', '/', '\'', '"', '<', '(', '[', '{',

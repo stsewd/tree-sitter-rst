@@ -12,7 +12,7 @@
         "src/scanner.c"
       ],
       "cflags_c": [
-        "-std=c11",
+        "-std=c99"
       ]
     }
   ]

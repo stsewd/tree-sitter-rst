@@ -12,7 +12,7 @@ bool parse_line(TSLexer *lexer, const bool *valid_symbols) {
   lexer->mark_end(lexer);
   int32_t current = lexer->lookahead;
 
-  if (previous == '\0') {
+  if (previous == 0) {
     return false;
   }
 

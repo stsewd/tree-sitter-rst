@@ -1,12 +1,16 @@
-#include <ctype.h>
-
 #include "tree_sitter_rst/utils.h"
 #include "tree_sitter_rst/chars.h"
 
 
 bool is_newline(int32_t c) {
-  for (int i = 0; i < NEWLINE_CHARS_LENGTH; i++) {
-    if (c == NEWLINE_CHARS[i]) {
+  const int32_t newline_chars[] = {
+     0,  // \0
+    10,  // \n
+    13,  // \r
+  };
+  const int length = 3;
+  for (int i = 0; i < length; i++) {
+    if (c == newline_chars[i]) {
       return true;
     }
   }
@@ -15,7 +19,16 @@ bool is_newline(int32_t c) {
 
 
 bool is_space(int32_t c) {
-  return isspace(c) || is_newline(c);
+  const int32_t space_chars[] = {' ', '\f', '\t', '\v'};
+  const int length = 4;
+  bool is_space_char = false;
+  for (int i = 0; i < length; i++) {
+    if (c == space_chars[i]) {
+      is_space_char = true;
+      break;
+    }
+  }
+  return is_space_char || is_newline(c);
 }
 
 
