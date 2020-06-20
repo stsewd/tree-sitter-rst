@@ -57,11 +57,11 @@ bool tree_sitter_rst_external_scanner_scan(
   }
 
   if (is_numeric_bullet(current) && valid_symbols[T_NUMERIC_BULLET]) {
-    return parse_enumerated_list_bullet(lexer, valid_symbols);
+    return parse_numeric_bullet(lexer, valid_symbols);
   }
 
   if (is_char_bullet(current) && valid_symbols[T_CHAR_BULLET]) {
-    return parse_list_bullet(lexer, valid_symbols);
+    return parse_char_bullet(lexer, valid_symbols);
   }
 
 

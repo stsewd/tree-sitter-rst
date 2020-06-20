@@ -158,8 +158,17 @@ bool is_inline_markup_end_char(int32_t c) {
 
 
 bool is_char_bullet(int32_t c) {
-  for (int i = 0; i < CHAR_BULLETS_LENGTH; i++) {
-    if (c == CHAR_BULLETS[i]) {
+  const int32_t bullets[] = {
+    '*',
+    '+',
+    '-',
+    8226,  // '•'
+    8227,  // '‣'
+    8259,  // '⁃'
+  };
+  const int length = 6;
+  for (int i = 0; i < length; i++) {
+    if (c == bullets[i]) {
       return true;
     }
   }

@@ -7,8 +7,8 @@
 bool parse_line(TSLexer *lexer, const bool *valid_symbols);
 bool parse_overline(TSLexer *lexer, const bool *valid_symbols);
 bool parse_underline(TSLexer *lexer, const bool *valid_symbols);
-bool parse_list_bullet(TSLexer *lexer, const bool *valid_symbols);
-bool parse_enumerated_list_bullet(TSLexer *lexer, const bool *valid_symbols);
+bool parse_char_bullet(TSLexer *lexer, const bool *valid_symbols);
+bool parse_numeric_bullet(TSLexer *lexer, const bool *valid_symbols);
 bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols);
 bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols);
 bool parse_text(TSLexer *lexer, const bool *valid_symbols);

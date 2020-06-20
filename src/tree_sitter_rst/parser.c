@@ -147,7 +147,7 @@ bool parse_underline(TSLexer *lexer, const bool *valid_symbols) {
 }
 
 
-bool parse_list_bullet(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_char_bullet(TSLexer *lexer, const bool *valid_symbols) {
   int32_t current = lexer->lookahead;
   int32_t previous = current;
 
@@ -167,7 +167,7 @@ bool parse_list_bullet(TSLexer *lexer, const bool *valid_symbols) {
 }
 
 
-bool parse_enumerated_list_bullet(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_numeric_bullet(TSLexer *lexer, const bool *valid_symbols) {
   int32_t current = lexer->lookahead;
   int32_t previous = current;
 
