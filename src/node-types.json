@@ -64,6 +64,36 @@
     ]
   },
   {
+    "type": "_markup_block",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "citation",
+        "named": true
+      },
+      {
+        "type": "comment",
+        "named": true
+      },
+      {
+        "type": "directive",
+        "named": true
+      },
+      {
+        "type": "footnote",
+        "named": true
+      },
+      {
+        "type": "substitution_definition",
+        "named": true
+      },
+      {
+        "type": "target",
+        "named": true
+      }
+    ]
+  },
+  {
     "type": "bullet_list",
     "named": true,
     "fields": {},
@@ -111,7 +141,17 @@
   {
     "type": "directive",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "document",
@@ -126,19 +166,7 @@
           "named": true
         },
         {
-          "type": "citation",
-          "named": true
-        },
-        {
-          "type": "comment",
-          "named": true
-        },
-        {
-          "type": "directive",
-          "named": true
-        },
-        {
-          "type": "footnote",
+          "type": "_markup_block",
           "named": true
         },
         {
@@ -147,14 +175,6 @@
         },
         {
           "type": "section",
-          "named": true
-        },
-        {
-          "type": "substitution_definition",
-          "named": true
-        },
-        {
-          "type": "target",
           "named": true
         }
       ]
@@ -272,7 +292,17 @@
   {
     "type": "option_list_item",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "paragraph",
@@ -307,7 +337,17 @@
   {
     "type": "substitution_definition",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "target",

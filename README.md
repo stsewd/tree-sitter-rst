@@ -10,14 +10,13 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 - Validate names of footnotes and citations https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#footnote-references
 - Parse external hyperlinks
 - Enumerated lists that begin with `(` -> (1)
-- Lists with empty elements
+- Allow lists with empty elements
 - Validate length of adornments in sections? (the spec doesn't mention this)
 - Tables (maybe implemented without validations?)
 - Indentation
 - Multi-line bodies
-- Allow to group different markup blocks
 - Group all chars as text?
-- Add fields?
+- Add fields in the grammar?
 
 # Design notes
 

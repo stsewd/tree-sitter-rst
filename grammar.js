@@ -67,6 +67,7 @@ module.exports = grammar({
   supertypes: $ => [
     $._list,
     $._inline_markup,
+    $._markup_block,
   ],
 
   rules: {
@@ -104,7 +105,7 @@ module.exports = grammar({
         $.paragraph,
         $._list,
         //$.line_block,
-        $._markup_block,
+        $._explicit_markup_block,
       ),
       $._blankline,
     ),
@@ -202,24 +203,24 @@ module.exports = grammar({
 
     // Markup blocks
     // =============
+    _explicit_markup_block: $ => seq(
+      repeat(seq($._markup_block, $._newline)),
+      $._markup_block,
+    ),
 
     _markup_block: $ => choice(
-      $._footnote_block,
-      $._citation_block,
-      $._hyperlink_target_block,
-      $._anoynymous_hyperlink_target_block,
-      $._directive_block,
-      $._substitution_definition_block,
-      $._comment_block,
+      $.footnote,
+      $.citation,
+      $.target,
+      alias($._anonymous_target, $.target),
+      $.directive,
+      $.substitution_definition,
+      $.comment,
     ),
 
     // Footnotes
     // ---------
 
-    _footnote_block: $ => seq(
-      repeat(seq($.footnote, $._newline)),
-      $.footnote,
-    ),
     footnote: $ => seq(
       $._explicit_markup_start,
       token(seq(WHITE_SPACE, '[', LABEL, ']', WHITE_SPACE)),
@@ -229,10 +230,6 @@ module.exports = grammar({
     // Citations
     // ---------
 
-    _citation_block: $ => seq(
-      repeat(seq($.citation, $._newline)),
-      $.citation,
-    ),
     citation: $ => seq(
       $._explicit_markup_start,
       token(seq(WHITE_SPACE, '[', CITATION_LABEL, ']', WHITE_SPACE)),
@@ -242,10 +239,6 @@ module.exports = grammar({
     // Hyperlink targets
     // -----------------
 
-    _hyperlink_target_block: $ => seq(
-      repeat(seq($.target, $._newline)),
-      $.target,
-    ),
     target: $ => seq(
       $._explicit_markup_start,
       token(seq(WHITE_SPACE, '_', REFERENCE_NAME, ':')),
@@ -255,10 +248,6 @@ module.exports = grammar({
     // Anonymous hyperlink targets
     // ---------------------------
 
-    _anoynymous_hyperlink_target_block: $ => seq(
-      repeat(seq(alias($._anonymous_target, $.target), $._newline)),
-      alias($._anonymous_target, $.target),
-    ),
     _anonymous_target: $ => seq(
       '__',
       optional(token(seq(WHITE_SPACE, LINK))),
@@ -267,10 +256,6 @@ module.exports = grammar({
     // Directives
     // ----------
 
-    _directive_block: $ => seq(
-      repeat(seq($.directive, $._newline)),
-      $.directive,
-    ),
     directive: $ => seq(
       $._explicit_markup_start,
       token(seq(WHITE_SPACE, TYPE, '::')),
@@ -281,10 +266,6 @@ module.exports = grammar({
     // Substitution definition
     // -----------------------
 
-    _substitution_definition_block: $ => seq(
-      repeat(seq($.substitution_definition, $._newline)),
-      $.substitution_definition,
-    ),
     substitution_definition: $ => seq(
       $._explicit_markup_start,
       token(seq(WHITE_SPACE, '|', SUBSTITUTION_TEXT, '|', WHITE_SPACE)),
@@ -293,17 +274,14 @@ module.exports = grammar({
     _embed_directive: $ => seq(
       TYPE,
       '::',
-      seq(WHITE_SPACE, $._line),
+      WHITE_SPACE,
+      $._line,
     ),
 
 
     // Comments
     // --------
 
-    _comment_block: $ => seq(
-      repeat(seq($.comment, $._newline)),
-      $.comment,
-    ),
     comment: $ => seq(
       $._explicit_markup_start,
       optional(seq(WHITE_SPACE, $._line)),

@@ -90,7 +90,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_markup_block"
+              "name": "_explicit_markup_block"
             }
           ]
         },
@@ -623,11 +623,8 @@
           }
         },
         {
-          "type": "REPEAT1",
-          "content": {
-            "type": "PATTERN",
-            "value": "."
-          }
+          "type": "SYMBOL",
+          "name": "_line"
         }
       ]
     },
@@ -707,40 +704,7 @@
         }
       ]
     },
-    "_markup_block": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_footnote_block"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_citation_block"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_hyperlink_target_block"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_anoynymous_hyperlink_target_block"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_directive_block"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_substitution_definition_block"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_comment_block"
-        }
-      ]
-    },
-    "_footnote_block": {
+    "_explicit_markup_block": {
       "type": "SEQ",
       "members": [
         {
@@ -750,7 +714,7 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "footnote"
+                "name": "_markup_block"
               },
               {
                 "type": "SYMBOL",
@@ -761,7 +725,45 @@
         },
         {
           "type": "SYMBOL",
+          "name": "_markup_block"
+        }
+      ]
+    },
+    "_markup_block": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
           "name": "footnote"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "citation"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "target"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_anonymous_target"
+          },
+          "named": true,
+          "value": "target"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "directive"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "substitution_definition"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "comment"
         }
       ]
     },
@@ -857,31 +859,6 @@
         }
       ]
     },
-    "_citation_block": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "citation"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_newline"
-              }
-            ]
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "citation"
-        }
-      ]
-    },
     "citation": {
       "type": "SEQ",
       "members": [
@@ -954,31 +931,6 @@
         {
           "type": "SYMBOL",
           "name": "_line"
-        }
-      ]
-    },
-    "_hyperlink_target_block": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "target"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_newline"
-              }
-            ]
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "target"
         }
       ]
     },
@@ -1089,41 +1041,6 @@
         }
       ]
     },
-    "_anoynymous_hyperlink_target_block": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_anonymous_target"
-                },
-                "named": true,
-                "value": "target"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_newline"
-              }
-            ]
-          }
-        },
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_anonymous_target"
-          },
-          "named": true,
-          "value": "target"
-        }
-      ]
-    },
     "_anonymous_target": {
       "type": "SEQ",
       "members": [
@@ -1174,31 +1091,6 @@
               "type": "BLANK"
             }
           ]
-        }
-      ]
-    },
-    "_directive_block": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "directive"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_newline"
-              }
-            ]
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "directive"
         }
       ]
     },
@@ -1274,11 +1166,8 @@
                   ]
                 },
                 {
-                  "type": "REPEAT1",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "."
-                  }
+                  "type": "SYMBOL",
+                  "name": "_line"
                 }
               ]
             },
@@ -1286,31 +1175,6 @@
               "type": "BLANK"
             }
           ]
-        }
-      ]
-    },
-    "_substitution_definition_block": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "substitution_definition"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_newline"
-              }
-            ]
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "substitution_definition"
         }
       ]
     },
@@ -1401,62 +1265,29 @@
           "value": "::"
         },
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": " "
-                },
-                {
-                  "type": "STRING",
-                  "value": "\t"
-                },
-                {
-                  "type": "STRING",
-                  "value": "\u000b"
-                },
-                {
-                  "type": "STRING",
-                  "value": "\f"
-                }
-              ]
+              "type": "STRING",
+              "value": " "
             },
             {
-              "type": "REPEAT1",
-              "content": {
-                "type": "PATTERN",
-                "value": "."
-              }
+              "type": "STRING",
+              "value": "\t"
+            },
+            {
+              "type": "STRING",
+              "value": "\u000b"
+            },
+            {
+              "type": "STRING",
+              "value": "\f"
             }
           ]
-        }
-      ]
-    },
-    "_comment_block": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "comment"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_newline"
-              }
-            ]
-          }
         },
         {
           "type": "SYMBOL",
-          "name": "comment"
+          "name": "_line"
         }
       ]
     },
@@ -1681,7 +1512,8 @@
   "inline": [],
   "supertypes": [
     "_list",
-    "_inline_markup"
+    "_inline_markup",
+    "_markup_block"
   ]
 }
 
