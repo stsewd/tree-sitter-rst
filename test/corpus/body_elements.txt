@@ -205,6 +205,47 @@ Option lists
   (option_list
     (option_list_item)))
 
+==============
+Combined lists
+==============
+
+1. One
+2. Two
+- Three
+- Four
+3) Five
+4) Six
+* Seven
+* Eight
+:author: Santos
++ Nine
+A) Ten
+
+---
+
+(document
+ (enumerated_list
+  (list_item)
+  (list_item))
+ (bullet_list
+  (list_item)
+  (list_item))
+ (enumerated_list
+  (list_item)
+  (list_item))
+ (bullet_list
+  (list_item)
+  (list_item))
+ (field_list
+  (field
+   (field_name)
+   (field_body)))
+ (bullet_list
+  (list_item))
+ (enumerated_list
+  (list_item)))
+
+
 ===========
 Line blocks
 ===========
