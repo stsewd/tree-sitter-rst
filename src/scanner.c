@@ -59,13 +59,21 @@ bool tree_sitter_rst_external_scanner_scan(
   }
 
 
-  if (is_adornment_char(current) && valid_symbols[T_UNDERLINE]) {
+  if (
+      is_adornment_char(current)
+      && (valid_symbols[T_OVERLINE] || valid_symbols[T_TRANSITION_MARKER])
+  ) {
+    return parse_overline(lexer, valid_symbols);
+  }
+
+
+  if (
+      is_adornment_char(current)
+      && (valid_symbols[T_UNDERLINE] || valid_symbols[T_TRANSITION_MARKER])
+  ) {
     return parse_underline(lexer, valid_symbols);
   }
 
-  if (is_adornment_char(current) && valid_symbols[T_OVERLINE]) {
-    return parse_overline(lexer, valid_symbols);
-  }
 
   if (is_numeric_bullet(current) && valid_symbols[T_NUMERIC_BULLET]) {
     return parse_numeric_bullet(lexer, valid_symbols);

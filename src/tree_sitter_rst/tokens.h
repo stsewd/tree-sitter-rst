@@ -9,6 +9,9 @@ enum TokenType {
   T_OVERLINE,
   T_UNDERLINE,
 
+  // Transitions
+  T_TRANSITION_MARKER,
+
   // Lists
   T_CHAR_BULLET,
   T_NUMERIC_BULLET,

@@ -50,6 +50,7 @@ module.exports = grammar({
 
     $._overline,
     $._underline,
+    $._transition_marker,
 
     $._char_bullet,
     $._numeric_bullet,
@@ -79,6 +80,7 @@ module.exports = grammar({
     document: $ => repeat(
       choice(
         $.section,
+        $.transition,
         $._body_elements,
         $._blankline,
       )
@@ -98,6 +100,16 @@ module.exports = grammar({
         alias($._line, $.title), $._newline,
         $._underline,
       ),
+    ),
+
+
+    // ==========
+    // Transitions
+    // ===========
+
+    transition: $ => seq(
+      $._transition_marker,
+      $._blankline,
     ),
 
 
@@ -311,12 +323,18 @@ module.exports = grammar({
     // Inline markup
     // =============
 
-    _line: $ => repeat1(
-      choice(
-        token(repeat(WHITE_SPACE)),
-        $._inline_markup,
+    _line: $ => seq(
+      $._whitespace,
+      $._inline_markup,
+      repeat(
+        choice(
+          $._whitespace,
+          $._inline_markup,
+        ),
       ),
     ),
+
+    _whitespace: $ => token(repeat(WHITE_SPACE)),
 
     _inline_markup: $ => choice(
       $._text,

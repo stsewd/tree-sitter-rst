@@ -114,7 +114,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "_inline_markup",
@@ -176,6 +176,10 @@
         {
           "type": "section",
           "named": true
+        },
+        {
+          "type": "transition",
+          "named": true
         }
       ]
     }
@@ -220,7 +224,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "_inline_markup",
@@ -250,7 +254,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "_inline_markup",
@@ -265,7 +269,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "_inline_markup",
@@ -295,7 +299,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "_inline_markup",
@@ -310,7 +314,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "_inline_markup",
@@ -340,7 +344,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "_inline_markup",
@@ -360,7 +364,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "_inline_markup",
@@ -368,6 +372,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "transition",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "\t",

@@ -12,6 +12,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "transition"
+          },
+          {
+            "type": "SYMBOL",
             "name": "_body_elements"
           },
           {
@@ -71,6 +75,19 @@
               "name": "_underline"
             }
           ]
+        }
+      ]
+    },
+    "transition": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_transition_marker"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_blankline"
         }
       ]
     },
@@ -1412,42 +1429,59 @@
       ]
     },
     "_line": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "REPEAT",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": " "
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "\t"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "\u000b"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "\f"
-                  }
-                ]
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_whitespace"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_inline_markup"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_whitespace"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_inline_markup"
               }
-            }
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_inline_markup"
+            ]
           }
-        ]
+        }
+      ]
+    },
+    "_whitespace": {
+      "type": "TOKEN",
+      "content": {
+        "type": "REPEAT",
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": " "
+            },
+            {
+              "type": "STRING",
+              "value": "\t"
+            },
+            {
+              "type": "STRING",
+              "value": "\u000b"
+            },
+            {
+              "type": "STRING",
+              "value": "\f"
+            }
+          ]
+        }
       }
     },
     "_inline_markup": {
@@ -1537,6 +1571,10 @@
     {
       "type": "SYMBOL",
       "name": "_underline"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_transition_marker"
     },
     {
       "type": "SYMBOL",

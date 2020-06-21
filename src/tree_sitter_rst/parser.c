@@ -42,7 +42,10 @@ bool parse_overline(TSLexer *lexer, const bool *valid_symbols) {
   int32_t adornment = lexer->lookahead;
   int32_t current = adornment;
 
-  if (!is_adornment_char(current) || !valid_symbols[T_OVERLINE]) {
+  if (
+    !is_adornment_char(current)
+    || (!valid_symbols[T_OVERLINE] && !valid_symbols[T_TRANSITION_MARKER])
+  ) {
     return false;
   }
 
@@ -84,6 +87,10 @@ bool parse_overline(TSLexer *lexer, const bool *valid_symbols) {
   }
 
   if (is_empty) {
+    if (overline_length >= 4 && valid_symbols[T_TRANSITION_MARKER]) {
+      lexer->result_symbol = T_TRANSITION_MARKER;
+      return true;
+    }
     return false;
   }
 
@@ -112,7 +119,10 @@ bool parse_underline(TSLexer *lexer, const bool *valid_symbols) {
   int32_t adornment = lexer->lookahead;
   int32_t current = adornment;
 
-  if (!is_adornment_char(current) || !valid_symbols[T_UNDERLINE]) {
+  if (
+      !is_adornment_char(current)
+      || (!valid_symbols[T_UNDERLINE] && !valid_symbols[T_TRANSITION_MARKER])
+  ) {
     return false;
   }
 
@@ -138,7 +148,26 @@ bool parse_underline(TSLexer *lexer, const bool *valid_symbols) {
     current = lexer->lookahead;
     underline_length++;
   }
-  if (underline_length >= 1) {
+
+  if (underline_length >= 4 && valid_symbols[T_TRANSITION_MARKER]) {
+    lexer->mark_end(lexer);
+
+    lexer->advance(lexer, false);
+    current = lexer->lookahead;
+
+    while (!is_newline(current)) {
+      if (!is_space(current)) {
+        return false;
+      }
+      lexer->advance(lexer, false);
+      current = lexer->lookahead;
+    }
+
+    lexer->result_symbol = T_TRANSITION_MARKER;
+    return true;
+  }
+
+  if (underline_length >= 1 && valid_symbols[T_UNDERLINE]) {
     lexer->mark_end(lexer);
     lexer->result_symbol = T_UNDERLINE;
     return true;
