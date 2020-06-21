@@ -54,6 +54,11 @@ bool tree_sitter_rst_external_scanner_scan(
   }
 
 
+  if (current == ':' && valid_symbols[T_FIELD_NAME]) {
+    return parse_field_name(lexer, valid_symbols);
+  }
+
+
   if (is_adornment_char(current) && valid_symbols[T_UNDERLINE]) {
     return parse_underline(lexer, valid_symbols);
   }

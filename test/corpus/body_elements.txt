@@ -110,18 +110,45 @@ Field lists
 :something with Space: -Is this real?
 :BASIC: YES
 
+:I'm : valid: Yes
+:I'm \: valid: Yes
+
+:I'm valid\: No
+
 ---
 
 (document
-  (field_list
-    (field)
-    (field)
-    (field)
-    (field)
-    (field))
-  (field_list
-    (field)
-    (field)))
+ (field_list
+  (field
+   (field_name)
+   (field_body))
+  (field
+   (field_name)
+   (field_body))
+  (field
+   (field_name)
+   (field_body))
+  (field
+   (field_name)
+   (field_body))
+  (field
+   (field_name)
+   (field_body)))
+ (field_list
+  (field
+   (field_name)
+   (field_body))
+  (field
+   (field_name)
+   (field_body)))
+ (field_list
+  (field
+   (field_name)
+   (field_body))
+  (field
+   (field_name)
+   (field_body)))
+(paragraph))
 
 ============
 Option lists

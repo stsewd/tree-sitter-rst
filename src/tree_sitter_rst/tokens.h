@@ -9,9 +9,10 @@ enum TokenType {
   T_OVERLINE,
   T_UNDERLINE,
 
-  // Body Elements
+  // Lists
   T_CHAR_BULLET,
   T_NUMERIC_BULLET,
+  T_FIELD_NAME,
 
   // Inline Markup
   T_TEXT,

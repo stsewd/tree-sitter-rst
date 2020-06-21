@@ -219,6 +219,59 @@ bool parse_numeric_bullet(TSLexer *lexer, const bool *valid_symbols) {
 }
 
 
+bool parse_field_name(TSLexer *lexer, const bool *valid_symbols) {
+  int32_t previous = lexer->lookahead;
+
+  if (previous != ':' || !valid_symbols[T_FIELD_NAME]) {
+    return false;
+  }
+
+  lexer->advance(lexer, false);
+  int32_t current = lexer->lookahead;
+
+  int consumed_chars = 0;
+  bool is_escaped = false;
+  while (!is_newline(current)) {
+    if (current == '\\') {
+      is_escaped = true;
+      lexer->advance(lexer, false);
+      previous = current;
+      current = lexer->lookahead;
+      consumed_chars++;
+      if (is_newline(current)) {
+        break;
+      }
+    } else {
+      is_escaped = false;
+    }
+
+    if (consumed_chars > 0 && current == ':' && !is_escaped) {
+      lexer->advance(lexer, false);
+      previous = current;
+      current = lexer->lookahead;
+      consumed_chars++;
+
+      if (is_newline(current)) {
+        break;
+      }
+
+      if (is_space(current)) {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = T_FIELD_NAME;
+        return true;
+      }
+    }
+
+    lexer->advance(lexer, false);
+    previous = current;
+    current = lexer->lookahead;
+    consumed_chars++;
+  }
+
+  return false;
+}
+
+
 bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
   int32_t previous = lexer->lookahead;
   lexer->advance(lexer, false);

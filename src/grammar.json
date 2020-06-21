@@ -135,6 +135,14 @@
         {
           "type": "SYMBOL",
           "name": "enumerated_list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "field_list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "option_list"
         }
       ]
     },
@@ -305,52 +313,38 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": ":"
-              },
-              {
-                "type": "PATTERN",
-                "value": "[^:]+"
-              },
-              {
-                "type": "STRING",
-                "value": ":"
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": " "
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "\t"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "\u000b"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "\f"
-                  }
-                ]
-              }
-            ]
-          }
+          "type": "SYMBOL",
+          "name": "field_name"
         },
         {
-          "type": "REPEAT1",
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": " "
+            },
+            {
+              "type": "STRING",
+              "value": "\t"
+            },
+            {
+              "type": "STRING",
+              "value": "\u000b"
+            },
+            {
+              "type": "STRING",
+              "value": "\f"
+            }
+          ]
+        },
+        {
+          "type": "ALIAS",
           "content": {
-            "type": "PATTERN",
-            "value": "."
-          }
+            "type": "SYMBOL",
+            "name": "_line"
+          },
+          "named": true,
+          "value": "field_body"
         }
       ]
     },
@@ -1634,6 +1628,10 @@
     {
       "type": "SYMBOL",
       "name": "_numeric_bullet"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "field_name"
     },
     {
       "type": "SYMBOL",

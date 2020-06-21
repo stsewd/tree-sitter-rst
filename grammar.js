@@ -1,7 +1,5 @@
 const WHITE_SPACE = choice(' ', '\t', '\v', '\f')
-const BODY = repeat1(/./)
 
-const FIELD_NAME = /[^:]+/
 const OPTION = /[a-zA-Z0-9][a-zA-Z0-9_-]*/
 const OPTION_STRING = choice(
   seq('-', OPTION),
@@ -16,7 +14,6 @@ const OPTION_GROUP = seq(
   ),
 )
 
-const MARKUP_START = seq('..', WHITE_SPACE)
 const LABEL = choice(
   /[0-9]+/,
   '#',
@@ -51,6 +48,7 @@ module.exports = grammar({
 
     $._char_bullet,
     $._numeric_bullet,
+    $.field_name,
 
     $._text,
     $.emphasis,
@@ -127,8 +125,8 @@ module.exports = grammar({
     _list: $ => choice(
       $.bullet_list,
       $.enumerated_list,
-      //$.field_list,
-      //$.option_list,
+      $.field_list,
+      $.option_list,
     ),
 
     // Bullet lists
@@ -163,8 +161,9 @@ module.exports = grammar({
       $.field,
     ),
     field: $ => seq(
-      token(seq(':', FIELD_NAME, ':', WHITE_SPACE)),
-      BODY,
+      $.field_name,
+      WHITE_SPACE,
+      alias($._line, $.field_body),
     ),
 
     // Option list
@@ -184,7 +183,7 @@ module.exports = grammar({
           WHITE_SPACE,
         ),
       ),
-      BODY,
+      $._line,
     ),
 
 
@@ -275,7 +274,7 @@ module.exports = grammar({
     directive: $ => seq(
       $._explicit_markup_start,
       token(seq(WHITE_SPACE, TYPE, '::')),
-      optional(seq(WHITE_SPACE, BODY)),
+      optional(seq(WHITE_SPACE, $._line)),
     ),
 
 
@@ -294,7 +293,7 @@ module.exports = grammar({
     _embed_directive: $ => seq(
       TYPE,
       '::',
-      seq(WHITE_SPACE, BODY),
+      seq(WHITE_SPACE, $._line),
     ),
 
 

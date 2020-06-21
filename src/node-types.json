@@ -52,6 +52,14 @@
       {
         "type": "enumerated_list",
         "named": true
+      },
+      {
+        "type": "field_list",
+        "named": true
+      },
+      {
+        "type": "option_list",
+        "named": true
       }
     ]
   },
@@ -170,7 +178,51 @@
   {
     "type": "field",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "field_body",
+          "named": true
+        },
+        {
+          "type": "field_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "field_body",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "field_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "field",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "footnote",
@@ -197,6 +249,21 @@
       "types": [
         {
           "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "option_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "option_list_item",
           "named": true
         }
       ]
@@ -288,6 +355,10 @@
   },
   {
     "type": "emphasis",
+    "named": true
+  },
+  {
+    "type": "field_name",
     "named": true
   },
   {
