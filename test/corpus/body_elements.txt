@@ -44,8 +44,14 @@ Bullet lists
 - One
 - Two
 
+- Three
+
+|
+
 + Another
 * Other one
+
+|
 
 + Just me
 
@@ -54,10 +60,13 @@ Bullet lists
 (document
   (bullet_list
     (list_item)
+    (list_item)
     (list_item))
+  (paragraph)
   (bullet_list
     (list_item)
     (list_item))
+  (paragraph)
   (bullet_list
     (list_item)))
 
@@ -67,10 +76,15 @@ Enumerated lists
 
 1. One
 2. Two
+
 3. Three
+
+|
 
 #. One
 #. Two
+
+|
 
 10. One
 11. Two
@@ -86,9 +100,11 @@ Z. Six
     (list_item)
     (list_item)
     (list_item))
+  (paragraph)
   (enumerated_list
     (list_item)
     (list_item))
+  (paragraph)
   (enumerated_list
     (list_item)
     (list_item)
@@ -104,11 +120,16 @@ Field lists
 :Date: 2001-08-16
 :Version: 1
 :Authors: Me
+
 :Indentation: Since the field marker may be quite long, the second.
 :Parameter i: integer
 
+|
+
 :something with Space: -Is this real?
 :BASIC: YES
+
+|
 
 :I'm : valid: Yes
 :I'm \: valid: Yes
@@ -134,6 +155,7 @@ Field lists
   (field
    (field_name)
    (field_body)))
+ (paragraph)
  (field_list
   (field
    (field_name)
@@ -141,6 +163,7 @@ Field lists
   (field
    (field_name)
    (field_body)))
+ (paragraph)
  (field_list
   (field
    (field_name)

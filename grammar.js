@@ -37,7 +37,12 @@ module.exports = grammar({
 
   extras: $ => [$._newline],
 
-  conflicts: $ => [],
+  conflicts: $ => [
+    [$.bullet_list],
+    [$.enumerated_list],
+    [$.field_list],
+    [$.option_list],
+  ],
 
   externals: $ => [
     $._newline,
@@ -103,7 +108,7 @@ module.exports = grammar({
     _body_elements: $ => seq(
       choice(
         $.paragraph,
-        $._list,
+        $._list_block,
         //$.line_block,
         $._explicit_markup_block,
       ),
@@ -122,6 +127,10 @@ module.exports = grammar({
 
     // Lists
     // =====
+    _list_block: $ => seq(
+      repeat(seq($._list, $._newline)),
+      $._list,
+    ),
 
     _list: $ => choice(
       $.bullet_list,
@@ -134,7 +143,12 @@ module.exports = grammar({
     // ------------
 
     bullet_list: $ => seq(
-      repeat(seq(alias($._bullet_list_item, $.list_item), $._newline)),
+      repeat(
+        seq(
+          alias($._bullet_list_item, $.list_item),
+          choice($._newline, repeat1($._blankline)),
+        ),
+      ),
       alias($._bullet_list_item, $.list_item),
     ),
 
@@ -144,7 +158,12 @@ module.exports = grammar({
     // ----------------
 
     enumerated_list: $ => seq(
-      repeat(seq(alias($._numeric_list_item, $.list_item), $._newline)),
+      repeat(
+        seq(
+          alias($._numeric_list_item, $.list_item),
+          choice($._newline, repeat1($._blankline)),
+        ),
+      ),
       alias($._numeric_list_item, $.list_item),
     ),
     _numeric_list_item: $ => seq($._numeric_bullet, WHITE_SPACE, $._line),
@@ -158,7 +177,7 @@ module.exports = grammar({
     // ----------
 
     field_list: $ => seq(
-      repeat(seq($.field, $._newline)),
+      repeat(seq($.field, choice($._newline, repeat1($._blankline)))),
       $.field,
     ),
     field: $ => seq(
@@ -171,7 +190,7 @@ module.exports = grammar({
     // -----------
 
     option_list: $ => seq(
-      repeat(seq($.option_list_item, $._newline)),
+      repeat(seq($.option_list_item, choice($._newline, repeat1($._newline)))),
       $.option_list_item,
     ),
 

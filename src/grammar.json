@@ -86,7 +86,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_list"
+              "name": "_list_block"
             },
             {
               "type": "SYMBOL",
@@ -122,6 +122,31 @@
         {
           "type": "SYMBOL",
           "name": "_line"
+        }
+      ]
+    },
+    "_list_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_list"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_newline"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_list"
         }
       ]
     },
@@ -164,8 +189,20 @@
                 "value": "list_item"
               },
               {
-                "type": "SYMBOL",
-                "name": "_newline"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_newline"
+                  },
+                  {
+                    "type": "REPEAT1",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_blankline"
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -233,8 +270,20 @@
                 "value": "list_item"
               },
               {
-                "type": "SYMBOL",
-                "name": "_newline"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_newline"
+                  },
+                  {
+                    "type": "REPEAT1",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_blankline"
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -297,8 +346,20 @@
                 "name": "field"
               },
               {
-                "type": "SYMBOL",
-                "name": "_newline"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_newline"
+                  },
+                  {
+                    "type": "REPEAT1",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_blankline"
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -361,8 +422,20 @@
                 "name": "option_list_item"
               },
               {
-                "type": "SYMBOL",
-                "name": "_newline"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_newline"
+                  },
+                  {
+                    "type": "REPEAT1",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_newline"
+                    }
+                  }
+                ]
               }
             ]
           }
@@ -1434,7 +1507,20 @@
       "name": "_newline"
     }
   ],
-  "conflicts": [],
+  "conflicts": [
+    [
+      "bullet_list"
+    ],
+    [
+      "enumerated_list"
+    ],
+    [
+      "field_list"
+    ],
+    [
+      "option_list"
+    ]
+  ],
   "externals": [
     {
       "type": "SYMBOL",
