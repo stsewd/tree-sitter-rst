@@ -55,7 +55,7 @@ module.exports = grammar({
     $._underline,
 
     // Transitions
-    $._transition_marker,
+    $.transition,
 
     // Lists
     $._char_bullet,
@@ -88,7 +88,7 @@ module.exports = grammar({
     document: $ => repeat(
       choice(
         $.section,
-        $.transition,
+        $._transition_block,
         $._body_elements,
         $._blankline,
       )
@@ -115,8 +115,8 @@ module.exports = grammar({
     // Transitions
     // ===========
 
-    transition: $ => seq(
-      $._transition_marker,
+    _transition_block: $ => seq(
+      $.transition,
       $._blankline,
     ),
 

@@ -12,7 +12,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "transition"
+            "name": "_transition_block"
           },
           {
             "type": "SYMBOL",
@@ -78,12 +78,12 @@
         }
       ]
     },
-    "transition": {
+    "_transition_block": {
       "type": "SEQ",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_transition_marker"
+          "name": "transition"
         },
         {
           "type": "SYMBOL",
@@ -277,15 +277,31 @@
           "name": "_indent"
         },
         {
+          "type": "REPEAT1",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_blankline"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_body_elements"
+              }
+            ]
+          }
+        },
+        {
           "type": "CHOICE",
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_blankline"
+              "name": "_dedent"
             },
             {
               "type": "SYMBOL",
-              "name": "_body_elements"
+              "name": "_newline"
             }
           ]
         }
@@ -1604,7 +1620,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_transition_marker"
+      "name": "transition"
     },
     {
       "type": "SYMBOL",

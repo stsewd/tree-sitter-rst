@@ -374,11 +374,6 @@
     }
   },
   {
-    "type": "transition",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "\t",
     "named": false
   },
@@ -436,6 +431,10 @@
   },
   {
     "type": "substitution_reference",
+    "named": true
+  },
+  {
+    "type": "transition",
     "named": true
   },
   {

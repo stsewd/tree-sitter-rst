@@ -12,7 +12,7 @@ enum TokenType {
   T_UNDERLINE,
 
   // Transitions
-  T_TRANSITION_MARKER,
+  T_TRANSITION,
 
   // Lists
   T_CHAR_BULLET,
