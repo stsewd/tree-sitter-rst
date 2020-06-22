@@ -5,17 +5,18 @@
 
 #include "tree_sitter_rst/chars.c"
 #include "tree_sitter_rst/parser.c"
+#include "tree_sitter_rst/scanner.c"
 
 #include "tree_sitter_rst/tokens.h"
 
 
 void * tree_sitter_rst_external_scanner_create() {
-  int *i = malloc(sizeof(int));
-  return i;
+  return new_rst_scanner();
 }
 
 
 void tree_sitter_rst_external_scanner_destroy(void *payload) {
+  destroy_rst_scanner(payload);
 }
 
 unsigned tree_sitter_rst_external_scanner_serialize(
@@ -40,6 +41,9 @@ bool tree_sitter_rst_external_scanner_scan(
     const bool *valid_symbols
 ) {
   int32_t current = lexer->lookahead;
+
+  RSTScanner *scanner = (RSTScanner *) payload;
+
 
   if (
       is_newline(current)

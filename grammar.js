@@ -47,15 +47,22 @@ module.exports = grammar({
   externals: $ => [
     $._newline,
     $._blankline,
+    $._indent,
+    $._dedent,
 
+    // Sections
     $._overline,
     $._underline,
+
+    // Transitions
     $._transition_marker,
 
+    // Lists
     $._char_bullet,
     $._numeric_bullet,
     $.field_name,
 
+    // Inline markup
     $._text,
     $.emphasis,
     $.strong,
@@ -67,6 +74,7 @@ module.exports = grammar({
     $.reference,
     $.standalone_hyperlink,  // TODO
 
+    // Markup blocks
     $._explicit_markup_start,
   ],
 
@@ -165,6 +173,18 @@ module.exports = grammar({
     ),
 
     _bullet_list_item: $ => seq($._char_bullet, WHITE_SPACE, $._line),
+
+    // TODO
+    _block: $ => seq(
+      $._indent,
+      repeat1(
+        choice(
+          $._blankline,
+          $._body_elements,
+        ),
+      ),
+      choice($._dedent, $._newline),
+    ),
 
     // Enumerated lists
     // ----------------

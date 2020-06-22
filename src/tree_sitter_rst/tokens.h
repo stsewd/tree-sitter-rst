@@ -4,6 +4,8 @@
 enum TokenType {
   T_NEWLINE,
   T_BLANKLINE,
+  T_INDENT,
+  T_DEDENT,
 
   // Sections
   T_OVERLINE,
@@ -17,7 +19,7 @@ enum TokenType {
   T_NUMERIC_BULLET,
   T_FIELD_NAME,
 
-  // Inline Markup
+  // Inline markup
   T_TEXT,
   T_EMPHASIS,
   T_STRONG,

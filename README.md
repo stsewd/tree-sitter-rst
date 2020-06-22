@@ -10,7 +10,6 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
 - Move parsing of option list to C and declare more nodes -- This is in progress
 - Validate names of footnotes and citations https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#footnote-references
 - Validate references names
-- Implement transitions
 - Implement indented literal blocks
 - Implement quoted literal blocks
 - Line blocks

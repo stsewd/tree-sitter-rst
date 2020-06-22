@@ -269,6 +269,28 @@
         }
       ]
     },
+    "_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_indent"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_blankline"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_body_elements"
+            }
+          ]
+        }
+      ]
+    },
     "enumerated_list": {
       "type": "SEQ",
       "members": [
@@ -1563,6 +1585,14 @@
     {
       "type": "SYMBOL",
       "name": "_blankline"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_indent"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_dedent"
     },
     {
       "type": "SYMBOL",
