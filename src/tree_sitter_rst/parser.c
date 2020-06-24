@@ -112,6 +112,7 @@ bool parse_overline(TSLexer *lexer, const bool *valid_symbols) {
     lexer->result_symbol = T_OVERLINE;
     return true;
   }
+  return false;
 }
 
 
@@ -475,7 +476,7 @@ bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols) {
   while (1) {
     if (is_space(current) || is_end_char(current)) {
       if (previous == '_') {
-        lexer->mark_end;
+        lexer->mark_end(lexer);
         lexer->result_symbol = T_REFERENCE;
         return true;
       }
@@ -487,7 +488,7 @@ bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols) {
       previous = current;
       current = lexer->lookahead;
       if (is_space(current) || is_end_char(current)) {
-        lexer->mark_end;
+        lexer->mark_end(lexer);
         lexer->result_symbol = T_REFERENCE;
         return true;
       }

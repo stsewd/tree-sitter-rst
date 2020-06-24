@@ -2,6 +2,7 @@
 #define TREE_SITTER_RST_CHARS_H_
 
 #include <stdbool.h>
+#include <tree_sitter/parser.h>
 
 bool is_newline(int32_t c);
 bool is_space(int32_t c);
