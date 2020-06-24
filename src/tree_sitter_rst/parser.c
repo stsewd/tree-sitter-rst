@@ -1,10 +1,10 @@
 #include "tree_sitter_rst/parser.h"
 
-#include "tree_sitter_rst/tokens.h"
 #include "tree_sitter_rst/chars.h"
+#include "tree_sitter_rst/tokens.h"
 
-
-bool parse_line(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_line(TSLexer* lexer, const bool* valid_symbols)
+{
   int32_t previous = lexer->lookahead;
   lexer->advance(lexer, false);
   lexer->mark_end(lexer);
@@ -37,15 +37,14 @@ bool parse_line(TSLexer *lexer, const bool *valid_symbols) {
   return false;
 }
 
-
-bool parse_overline(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_overline(TSLexer* lexer, const bool* valid_symbols)
+{
   int32_t adornment = lexer->lookahead;
   int32_t current = adornment;
 
   if (
-    !is_adornment_char(current)
-    || (!valid_symbols[T_OVERLINE] && !valid_symbols[T_TRANSITION])
-  ) {
+      !is_adornment_char(current)
+      || (!valid_symbols[T_OVERLINE] && !valid_symbols[T_TRANSITION])) {
     return false;
   }
 
@@ -72,7 +71,6 @@ bool parse_overline(TSLexer *lexer, const bool *valid_symbols) {
     overline_length++;
   }
   lexer->mark_end(lexer);
-
 
   lexer->advance(lexer, false);
   current = lexer->lookahead;
@@ -115,15 +113,14 @@ bool parse_overline(TSLexer *lexer, const bool *valid_symbols) {
   return false;
 }
 
-
-bool parse_underline(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_underline(TSLexer* lexer, const bool* valid_symbols)
+{
   int32_t adornment = lexer->lookahead;
   int32_t current = adornment;
 
   if (
       !is_adornment_char(current)
-      || (!valid_symbols[T_UNDERLINE] && !valid_symbols[T_TRANSITION])
-  ) {
+      || (!valid_symbols[T_UNDERLINE] && !valid_symbols[T_TRANSITION])) {
     return false;
   }
 
@@ -176,8 +173,8 @@ bool parse_underline(TSLexer *lexer, const bool *valid_symbols) {
   return false;
 }
 
-
-bool parse_char_bullet(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_char_bullet(TSLexer* lexer, const bool* valid_symbols)
+{
   int32_t current = lexer->lookahead;
   int32_t previous = current;
 
@@ -196,8 +193,8 @@ bool parse_char_bullet(TSLexer *lexer, const bool *valid_symbols) {
   return false;
 }
 
-
-bool parse_numeric_bullet(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_numeric_bullet(TSLexer* lexer, const bool* valid_symbols)
+{
   int32_t current = lexer->lookahead;
   int32_t previous = current;
 
@@ -248,8 +245,8 @@ bool parse_numeric_bullet(TSLexer *lexer, const bool *valid_symbols) {
   return false;
 }
 
-
-bool parse_field_name(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_field_name(TSLexer* lexer, const bool* valid_symbols)
+{
   int32_t previous = lexer->lookahead;
 
   if (previous != ':' || !valid_symbols[T_FIELD_NAME]) {
@@ -301,8 +298,8 @@ bool parse_field_name(TSLexer *lexer, const bool *valid_symbols) {
   return false;
 }
 
-
-bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_inline_markup(TSLexer* lexer, const bool* valid_symbols)
+{
   int32_t previous = lexer->lookahead;
   lexer->advance(lexer, false);
   int32_t current = lexer->lookahead;
@@ -392,8 +389,7 @@ bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
         && !is_space(previous)
         && is_inline_markup_end_char(current)
         // Literal is the only inline markup that doesn't care if the previous char is '\'
-        && (!is_escaped || is_literal)
-    ) {
+        && (!is_escaped || is_literal)) {
       previous = current;
       current = lexer->lookahead;
 
@@ -462,8 +458,8 @@ bool parse_inline_markup(TSLexer *lexer, const bool *valid_symbols) {
   return false;
 }
 
-
-bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_inline_reference(TSLexer* lexer, const bool* valid_symbols)
+{
   int32_t previous = lexer->lookahead;
 
   if (!is_alphanumeric(previous) || !valid_symbols[T_REFERENCE]) {
@@ -497,8 +493,7 @@ bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols) {
 
     if (
         is_internal_reference_char(current) && is_internal_reference_char(previous)
-        || (!is_alphanumeric(current) && !is_internal_reference_char(current))
-    ) {
+        || (!is_alphanumeric(current) && !is_internal_reference_char(current))) {
       return false;
     }
 
@@ -516,8 +511,8 @@ bool parse_inline_reference(TSLexer *lexer, const bool *valid_symbols) {
   return false;
 }
 
-
-bool parse_explict_markup_start(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_explict_markup_start(TSLexer* lexer, const bool* valid_symbols)
+{
   int32_t previous = lexer->lookahead;
 
   if (previous != '.' || !valid_symbols[T_EXPLICIT_MARKUP_START]) {
@@ -543,8 +538,8 @@ bool parse_explict_markup_start(TSLexer *lexer, const bool *valid_symbols) {
   return false;
 }
 
-
-bool parse_text(TSLexer *lexer, const bool *valid_symbols) {
+bool parse_text(TSLexer* lexer, const bool* valid_symbols)
+{
   int32_t previous = lexer->lookahead;
   lexer->advance(lexer, false);
   int32_t current = lexer->lookahead;

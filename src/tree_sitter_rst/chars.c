@@ -1,11 +1,11 @@
 #include "tree_sitter_rst/chars.h"
 
-
-bool is_newline(int32_t c) {
+bool is_newline(int32_t c)
+{
   const int32_t newline_chars[] = {
-     0,  // \0
-    10,  // \n
-    13,  // \r
+    0, // \0
+    10, // \n
+    13, // \r
   };
   const int length = 3;
   for (int i = 0; i < length; i++) {
@@ -16,9 +16,9 @@ bool is_newline(int32_t c) {
   return false;
 }
 
-
-bool is_space(int32_t c) {
-  const int32_t space_chars[] = {' ', '\f', '\t', '\v'};
+bool is_space(int32_t c)
+{
+  const int32_t space_chars[] = { ' ', '\f', '\t', '\v' };
   const int length = 4;
   bool is_space_char = false;
   for (int i = 0; i < length; i++) {
@@ -30,10 +30,19 @@ bool is_space(int32_t c) {
   return is_space_char || is_newline(c);
 }
 
-
-bool is_number(int32_t c) {
+bool is_number(int32_t c)
+{
   const int32_t numbers[] = {
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
   };
   const int length = 10;
   for (int i = 0; i < length; i++) {
@@ -44,11 +53,35 @@ bool is_number(int32_t c) {
   return false;
 }
 
-
-bool is_abc_lower(int32_t c) {
+bool is_abc_lower(int32_t c)
+{
   const int32_t abc[] = {
-    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z',
   };
   const int length = 26;
   for (int i = 0; i < length; i++) {
@@ -59,11 +92,35 @@ bool is_abc_lower(int32_t c) {
   return false;
 }
 
-
-bool is_abc_upper(int32_t c) {
+bool is_abc_upper(int32_t c)
+{
   const int32_t abc[] = {
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
   };
   const int length = 26;
   for (int i = 0; i < length; i++) {
@@ -74,21 +131,51 @@ bool is_abc_upper(int32_t c) {
   return false;
 }
 
-
-bool is_abc(int32_t c) {
+bool is_abc(int32_t c)
+{
   return is_abc_lower(c) || is_abc_upper(c);
 }
 
-
-bool is_alphanumeric(int32_t c) {
+bool is_alphanumeric(int32_t c)
+{
   return is_abc(c) || is_number(c);
 }
 
-
-bool is_adornment_char(int32_t c) {
+bool is_adornment_char(int32_t c)
+{
   const int32_t adornment_chars[] = {
-    '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':',
-    ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~',
+    '!',
+    '"',
+    '#',
+    '$',
+    '%',
+    '&',
+    '\'',
+    '(',
+    ')',
+    '*',
+    '+',
+    ',',
+    '-',
+    '.',
+    '/',
+    ':',
+    ';',
+    '<',
+    '=',
+    '>',
+    '?',
+    '@',
+    '[',
+    '\\',
+    ']',
+    '^',
+    '_',
+    '`',
+    '{',
+    '|',
+    '}',
+    '~',
   };
   const int length = 32;
   for (int i = 0; i < length; i++) {
@@ -99,10 +186,18 @@ bool is_adornment_char(int32_t c) {
   return false;
 }
 
-
-bool is_start_char(int32_t c) {
+bool is_start_char(int32_t c)
+{
   const int32_t valid_chars[] = {
-    '-', ':', '/', '\'', '"', '<', '(', '[', '{',
+    '-',
+    ':',
+    '/',
+    '\'',
+    '"',
+    '<',
+    '(',
+    '[',
+    '{',
   };
   const int length = 9;
   for (int i = 0; i < length; i++) {
@@ -113,10 +208,24 @@ bool is_start_char(int32_t c) {
   return false;
 }
 
-
-bool is_end_char(int32_t c) {
+bool is_end_char(int32_t c)
+{
   const int32_t valid_chars[] = {
-    '-', '.', ',', ':', ';', '!', '?', '\\', '/', '\'', '"', ')', ']', '}', '>',
+    '-',
+    '.',
+    ',',
+    ':',
+    ';',
+    '!',
+    '?',
+    '\\',
+    '/',
+    '\'',
+    '"',
+    ')',
+    ']',
+    '}',
+    '>',
   };
   const int length = 15;
   for (int i = 0; i < length; i++) {
@@ -127,14 +236,14 @@ bool is_end_char(int32_t c) {
   return false;
 }
 
-
-bool is_inline_markup_start_char(int32_t c) {
+bool is_inline_markup_start_char(int32_t c)
+{
   const int32_t inline_markup_chars[] = {
-    '*',  // *emphasis*, and **strong**.
-    '`',  // `interpreted text`, ``literals``, `hyperlink references`_, and `anonymous references`__.
-    '|',  // |substitution references|.
-    '_',  // _`inline internal target`.
-    '[',  // [foot-note]_.
+    '*', // *emphasis*, and **strong**.
+    '`', // `interpreted text`, ``literals``, `hyperlink references`_, and `anonymous references`__.
+    '|', // |substitution references|.
+    '_', // _`inline internal target`.
+    '[', // [foot-note]_.
   };
   const int length = 5;
   for (int i = 0; i < length; i++) {
@@ -145,14 +254,14 @@ bool is_inline_markup_start_char(int32_t c) {
   return false;
 }
 
-
-bool is_inline_markup_end_char(int32_t c) {
+bool is_inline_markup_end_char(int32_t c)
+{
   const int32_t inline_markup_chars[] = {
-    '*',  // *emphasis*, and **strong**.
-    '`',  // `interpreted text`, ``literals``, _`inline internal target`,
-          // `hyperlink references`_, and `anonymous references`__.
-    '|',  // |substitution references|.
-    ']',  // [foot-note]_.
+    '*', // *emphasis*, and **strong**.
+    '`', // `interpreted text`, ``literals``, _`inline internal target`,
+    // `hyperlink references`_, and `anonymous references`__.
+    '|', // |substitution references|.
+    ']', // [foot-note]_.
   };
   const int length = 4;
   for (int i = 0; i < length; i++) {
@@ -163,9 +272,9 @@ bool is_inline_markup_end_char(int32_t c) {
   return false;
 }
 
-
-bool is_internal_reference_char(int32_t c) {
-  const int32_t internal_chars[] = {'-', '_', '.', ':', '+'};
+bool is_internal_reference_char(int32_t c)
+{
+  const int32_t internal_chars[] = { '-', '_', '.', ':', '+' };
   const int length = 5;
   for (int i = 0; i < length; i++) {
     if (c == internal_chars[i]) {
@@ -175,15 +284,15 @@ bool is_internal_reference_char(int32_t c) {
   return false;
 }
 
-
-bool is_char_bullet(int32_t c) {
+bool is_char_bullet(int32_t c)
+{
   const int32_t bullets[] = {
     '*',
     '+',
     '-',
-    8226,  // '•'
-    8227,  // '‣'
-    8259,  // '⁃'
+    8226, // '•'
+    8227, // '‣'
+    8259, // '⁃'
   };
   const int length = 6;
   for (int i = 0; i < length; i++) {
@@ -194,26 +303,31 @@ bool is_char_bullet(int32_t c) {
   return false;
 }
 
-
-bool is_numeric_bullet(int32_t c) {
+bool is_numeric_bullet(int32_t c)
+{
   return (
-    is_numeric_bullet_simple(c)
-    || is_numeric_bullet_roman_lower(c)
-    || is_numeric_bullet_roman_upper(c)
-    || is_numeric_bullet_abc_lower(c)
-    || is_numeric_bullet_abc_upper(c)
-  );
+      is_numeric_bullet_simple(c)
+      || is_numeric_bullet_roman_lower(c)
+      || is_numeric_bullet_roman_upper(c)
+      || is_numeric_bullet_abc_lower(c)
+      || is_numeric_bullet_abc_upper(c));
 }
 
-
-bool is_numeric_bullet_simple(int32_t c) {
+bool is_numeric_bullet_simple(int32_t c)
+{
   return is_number(c) || c == '#';
 }
 
-
-bool is_numeric_bullet_roman_lower(int32_t c) {
+bool is_numeric_bullet_roman_lower(int32_t c)
+{
   const int32_t valid_chars[] = {
-    'i', 'v', 'x', 'l', 'c', 'd', 'm',
+    'i',
+    'v',
+    'x',
+    'l',
+    'c',
+    'd',
+    'm',
   };
   const int length = 7;
   for (int i = 0; i < length; i++) {
@@ -224,10 +338,16 @@ bool is_numeric_bullet_roman_lower(int32_t c) {
   return false;
 }
 
-
-bool is_numeric_bullet_roman_upper(int32_t c) {
+bool is_numeric_bullet_roman_upper(int32_t c)
+{
   const int32_t valid_chars[] = {
-    'I', 'V', 'X', 'L', 'C', 'D', 'M',
+    'I',
+    'V',
+    'X',
+    'L',
+    'C',
+    'D',
+    'M',
   };
   const int length = 7;
   for (int i = 0; i < length; i++) {
@@ -238,12 +358,12 @@ bool is_numeric_bullet_roman_upper(int32_t c) {
   return false;
 }
 
-
-bool is_numeric_bullet_abc_lower(int32_t c) {
+bool is_numeric_bullet_abc_lower(int32_t c)
+{
   return is_abc_lower(c);
 }
 
-
-bool is_numeric_bullet_abc_upper(int32_t c) {
+bool is_numeric_bullet_abc_upper(int32_t c)
+{
   return is_abc_upper(c);
 }
