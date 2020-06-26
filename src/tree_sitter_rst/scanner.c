@@ -1,4 +1,7 @@
 #include <stdlib.h>
+#include <string.h>
+
+#include <tree_sitter/parser.h>
 
 #include "tree_sitter_rst/scanner.h"
 
@@ -40,9 +43,16 @@ int rst_scanner_pop(RSTScanner* scanner)
 
 unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer)
 {
-  return 0;
+  unsigned i = scanner->length;
+  if (i > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
+    i = TREE_SITTER_SERIALIZATION_BUFFER_SIZE;
+  }
+  memcpy(buffer, scanner->indent_stack, i);
+  return i;
 }
 
-void rst_scanner_deserialize(RSTScanner* scanner, char* buffer, unsigned length)
+void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned length)
 {
+  memcpy((void*)buffer, scanner->indent_stack, length);
+  scanner->length = length;
 }

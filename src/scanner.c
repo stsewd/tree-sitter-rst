@@ -23,7 +23,8 @@ unsigned tree_sitter_rst_external_scanner_serialize(
     void* payload,
     char* buffer)
 {
-  return 0;
+  RSTScanner* scanner = payload;
+  return scanner->serialize(scanner, buffer);
 }
 
 void tree_sitter_rst_external_scanner_deserialize(
@@ -31,6 +32,8 @@ void tree_sitter_rst_external_scanner_deserialize(
     const char* buffer,
     unsigned length)
 {
+  RSTScanner* scanner = payload;
+  scanner->deserialize(scanner, buffer, length);
 }
 
 bool tree_sitter_rst_external_scanner_scan(

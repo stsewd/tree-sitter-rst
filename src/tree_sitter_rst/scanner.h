@@ -7,13 +7,13 @@ typedef struct RSTScanner RSTScanner;
 
 struct RSTScanner {
   int* indent_stack;
-  int length;
+  unsigned length;
 
   void (*push)(RSTScanner* scanner, int value);
   int (*pop)(RSTScanner* scanner);
 
   unsigned (*serialize)(RSTScanner* scanner, char* buffer);
-  void (*deserialize)(RSTScanner* scanner, char* buffer, unsigned length);
+  void (*deserialize)(RSTScanner* scanner, const char* buffer, unsigned length);
 };
 
 RSTScanner* new_rst_scanner();
@@ -23,6 +23,6 @@ void rst_scanner_push(RSTScanner* scanner, int value);
 int rst_scanner_pop(RSTScanner* scanner);
 
 unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer);
-void rst_scanner_deserialize(RSTScanner* scanner, char* buffer, unsigned length);
+void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned length);
 
 #endif /* ifndef TREE_SITTER_RST_SCANNER_H */
