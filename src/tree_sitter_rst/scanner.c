@@ -80,31 +80,31 @@ bool rst_scanner_scan(RSTScanner* scanner)
   }
 
   if (current == '.' && valid_symbols[T_EXPLICIT_MARKUP_START]) {
-    return parse_explict_markup_start(lexer, valid_symbols);
+    return parse_explict_markup_start(scanner);
   }
 
   if (current == ':' && valid_symbols[T_FIELD_NAME]) {
-    return parse_field_name(lexer, valid_symbols);
+    return parse_field_name(scanner);
   }
 
   if (
       is_adornment_char(current)
       && (valid_symbols[T_OVERLINE] || valid_symbols[T_TRANSITION])) {
-    return parse_overline(lexer, valid_symbols);
+    return parse_overline(scanner);
   }
 
   if (
       is_adornment_char(current)
       && (valid_symbols[T_UNDERLINE] || valid_symbols[T_TRANSITION])) {
-    return parse_underline(lexer, valid_symbols);
+    return parse_underline(scanner);
   }
 
   if (is_numeric_bullet(current) && valid_symbols[T_NUMERIC_BULLET]) {
-    return parse_numeric_bullet(lexer, valid_symbols);
+    return parse_numeric_bullet(scanner);
   }
 
   if (is_char_bullet(current) && valid_symbols[T_CHAR_BULLET]) {
-    return parse_char_bullet(lexer, valid_symbols);
+    return parse_char_bullet(scanner);
   }
 
   if (
@@ -117,11 +117,11 @@ bool rst_scanner_scan(RSTScanner* scanner)
           || valid_symbols[T_INLINE_TARGET]
           || valid_symbols[T_FOOTNOTE_REFERENCE]
           || valid_symbols[T_REFERENCE])) {
-    return parse_inline_markup(lexer, valid_symbols);
+    return parse_inline_markup(scanner);
   }
 
   if (!is_space(current) && (valid_symbols[T_REFERENCE] || valid_symbols[T_TEXT])) {
-    return parse_inline_reference(lexer, valid_symbols) || parse_text(lexer, valid_symbols);
+    return parse_inline_reference(scanner) || parse_text(scanner);
   }
 
   // TODO: improve this
