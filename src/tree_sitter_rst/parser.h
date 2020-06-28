@@ -3,7 +3,7 @@
 
 #include "tree_sitter_rst/scanner.h"
 
-bool parse_line(RSTScanner *scanner);
+bool parse_indent(RSTScanner *scanner);
 bool parse_overline(RSTScanner *scanner);
 bool parse_underline(RSTScanner *scanner);
 bool parse_char_bullet(RSTScanner *scanner);

@@ -124,60 +124,8 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_inline_reference(scanner) || parse_text(scanner);
   }
 
-  // TODO: improve this
-  int indent = 0;
-  int newlines = 0;
-  while (true) {
-    if (current == ' ' || current == '\v' || current == '\f') {
-      indent += 1;
-    } else if (current == '\t') {
-      indent += 8;
-    } else if (current == 0) {
-      if (valid_symbols[T_DEDENT] && scanner->length > 0) {
-        scanner->pop(scanner);
-        lexer->advance(lexer, false);
-        lexer->mark_end(lexer);
-        lexer->result_symbol = T_DEDENT;
-        return true;
-      }
-      if (valid_symbols[T_BLANKLINE]) {
-        lexer->mark_end(lexer);
-        lexer->result_symbol = T_BLANKLINE;
-        return true;
-      }
-      return false;
-    } else if (is_newline(current)) {
-      newlines++;
-      indent = 0;
-    } else {
-      break;
-    }
-    lexer->advance(lexer, true);
-    current = lexer->lookahead;
-  }
-
-  if (newlines > 0) {
-    int current_ident = scanner->back(scanner);
-    if (indent > current_ident && valid_symbols[T_INDENT]) {
-      scanner->push(scanner, indent);
-      lexer->result_symbol = T_INDENT;
-      return true;
-    }
-    if (indent < current_ident && valid_symbols[T_DEDENT]) {
-      scanner->pop(scanner);
-      lexer->result_symbol = T_DEDENT;
-      return true;
-    }
-
-    if (newlines > 1 && valid_symbols[T_BLANKLINE]) {
-      lexer->result_symbol = T_BLANKLINE;
-      return true;
-    }
-
-    if (valid_symbols[T_NEWLINE]) {
-      lexer->result_symbol = T_NEWLINE;
-      return true;
-    }
+  if (is_space(current)) {
+    return parse_indent(scanner);
   }
 
   return false;
