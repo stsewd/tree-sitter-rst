@@ -4,6 +4,18 @@
 #include <stdbool.h>
 #include <tree_sitter/parser.h>
 
+#define CHAR_EOF 0
+#define CHAR_NEWLINE 10
+#define CHAR_CARRIAGE_RETURN 13
+
+#define CHAR_SPACE ' '
+#define CHAR_FORM_FEED '\f'
+#define CHAR_TAB '\t'
+#define CHAR_VERTICAL_TAB '\v'
+
+// number of spaces to expand a tab
+#define TAB_STOP 8
+
 bool is_newline(int32_t c);
 bool is_space(int32_t c);
 bool is_number(int32_t c);

@@ -3,9 +3,9 @@
 bool is_newline(int32_t c)
 {
   const int32_t newline_chars[] = {
-    0, // \0
-    10, // \n
-    13, // \r
+    CHAR_EOF,
+    CHAR_NEWLINE,
+    CHAR_CARRIAGE_RETURN,
   };
   const int length = 3;
   for (int i = 0; i < length; i++) {
@@ -18,7 +18,12 @@ bool is_newline(int32_t c)
 
 bool is_space(int32_t c)
 {
-  const int32_t space_chars[] = { ' ', '\f', '\t', '\v' };
+  const int32_t space_chars[] = {
+    CHAR_SPACE,
+    CHAR_FORM_FEED,
+    CHAR_TAB,
+    CHAR_VERTICAL_TAB,
+  };
   const int length = 4;
   bool is_space_char = false;
   for (int i = 0; i < length; i++) {

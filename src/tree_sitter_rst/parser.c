@@ -3,19 +3,20 @@
 #include "tree_sitter_rst/chars.h"
 #include "tree_sitter_rst/tokens.h"
 
-bool parse_indent(RSTScanner *scanner) {
-  TSLexer *lexer = scanner->lexer;
-  const bool *valid_symbols = scanner->valid_symbols;
+bool parse_indent(RSTScanner* scanner)
+{
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
   int32_t current = lexer->lookahead;
 
   int indent = 0;
   int newlines = 0;
   while (true) {
-    if (current == ' ' || current == '\v' || current == '\f') {
+    if (current == CHAR_SPACE || current == CHAR_VERTICAL_TAB || current == CHAR_FORM_FEED) {
       indent += 1;
-    } else if (current == '\t') {
-      indent += 8;
-    } else if (current == 0) {
+    } else if (current == CHAR_TAB) {
+      indent += TAB_STOP;
+    } else if (current == CHAR_EOF) {
       if (valid_symbols[T_DEDENT] && scanner->length > 0) {
         scanner->pop(scanner);
         lexer->advance(lexer, false);
@@ -65,10 +66,10 @@ bool parse_indent(RSTScanner *scanner) {
   return false;
 }
 
-bool parse_overline(RSTScanner *scanner)
+bool parse_overline(RSTScanner* scanner)
 {
-  TSLexer *lexer = scanner->lexer;
-  const bool *valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
 
   int32_t adornment = lexer->lookahead;
   int32_t current = adornment;
@@ -144,10 +145,10 @@ bool parse_overline(RSTScanner *scanner)
   return false;
 }
 
-bool parse_underline(RSTScanner *scanner)
+bool parse_underline(RSTScanner* scanner)
 {
-  TSLexer *lexer = scanner->lexer;
-  const bool *valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
 
   int32_t adornment = lexer->lookahead;
   int32_t current = adornment;
@@ -207,10 +208,10 @@ bool parse_underline(RSTScanner *scanner)
   return false;
 }
 
-bool parse_char_bullet(RSTScanner *scanner)
+bool parse_char_bullet(RSTScanner* scanner)
 {
-  TSLexer *lexer = scanner->lexer;
-  const bool *valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
 
   int32_t current = lexer->lookahead;
   int32_t previous = current;
@@ -230,10 +231,10 @@ bool parse_char_bullet(RSTScanner *scanner)
   return false;
 }
 
-bool parse_numeric_bullet(RSTScanner *scanner)
+bool parse_numeric_bullet(RSTScanner* scanner)
 {
-  TSLexer *lexer = scanner->lexer;
-  const bool *valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
 
   int32_t current = lexer->lookahead;
   int32_t previous = current;
@@ -285,10 +286,10 @@ bool parse_numeric_bullet(RSTScanner *scanner)
   return false;
 }
 
-bool parse_field_name(RSTScanner *scanner)
+bool parse_field_name(RSTScanner* scanner)
 {
-  TSLexer *lexer = scanner->lexer;
-  const bool *valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
 
   int32_t previous = lexer->lookahead;
 
@@ -341,10 +342,10 @@ bool parse_field_name(RSTScanner *scanner)
   return false;
 }
 
-bool parse_inline_markup(RSTScanner *scanner)
+bool parse_inline_markup(RSTScanner* scanner)
 {
-  TSLexer *lexer = scanner->lexer;
-  const bool *valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
 
   int32_t previous = lexer->lookahead;
   lexer->advance(lexer, false);
@@ -504,10 +505,10 @@ bool parse_inline_markup(RSTScanner *scanner)
   return false;
 }
 
-bool parse_inline_reference(RSTScanner *scanner)
+bool parse_inline_reference(RSTScanner* scanner)
 {
-  TSLexer *lexer = scanner->lexer;
-  const bool *valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
 
   int32_t previous = lexer->lookahead;
 
@@ -560,10 +561,10 @@ bool parse_inline_reference(RSTScanner *scanner)
   return false;
 }
 
-bool parse_explict_markup_start(RSTScanner *scanner)
+bool parse_explict_markup_start(RSTScanner* scanner)
 {
-  TSLexer *lexer = scanner->lexer;
-  const bool *valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
 
   int32_t previous = lexer->lookahead;
 
@@ -590,10 +591,10 @@ bool parse_explict_markup_start(RSTScanner *scanner)
   return false;
 }
 
-bool parse_text(RSTScanner *scanner)
+bool parse_text(RSTScanner* scanner)
 {
-  TSLexer *lexer = scanner->lexer;
-  const bool *valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
 
   int32_t previous = lexer->lookahead;
   lexer->advance(lexer, false);

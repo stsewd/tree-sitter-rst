@@ -8,7 +8,7 @@
 typedef struct RSTScanner RSTScanner;
 
 struct RSTScanner {
-  TSLexer *lexer;
+  TSLexer* lexer;
   const bool* valid_symbols;
 
   int* indent_stack;
