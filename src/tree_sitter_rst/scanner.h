@@ -3,6 +3,8 @@
 
 #define RST_SCANNER_STACK_MAX_CAPACITY 99
 
+#include <tree_sitter/parser.h>
+
 typedef struct RSTScanner RSTScanner;
 
 struct RSTScanner {
@@ -15,6 +17,7 @@ struct RSTScanner {
 
   unsigned (*serialize)(RSTScanner* scanner, char* buffer);
   void (*deserialize)(RSTScanner* scanner, const char* buffer, unsigned length);
+  bool (*scan)(RSTScanner* scanner, TSLexer* lexer, const bool* valid_symbols);
 };
 
 RSTScanner* new_rst_scanner();
@@ -26,5 +29,6 @@ int rst_scanner_back(const RSTScanner* scanner);
 
 unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer);
 void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned length);
+bool rst_scanner_scan(RSTScanner* scanner, TSLexer* lexer, const bool* valid_symbols);
 
 #endif /* ifndef TREE_SITTER_RST_SCANNER_H */
