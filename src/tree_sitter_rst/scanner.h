@@ -8,6 +8,9 @@
 typedef struct RSTScanner RSTScanner;
 
 struct RSTScanner {
+  TSLexer *lexer;
+  const bool* valid_symbols;
+
   int* indent_stack;
   unsigned length;
 
@@ -17,7 +20,7 @@ struct RSTScanner {
 
   unsigned (*serialize)(RSTScanner* scanner, char* buffer);
   void (*deserialize)(RSTScanner* scanner, const char* buffer, unsigned length);
-  bool (*scan)(RSTScanner* scanner, TSLexer* lexer, const bool* valid_symbols);
+  bool (*scan)(RSTScanner* scanner);
 };
 
 RSTScanner* new_rst_scanner();
@@ -29,6 +32,6 @@ int rst_scanner_back(const RSTScanner* scanner);
 
 unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer);
 void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned length);
-bool rst_scanner_scan(RSTScanner* scanner, TSLexer* lexer, const bool* valid_symbols);
+bool rst_scanner_scan(RSTScanner* scanner);
 
 #endif /* ifndef TREE_SITTER_RST_SCANNER_H */

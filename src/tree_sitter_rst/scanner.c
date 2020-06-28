@@ -68,8 +68,11 @@ void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned l
   scanner->length = length;
 }
 
-bool rst_scanner_scan(RSTScanner* scanner, TSLexer* lexer, const bool* valid_symbols)
+bool rst_scanner_scan(RSTScanner* scanner)
 {
+  TSLexer *lexer = scanner->lexer;
+  const bool *valid_symbols = scanner->valid_symbols;
+
   int32_t current = lexer->lookahead;
 
   if (current == 0) {

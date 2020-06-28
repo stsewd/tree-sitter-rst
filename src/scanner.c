@@ -36,5 +36,7 @@ bool tree_sitter_rst_external_scanner_scan(
     const bool* valid_symbols)
 {
   RSTScanner* scanner = (RSTScanner*)payload;
-  return scanner->scan(scanner, lexer, valid_symbols);
+  scanner->lexer = lexer;
+  scanner->valid_symbols = valid_symbols;
+  return scanner->scan(scanner);
 }
