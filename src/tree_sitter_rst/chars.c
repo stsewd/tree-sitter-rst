@@ -372,3 +372,23 @@ bool is_numeric_bullet_abc_upper(int32_t c)
 {
   return is_abc_upper(c);
 }
+
+int get_indent_level(TSLexer* lexer)
+{
+  int32_t current = lexer->lookahead;
+  int indent = 0;
+
+  while (true) {
+    if (current == CHAR_SPACE || current == CHAR_VERTICAL_TAB || current == CHAR_FORM_FEED) {
+      indent += 1;
+    } else if (current == CHAR_TAB) {
+      indent += TAB_STOP;
+    } else {
+      break;
+    }
+    lexer->advance(lexer, true);
+    current = lexer->lookahead;
+  }
+
+  return indent;
+}

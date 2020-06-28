@@ -12,6 +12,15 @@ bool parse_indent(RSTScanner* scanner)
   int indent = 0;
   int newlines = 0;
   while (true) {
+
+    if (current != CHAR_EOF && is_newline(current) && newlines == 0) {
+      newlines++;
+      indent = 0;
+      lexer->advance(lexer, true);
+      current = lexer->lookahead;
+      lexer->mark_end(lexer);
+    }
+
     if (current == CHAR_SPACE || current == CHAR_VERTICAL_TAB || current == CHAR_FORM_FEED) {
       indent += 1;
     } else if (current == CHAR_TAB) {
@@ -54,6 +63,7 @@ bool parse_indent(RSTScanner* scanner)
     }
 
     if (newlines > 1 && valid_symbols[T_BLANKLINE]) {
+      lexer->mark_end(lexer);
       lexer->result_symbol = T_BLANKLINE;
       return true;
     }
@@ -87,6 +97,10 @@ bool parse_overline(RSTScanner* scanner)
         if (is_space(current) && is_char_bullet(adornment) && valid_symbols[T_CHAR_BULLET]) {
           lexer->mark_end(lexer);
           lexer->result_symbol = T_CHAR_BULLET;
+
+          const int indent = scanner->back(scanner) + 1 + get_indent_level(lexer);
+          scanner->push(scanner, indent);
+
           return true;
         }
         if ((current == '.' || current == ')') && is_numeric_bullet(adornment) && valid_symbols[T_NUMERIC_BULLET]) {
@@ -166,6 +180,10 @@ bool parse_underline(RSTScanner* scanner)
         if (is_space(current) && is_char_bullet(adornment) && valid_symbols[T_CHAR_BULLET]) {
           lexer->mark_end(lexer);
           lexer->result_symbol = T_CHAR_BULLET;
+
+          const int indent = scanner->back(scanner) + 1 + get_indent_level(lexer);
+          scanner->push(scanner, indent);
+
           return true;
         }
         if (current == '.' && is_numeric_bullet(adornment) && valid_symbols[T_NUMERIC_BULLET]) {
@@ -226,6 +244,10 @@ bool parse_char_bullet(RSTScanner* scanner)
   if (is_space(current)) {
     lexer->mark_end(lexer);
     lexer->result_symbol = T_CHAR_BULLET;
+
+    const int indent = scanner->back(scanner) + 1 + get_indent_level(lexer);
+    scanner->push(scanner, indent);
+
     return true;
   }
   return false;

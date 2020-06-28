@@ -13,7 +13,7 @@
 #define CHAR_TAB '\t'
 #define CHAR_VERTICAL_TAB '\v'
 
-// number of spaces to expand a tab
+// number of spaces to expand a tab to
 #define TAB_STOP 8
 
 bool is_newline(int32_t c);
@@ -40,5 +40,7 @@ bool is_numeric_bullet_roman_lower(int32_t c);
 bool is_numeric_bullet_roman_upper(int32_t c);
 bool is_numeric_bullet_abc_lower(int32_t c);
 bool is_numeric_bullet_abc_upper(int32_t c);
+
+int get_indent_level(TSLexer* lexer);
 
 #endif /* ifndef TREE_SITTER_RST_CHARS_H_ */
