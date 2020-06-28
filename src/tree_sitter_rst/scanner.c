@@ -13,6 +13,7 @@ RSTScanner* new_rst_scanner()
 
   scanner->push = rst_scanner_push;
   scanner->pop = rst_scanner_pop;
+  scanner->back = rst_scanner_back;
   scanner->serialize = rst_scanner_serialize;
   scanner->deserialize = rst_scanner_deserialize;
 
@@ -39,6 +40,14 @@ int rst_scanner_pop(RSTScanner* scanner)
     return 0;
   }
   return scanner->indent_stack[--scanner->length];
+}
+
+int rst_scanner_back(const RSTScanner* scanner)
+{
+  if (scanner->length <= 0) {
+    return 0;
+  }
+  return scanner->indent_stack[scanner->length - 1];
 }
 
 unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer)

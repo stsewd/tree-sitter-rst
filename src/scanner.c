@@ -41,14 +41,11 @@ bool tree_sitter_rst_external_scanner_scan(
     TSLexer* lexer,
     const bool* valid_symbols)
 {
+  RSTScanner* scanner = (RSTScanner*)payload;
   int32_t current = lexer->lookahead;
 
-  RSTScanner* scanner = (RSTScanner*)payload;
-
-  if (
-      is_newline(current)
-      && (valid_symbols[T_BLANKLINE] || valid_symbols[T_NEWLINE])) {
-    return parse_line(lexer, valid_symbols);
+  if (current == 0) {
+    return false;
   }
 
   if (current == '.' && valid_symbols[T_EXPLICIT_MARKUP_START]) {
@@ -94,6 +91,62 @@ bool tree_sitter_rst_external_scanner_scan(
 
   if (!is_space(current) && (valid_symbols[T_REFERENCE] || valid_symbols[T_TEXT])) {
     return parse_inline_reference(lexer, valid_symbols) || parse_text(lexer, valid_symbols);
+  }
+
+  // TODO: improve this
+  int indent = 0;
+  int newlines = 0;
+  while (true) {
+    if (current == ' ' || current == '\v' || current == '\f') {
+      indent += 1;
+    } else if (current == '\t') {
+      indent += 8;
+    } else if (current == 0) {
+      if (valid_symbols[T_DEDENT] && scanner->length > 0) {
+        scanner->pop(scanner);
+        lexer->advance(lexer, false);
+        lexer->mark_end(lexer);
+        lexer->result_symbol = T_DEDENT;
+        return true;
+      }
+      if (valid_symbols[T_BLANKLINE]) {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = T_BLANKLINE;
+        return true;
+      }
+      return false;
+    } else if (is_newline(current)) {
+      newlines++;
+      indent = 0;
+    } else {
+      break;
+    }
+    lexer->advance(lexer, true);
+    current = lexer->lookahead;
+  }
+
+  if (newlines > 0) {
+    int current_ident = scanner->back(scanner);
+    if (indent > current_ident && valid_symbols[T_INDENT]) {
+      scanner->push(scanner, indent);
+      lexer->result_symbol = T_INDENT;
+      return true;
+    }
+    if (indent < current_ident && valid_symbols[T_DEDENT]) {
+      scanner->pop(scanner);
+      lexer->result_symbol = T_DEDENT;
+      return true;
+    }
+
+    if (newlines > 1 && valid_symbols[T_BLANKLINE]) {
+      lexer->result_symbol = T_BLANKLINE;
+      return true;
+    }
+
+    if (valid_symbols[T_NEWLINE]) {
+      lexer->result_symbol = T_NEWLINE;
+      return true;
+    }
   }
 
   return false;
