@@ -386,7 +386,7 @@ int get_indent_level(TSLexer* lexer)
     } else {
       break;
     }
-    lexer->advance(lexer, true);
+    lexer->advance(lexer, false);
     current = lexer->lookahead;
   }
 
