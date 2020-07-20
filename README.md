@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/stsewd/tree-sitter-rst/workflows/CI/badge.svg)
 
-reStructuredText grammar for tree-sitter.
+reStructuredText grammar for [tree-sitter](https://tree-sitter.github.io/tree-sitter/).
 Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>.
 
 **Note: this grammar is still under development, a lot of things may change!**
