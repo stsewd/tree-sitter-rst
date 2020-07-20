@@ -17,7 +17,6 @@ enum TokenType {
   // Lists
   T_CHAR_BULLET,
   T_NUMERIC_BULLET,
-  T_FIELD_NAME,
 
   // Inline markup
   T_TEXT,
@@ -33,6 +32,12 @@ enum TokenType {
 
   // Markup blocks
   T_EXPLICIT_MARKUP_START,
+  T_FOOTNOTE_LABEL,
+  T_CITATION_LABEL,
+  T_TARGET_NAME,
+  T_ANONYMOUS_TARGET_MARK,
+  T_DIRECTIVE_MARK,
+  T_SUBSTITUTION_MARK,
 };
 
 #endif /* TREE_SITTER_RST_TOKENS_H_ */

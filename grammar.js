@@ -1,48 +1,7 @@
-const WHITE_SPACE = choice(' ', '\t', '\v', '\f')
-
-const OPTION = /[a-zA-Z0-9][a-zA-Z0-9_-]*/
-const OPTION_STRING = choice(
-  seq('-', OPTION),
-  seq('+', OPTION),
-  seq('--', OPTION),
-  seq('/', OPTION),
-)
-const OPTION_GROUP = seq(
-  OPTION_STRING,
-  optional(
-    seq(choice(' ', '='), OPTION),
-  ),
-)
-
-const LABEL = choice(
-  /[0-9]+/,
-  '#',
-  /#[a-zA-Z0-9][a-zA-Z0-9_]*/,
-  '*',
-)
-const CITATION_LABEL = /[a-zA-Z0-9]+([a-zA-Z0-9._-]+[a-zA-Z0-9])?/
-const REFERENCE_NAME = choice(
-  '_',
-  /[^_:]([^:]+[^_:])?/,
-  /`[^`]+`/,
-)
-const TYPE = /[a-zA-Z0-9]+([a-z-A-Z0-9-_+:.]+[a-zA-Z0-9])?/
-const SUBSTITUTION_TEXT = /[^\s](.+[^\s])?/
-
-const LINK = repeat1(/./)
-
+const WHITE_SPACE = choice(' ', '\t', '\v', '\f');
 
 module.exports = grammar({
   name: 'rst',
-
-  extras: $ => [$._newline],
-
-  conflicts: $ => [
-    [$.bullet_list],
-    [$.enumerated_list],
-    [$.field_list],
-    [$.option_list],
-  ],
 
   externals: $ => [
     $._newline,
@@ -60,7 +19,6 @@ module.exports = grammar({
     // Lists
     $._char_bullet,
     $._numeric_bullet,
-    $.field_name,
 
     // Inline markup
     $._text,
@@ -76,12 +34,22 @@ module.exports = grammar({
 
     // Markup blocks
     $._explicit_markup_start,
+    $._footnote_label,
+    $._citation_label,
+    $._target_name,
+    $._anonymous_target_mark,
+    $._directive_mark,
+    $._substitution_mark,
   ],
 
-  supertypes: $ => [
-    $._list,
-    $._inline_markup,
-    $._markup_block,
+  extras: $ => [
+    $.__newline,
+    $.__whitespace,
+  ],
+
+  conflicts: $ => [
+    [$.bullet_list],
+    [$.enumerated_list],
   ],
 
   rules: {
@@ -89,9 +57,8 @@ module.exports = grammar({
       choice(
         $.section,
         $._transition_block,
-        $._body_elements,
-        $._blankline,
-      )
+        $._body_element_block,
+      ),
     ),
 
     // ========
@@ -101,15 +68,14 @@ module.exports = grammar({
     section: $ => choice(
       seq(
         $._overline,
-        alias($._line, $.title), $._newline,
+        alias($._line, $.title),
         $._underline,
       ),
       seq(
-        alias($._line, $.title), $._newline,
+        alias($._line, $.title),
         $._underline,
       ),
     ),
-
 
     // ==========
     // Transitions
@@ -120,144 +86,71 @@ module.exports = grammar({
       $._blankline,
     ),
 
-
     // =============
     // Body elements
     // =============
 
-    _body_elements: $ => seq(
-      choice(
-        $.paragraph,
-        $._list_block,
-        //$.line_block,
-        $._explicit_markup_block,
-      ),
+    _body_element_block: $ => seq(
+      $._body_element,
       $._blankline,
     ),
 
+    _indented_block: $ => seq(
+      repeat(
+        seq(
+          $._body_element,
+          $._blankline,
+        ),
+      ),
+      $._body_element,
+      $._dedent,
+    ),
+
+    _body_element: $ => choice(
+      $.paragraph,
+      $._list_block,
+      $._explicit_markup_block,
+    ),
 
     // Paragraph
     // =========
 
-    paragraph: $ => seq(
-      repeat(seq($._line, $._newline)),
-      $._line,
-    ),
-
+    paragraph: $ => repeat1($._line),
 
     // Lists
     // =====
+
     _list_block: $ => seq(
-      repeat(seq($._list, $._newline)),
-      $._list,
+      repeat1($._list),
     ),
 
     _list: $ => choice(
       $.bullet_list,
       $.enumerated_list,
-      $.field_list,
-      $.option_list,
     ),
 
     // Bullet lists
     // ------------
 
-    bullet_list: $ => seq(
-      repeat(
-        seq(
-          alias($._bullet_list_item, $.list_item),
-          choice($._newline, repeat1($._blankline)),
-        ),
-      ),
+    bullet_list: $ => repeat1(
       alias($._bullet_list_item, $.list_item),
     ),
 
-    _bullet_list_item: $ => seq($._char_bullet, WHITE_SPACE, $._line),
+    _bullet_list_item: $ => seq($._char_bullet, choice($._indented_block, $._dedent)),
 
-    // TODO
-    _block: $ => seq(
-      $._indent,
-      repeat1(
-        choice(
-          $._blankline,
-          $._body_elements,
-        ),
-      ),
-      choice($._dedent, $._newline),
-    ),
-
-    // Enumerated lists
-    // ----------------
-
-    enumerated_list: $ => seq(
-      repeat(
-        seq(
-          alias($._numeric_list_item, $.list_item),
-          choice($._newline, repeat1($._blankline)),
-        ),
-      ),
-      alias($._numeric_list_item, $.list_item),
-    ),
-    _numeric_list_item: $ => seq($._numeric_bullet, WHITE_SPACE, $._line),
-
-    // Definition list
+    // Enumerated list
     // ---------------
 
-    // TODO
-
-    // Field list
-    // ----------
-
-    field_list: $ => seq(
-      repeat(seq($.field, choice($._newline, repeat1($._blankline)))),
-      $.field,
-    ),
-    field: $ => seq(
-      $.field_name,
-      WHITE_SPACE,
-      alias($._line, $.field_body),
+    enumerated_list: $ => repeat1(
+      alias($._numeric_list_item, $.list_item),
     ),
 
-    // Option list
-    // -----------
-
-    option_list: $ => seq(
-      repeat(seq($.option_list_item, choice($._newline, repeat1($._newline)))),
-      $.option_list_item,
-    ),
-
-    option_list_item: $ => seq(
-      token(
-        seq(
-          repeat(seq(OPTION_GROUP, ', ')),
-          OPTION_GROUP,
-          WHITE_SPACE,
-          WHITE_SPACE,
-        ),
-      ),
-      $._line,
-    ),
-
-
-    // Line block
-    // ==========
-
-    line_block: $ => seq(
-      repeat(seq($._single_line_block, $._newline)),
-      $._single_line_block,
-    ),
-    _single_line_block: $ => choice(
-      '|',
-      seq(token(seq('|', WHITE_SPACE)), $._line),
-    ),
-
+    _numeric_list_item: $ => seq($._numeric_bullet, choice($._indented_block, $._dedent)),
 
     // Markup blocks
     // =============
-    _explicit_markup_block: $ => seq(
-      repeat(seq($._markup_block, $._newline)),
-      $._markup_block,
-    ),
+
+    _explicit_markup_block: $ => repeat1($._markup_block),
 
     _markup_block: $ => choice(
       $.footnote,
@@ -272,19 +165,19 @@ module.exports = grammar({
     // Footnotes
     // ---------
 
-    footnote: $ => seq(
+    footnote: $ => seq(
       $._explicit_markup_start,
-      token(seq(WHITE_SPACE, '[', LABEL, ']', WHITE_SPACE)),
-      $._line,
+      alias($._footnote_label, $.label),
+      choice($._indented_block, $._dedent),
     ),
 
     // Citations
     // ---------
 
-    citation: $ => seq(
+    citation: $ => seq(
       $._explicit_markup_start,
-      token(seq(WHITE_SPACE, '[', CITATION_LABEL, ']', WHITE_SPACE)),
-      $._line,
+      alias($._citation_label, $.label),
+      choice($._indented_block, $._dedent),
     ),
 
     // Hyperlink targets
@@ -292,16 +185,18 @@ module.exports = grammar({
 
     target: $ => seq(
       $._explicit_markup_start,
-      token(seq(WHITE_SPACE, '_', REFERENCE_NAME, ':')),
-      optional(token(seq(WHITE_SPACE, LINK))),
+      alias($._target_name, $.reference),
+      optional(alias(/.+/, $.link)),
+      $._dedent,
     ),
 
     // Anonymous hyperlink targets
     // ---------------------------
 
     _anonymous_target: $ => seq(
-      '__',
-      optional(token(seq(WHITE_SPACE, LINK))),
+      $._anonymous_target_mark,
+      optional(alias(/.+/, $.link)),
+      $._newline,
     ),
 
     // Directives
@@ -309,52 +204,40 @@ module.exports = grammar({
 
     directive: $ => seq(
       $._explicit_markup_start,
-      token(seq(WHITE_SPACE, TYPE, '::')),
-      optional(seq(WHITE_SPACE, $._line)),
+      alias($._directive_mark, $.type),
+      choice($._indented_block, $._dedent),
     ),
-
 
     // Substitution definition
     // -----------------------
 
     substitution_definition: $ => seq(
       $._explicit_markup_start,
-      token(seq(WHITE_SPACE, '|', SUBSTITUTION_TEXT, '|', WHITE_SPACE)),
-      $._embed_directive,
-    ),
-    _embed_directive: $ => seq(
-      TYPE,
-      '::',
-      WHITE_SPACE,
-      $._line,
+      alias($._substitution_mark, $.substitution),
+      alias($._embedded_directive, $.directive),
     ),
 
+    _embedded_directive: $ => seq(
+      alias($._directive_mark, $.type),
+      choice($._indented_block, $._dedent),
+    ),
 
     // Comments
     // --------
 
     comment: $ => seq(
       $._explicit_markup_start,
-      optional(seq(WHITE_SPACE, $._line)),
+      choice($._indented_block, $._dedent)
     ),
-
 
     // =============
     // Inline markup
     // =============
 
     _line: $ => seq(
-      $._whitespace,
-      $._inline_markup,
-      repeat(
-        choice(
-          $._whitespace,
-          $._inline_markup,
-        ),
-      ),
+      repeat1($._inline_markup),
+      $._newline,
     ),
-
-    _whitespace: $ => token(repeat(WHITE_SPACE)),
 
     _inline_markup: $ => choice(
       $._text,
@@ -368,5 +251,8 @@ module.exports = grammar({
       $.reference,
       $.standalone_hyperlink,
     ),
+
+    __newline: $ => /\r?\n/,
+    __whitespace: $ => token(repeat1(WHITE_SPACE)),
   },
 });

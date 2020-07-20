@@ -7,10 +7,19 @@
 
 typedef struct RSTScanner RSTScanner;
 
+// TODO: track consumed_chars?
 struct RSTScanner {
+  // Wrappers around the lexer.
   TSLexer* lexer;
   const bool* valid_symbols;
 
+  int32_t lookahead;
+  int32_t previous;
+
+  void (*advance)(RSTScanner* scanner);
+  void (*skip)(RSTScanner* scanner);
+
+  // Functions for the indentation levels.
   int* indent_stack;
   unsigned length;
 
@@ -18,6 +27,7 @@ struct RSTScanner {
   int (*pop)(RSTScanner* scanner);
   int (*back)(const RSTScanner* scanner);
 
+  // Functions for the scanner.
   unsigned (*serialize)(RSTScanner* scanner, char* buffer);
   void (*deserialize)(RSTScanner* scanner, const char* buffer, unsigned length);
   bool (*scan)(RSTScanner* scanner);
@@ -25,6 +35,9 @@ struct RSTScanner {
 
 RSTScanner* new_rst_scanner();
 void destroy_rst_scanner(RSTScanner* scanner);
+
+void rst_scanner_advance(RSTScanner* scanner);
+void rst_scanner_skip(RSTScanner* scanner);
 
 void rst_scanner_push(RSTScanner* scanner, int value);
 int rst_scanner_pop(RSTScanner* scanner);

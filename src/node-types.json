@@ -1,99 +1,5 @@
 [
   {
-    "type": "_inline_markup",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "emphasis",
-        "named": true
-      },
-      {
-        "type": "footnote_reference",
-        "named": true
-      },
-      {
-        "type": "interpreted_text",
-        "named": true
-      },
-      {
-        "type": "literal",
-        "named": true
-      },
-      {
-        "type": "reference",
-        "named": true
-      },
-      {
-        "type": "standalone_hyperlink",
-        "named": true
-      },
-      {
-        "type": "strong",
-        "named": true
-      },
-      {
-        "type": "substitution_reference",
-        "named": true
-      },
-      {
-        "type": "target",
-        "named": true
-      }
-    ]
-  },
-  {
-    "type": "_list",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "bullet_list",
-        "named": true
-      },
-      {
-        "type": "enumerated_list",
-        "named": true
-      },
-      {
-        "type": "field_list",
-        "named": true
-      },
-      {
-        "type": "option_list",
-        "named": true
-      }
-    ]
-  },
-  {
-    "type": "_markup_block",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "citation",
-        "named": true
-      },
-      {
-        "type": "comment",
-        "named": true
-      },
-      {
-        "type": "directive",
-        "named": true
-      },
-      {
-        "type": "footnote",
-        "named": true
-      },
-      {
-        "type": "substitution_definition",
-        "named": true
-      },
-      {
-        "type": "target",
-        "named": true
-      }
-    ]
-  },
-  {
     "type": "bullet_list",
     "named": true,
     "fields": {},
@@ -117,7 +23,43 @@
       "required": true,
       "types": [
         {
-          "type": "_inline_markup",
+          "type": "bullet_list",
+          "named": true
+        },
+        {
+          "type": "citation",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "enumerated_list",
+          "named": true
+        },
+        {
+          "type": "footnote",
+          "named": true
+        },
+        {
+          "type": "label",
+          "named": true
+        },
+        {
+          "type": "paragraph",
+          "named": true
+        },
+        {
+          "type": "substitution_definition",
+          "named": true
+        },
+        {
+          "type": "target",
           "named": true
         }
       ]
@@ -132,7 +74,39 @@
       "required": false,
       "types": [
         {
-          "type": "_inline_markup",
+          "type": "bullet_list",
+          "named": true
+        },
+        {
+          "type": "citation",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "enumerated_list",
+          "named": true
+        },
+        {
+          "type": "footnote",
+          "named": true
+        },
+        {
+          "type": "paragraph",
+          "named": true
+        },
+        {
+          "type": "substitution_definition",
+          "named": true
+        },
+        {
+          "type": "target",
           "named": true
         }
       ]
@@ -144,10 +118,46 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
-          "type": "_inline_markup",
+          "type": "bullet_list",
+          "named": true
+        },
+        {
+          "type": "citation",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "enumerated_list",
+          "named": true
+        },
+        {
+          "type": "footnote",
+          "named": true
+        },
+        {
+          "type": "paragraph",
+          "named": true
+        },
+        {
+          "type": "substitution_definition",
+          "named": true
+        },
+        {
+          "type": "target",
+          "named": true
+        },
+        {
+          "type": "type",
           "named": true
         }
       ]
@@ -162,11 +172,27 @@
       "required": false,
       "types": [
         {
-          "type": "_list",
+          "type": "bullet_list",
           "named": true
         },
         {
-          "type": "_markup_block",
+          "type": "citation",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "enumerated_list",
+          "named": true
+        },
+        {
+          "type": "footnote",
           "named": true
         },
         {
@@ -175,6 +201,14 @@
         },
         {
           "type": "section",
+          "named": true
+        },
+        {
+          "type": "substitution_definition",
+          "named": true
+        },
+        {
+          "type": "target",
           "named": true
         },
         {
@@ -200,55 +234,6 @@
     }
   },
   {
-    "type": "field",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "field_body",
-          "named": true
-        },
-        {
-          "type": "field_name",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "field_body",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "_inline_markup",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "field_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "field",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "footnote",
     "named": true,
     "fields": {},
@@ -257,7 +242,43 @@
       "required": true,
       "types": [
         {
-          "type": "_inline_markup",
+          "type": "bullet_list",
+          "named": true
+        },
+        {
+          "type": "citation",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "enumerated_list",
+          "named": true
+        },
+        {
+          "type": "footnote",
+          "named": true
+        },
+        {
+          "type": "label",
+          "named": true
+        },
+        {
+          "type": "paragraph",
+          "named": true
+        },
+        {
+          "type": "substitution_definition",
+          "named": true
+        },
+        {
+          "type": "target",
           "named": true
         }
       ]
@@ -269,40 +290,42 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "_inline_markup",
+          "type": "bullet_list",
           "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "option_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
+        },
         {
-          "type": "option_list_item",
+          "type": "citation",
           "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "option_list_item",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
+        },
         {
-          "type": "_inline_markup",
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "enumerated_list",
+          "named": true
+        },
+        {
+          "type": "footnote",
+          "named": true
+        },
+        {
+          "type": "paragraph",
+          "named": true
+        },
+        {
+          "type": "substitution_definition",
+          "named": true
+        },
+        {
+          "type": "target",
           "named": true
         }
       ]
@@ -314,10 +337,42 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "_inline_markup",
+          "type": "emphasis",
+          "named": true
+        },
+        {
+          "type": "footnote_reference",
+          "named": true
+        },
+        {
+          "type": "interpreted_text",
+          "named": true
+        },
+        {
+          "type": "literal",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "standalone_hyperlink",
+          "named": true
+        },
+        {
+          "type": "strong",
+          "named": true
+        },
+        {
+          "type": "substitution_reference",
+          "named": true
+        },
+        {
+          "type": "target",
           "named": true
         }
       ]
@@ -347,7 +402,11 @@
       "required": true,
       "types": [
         {
-          "type": "_inline_markup",
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "substitution",
           "named": true
         }
       ]
@@ -356,7 +415,21 @@
   {
     "type": "target",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "link",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "title",
@@ -364,45 +437,49 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "_inline_markup",
+          "type": "emphasis",
+          "named": true
+        },
+        {
+          "type": "footnote_reference",
+          "named": true
+        },
+        {
+          "type": "interpreted_text",
+          "named": true
+        },
+        {
+          "type": "literal",
+          "named": true
+        },
+        {
+          "type": "reference",
+          "named": true
+        },
+        {
+          "type": "standalone_hyperlink",
+          "named": true
+        },
+        {
+          "type": "strong",
+          "named": true
+        },
+        {
+          "type": "substitution_reference",
+          "named": true
+        },
+        {
+          "type": "target",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "\t",
-    "named": false
-  },
-  {
-    "type": "\u000b",
-    "named": false
-  },
-  {
-    "type": "\f",
-    "named": false
-  },
-  {
-    "type": " ",
-    "named": false
-  },
-  {
-    "type": "::",
-    "named": false
-  },
-  {
-    "type": "__",
-    "named": false
-  },
-  {
     "type": "emphasis",
-    "named": true
-  },
-  {
-    "type": "field_name",
     "named": true
   },
   {
@@ -411,6 +488,14 @@
   },
   {
     "type": "interpreted_text",
+    "named": true
+  },
+  {
+    "type": "label",
+    "named": true
+  },
+  {
+    "type": "link",
     "named": true
   },
   {
@@ -430,6 +515,10 @@
     "named": true
   },
   {
+    "type": "substitution",
+    "named": true
+  },
+  {
     "type": "substitution_reference",
     "named": true
   },
@@ -438,7 +527,7 @@
     "named": true
   },
   {
-    "type": "|",
-    "named": false
+    "type": "type",
+    "named": true
   }
 ]

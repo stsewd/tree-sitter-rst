@@ -9,8 +9,22 @@
     "wasm": "tree-sitter build-wasm",
     "web": "tree-sitter web-ui"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stsewd/tree-sitter-rst.git"
+  },
+  "keywords": [
+    "tree-sitter",
+    "reStructuredText",
+    "rst",
+    "grammar"
+  ],
   "author": "Santos Gallegos",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stsewd/tree-sitter-rst/issues"
+  },
+  "homepage": "https://github.com/stsewd/tree-sitter-rst#readme",
   "dependencies": {
     "nan": "^2.14.1"
   },

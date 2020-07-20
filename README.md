@@ -3,29 +3,28 @@
 ![CI](https://github.com/stsewd/tree-sitter-rst/workflows/CI/badge.svg)
 
 reStructuredText grammar for tree-sitter.
-Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>
+Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>.
+
+**Note: this grammar is still under development, a lot of things may change!**
 
 # TODO
 
-- Move parsing of option list to C and declare more nodes -- This is in progress
-- Validate names of footnotes and citations https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#footnote-references
-- Validate references names
-- Implement indented literal blocks
-- Implement quoted literal blocks
+- Quoted literal blocks
 - Line blocks
 - Block quotes
 - roles
 - doctest block
-- Support common directives? (or at least the built-in ones)
-- Parse external hyperlinks
+- Parse external hyperlinks (standalone_hyperlink)
 - Enumerated lists that begin with `(` -> (1)
 - Allow lists with empty elements
-- Indentation
-- Multi-line bodies
+- Definition lists
+- Field lists
+- Option lists
 - Validate length of adornments in sections? (the spec doesn't mention this)
 - Tables (maybe implemented without validations?)
 - Group all chars as text?
 - Add fields in the grammar?
+- tests, tests, and more tests!
 
 # Design notes
 

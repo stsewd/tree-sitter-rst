@@ -38,5 +38,7 @@ bool tree_sitter_rst_external_scanner_scan(
   RSTScanner* scanner = (RSTScanner*)payload;
   scanner->lexer = lexer;
   scanner->valid_symbols = valid_symbols;
+  scanner->lookahead = lexer->lookahead;
+  scanner->previous = lexer->lookahead;
   return scanner->scan(scanner);
 }

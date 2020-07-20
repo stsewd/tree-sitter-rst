@@ -9,12 +9,17 @@
 RSTScanner* new_rst_scanner()
 {
   RSTScanner* scanner = malloc(sizeof(RSTScanner));
+
+  scanner->advance = rst_scanner_advance;
+  scanner->skip = rst_scanner_skip;
+
   scanner->indent_stack = malloc(sizeof(int) * RST_SCANNER_STACK_MAX_CAPACITY);
   scanner->length = 0;
 
   scanner->push = rst_scanner_push;
   scanner->pop = rst_scanner_pop;
   scanner->back = rst_scanner_back;
+
   scanner->serialize = rst_scanner_serialize;
   scanner->deserialize = rst_scanner_deserialize;
   scanner->scan = rst_scanner_scan;
@@ -26,6 +31,22 @@ void destroy_rst_scanner(RSTScanner* scanner)
 {
   free(scanner->indent_stack);
   free(scanner);
+}
+
+void rst_scanner_advance(RSTScanner* scanner)
+{
+  TSLexer* lexer = scanner->lexer;
+  scanner->previous = scanner->lookahead;
+  lexer->advance(lexer, false);
+  scanner->lookahead = lexer->lookahead;
+}
+
+void rst_scanner_skip(RSTScanner* scanner)
+{
+  TSLexer* lexer = scanner->lexer;
+  scanner->previous = scanner->lookahead;
+  lexer->advance(lexer, true);
+  scanner->lookahead = lexer->lookahead;
 }
 
 void rst_scanner_push(RSTScanner* scanner, int value)
@@ -72,43 +93,44 @@ bool rst_scanner_scan(RSTScanner* scanner)
 {
   TSLexer* lexer = scanner->lexer;
   const bool* valid_symbols = scanner->valid_symbols;
-
   int32_t current = lexer->lookahead;
 
-  if (current == 0) {
-    return false;
+  if (is_adornment_char(current)
+      && (valid_symbols[T_OVERLINE] || valid_symbols[T_TRANSITION])) {
+    return parse_overline(scanner);
+  }
+
+  if (is_adornment_char(current)
+      && (valid_symbols[T_UNDERLINE] || valid_symbols[T_TRANSITION])) {
+    return parse_underline(scanner);
   }
 
   if (current == '.' && valid_symbols[T_EXPLICIT_MARKUP_START]) {
     return parse_explict_markup_start(scanner);
   }
 
-  if (current == ':' && valid_symbols[T_FIELD_NAME]) {
-    return parse_field_name(scanner);
+  if (current == '['
+      && (valid_symbols[T_FOOTNOTE_LABEL] || valid_symbols[T_CITATION_LABEL])) {
+    return parse_label(scanner);
   }
 
-  if (
-      is_adornment_char(current)
-      && (valid_symbols[T_OVERLINE] || valid_symbols[T_TRANSITION])) {
-    return parse_overline(scanner);
+  if (current == '_' && valid_symbols[T_TARGET_NAME]) {
+    return parse_target_name(scanner);
   }
 
-  if (
-      is_adornment_char(current)
-      && (valid_symbols[T_UNDERLINE] || valid_symbols[T_TRANSITION])) {
-    return parse_underline(scanner);
+  if (current == '_' && valid_symbols[T_ANONYMOUS_TARGET_MARK]) {
+    return parse_anonymous_target_mark(scanner);
   }
 
-  if (is_numeric_bullet(current) && valid_symbols[T_NUMERIC_BULLET]) {
-    return parse_numeric_bullet(scanner);
+  if (current == '|' && valid_symbols[T_SUBSTITUTION_MARK]) {
+    return parse_substitution_mark(scanner);
   }
 
-  if (is_char_bullet(current) && valid_symbols[T_CHAR_BULLET]) {
-    return parse_char_bullet(scanner);
+  if (is_alphanumeric(current) && valid_symbols[T_DIRECTIVE_MARK]) {
+    return parse_directive_mark(scanner);
   }
 
-  if (
-      is_inline_markup_start_char(current)
+  if (is_inline_markup_start_char(current)
       && (valid_symbols[T_EMPHASIS]
           || valid_symbols[T_STRONG]
           || valid_symbols[T_INTERPRETED_TEXT]
@@ -118,6 +140,14 @@ bool rst_scanner_scan(RSTScanner* scanner)
           || valid_symbols[T_FOOTNOTE_REFERENCE]
           || valid_symbols[T_REFERENCE])) {
     return parse_inline_markup(scanner);
+  }
+
+  if (is_numeric_bullet(current) && valid_symbols[T_NUMERIC_BULLET]) {
+    return parse_numeric_bullet(scanner);
+  }
+
+  if (is_char_bullet(current) && valid_symbols[T_CHAR_BULLET]) {
+    return parse_char_bullet(scanner);
   }
 
   if (!is_space(current) && (valid_symbols[T_REFERENCE] || valid_symbols[T_TEXT])) {
