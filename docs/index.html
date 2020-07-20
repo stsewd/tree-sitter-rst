@@ -1,6 +1,7 @@
 <!--
   Based on:
   - https://github.com/tree-sitter/tree-sitter/blob/bfeec63d/cli/src/web_ui.html#L1
+  - https://github.com/ikatyang/tree-sitter-markdown/blob/master/docs/index.html
 
   Assets from:
   - https://github.com/tree-sitter/tree-sitter.github.io/blob/da6035e/tree-sitter.js
@@ -74,6 +75,47 @@
   <script>LANGUAGE_BASE_URL = "js";</script>
   <script src=js/tree-sitter.js></script>
   <script src=js/playground.js></script>
+
+  <script>
+    (codeExample => {
+      const handle = setInterval(() => {
+        const $codeEditor = document.querySelector('.CodeMirror');
+        if ($codeEditor) {
+          $codeEditor.CodeMirror.setValue(codeExample);
+          clearInterval(handle);
+        }
+      }, 500);
+    })(`reStructuredText
+----------------
+
+|rst| *suports* inline markup like:
+
+- **strong**
+- *emphasis*
+- \`\`literal text\`\`
+
+It also supports extending the markup using directives.
+
+.. note::
+
+   I'm a directive! There are a couple of builtin directives:
+
+   - image
+   - warning
+   - etc
+
+   Find all of them in the documentation_
+
+   .. _documentation: https://docutils.sourceforge.io/docs/ref/rst/directives.html
+
+
+This is a |rst| grammar for tree-sitter_, for contrubuiting or report any bugs
+check https://tree-sitter.github.io/tree-sitter/.
+
+.. _tree-sitter: https://tree-sitter.github.io/tree-sitter/
+
+.. |rst| replace:: reStructuredText`);
+  </script>
 
   <style>
 body {
