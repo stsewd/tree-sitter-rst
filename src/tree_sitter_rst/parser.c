@@ -776,6 +776,7 @@ bool parse_inline_reference(RSTScanner* scanner)
   scanner->advance(scanner);
 
   while (true) {
+    // TODO: check proper valid chars
     if (is_space(scanner->lookahead) || is_end_char(scanner->lookahead)) {
       if (scanner->previous == '_') {
         lexer->mark_end(lexer);

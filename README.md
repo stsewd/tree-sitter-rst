@@ -9,7 +9,7 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>.
 
 Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
-# TODO
+## TODO
 
 - Quoted literal blocks
 - Line blocks
@@ -28,9 +28,9 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Add fields in the grammar?
 - tests, tests, and more tests!
 
-# Design notes
+## Design notes
 
 - in RST lists can be started in the same block if they are a different subtype
   (we only start a new one if it's a different type).
 - In RST sections are a big node that contains body elements, here is just a node that contains the title.
-- Comments don't contain inline markup in RST, but they do here?
+- Comments don't contain inline markup in RST, but we still parse it here.
