@@ -1,5 +1,6 @@
 build:
 	tree-sitter generate
+	cp tree-sitter-rst.wasm docs/js/tree-sitter-rst.wasm
 
 test: build
 	tree-sitter test
