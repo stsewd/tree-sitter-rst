@@ -1,0 +1,135 @@
+==============
+Empty elements
+==============
+
+-
+- a
+-
+- b
+
+---
+
+(document
+  (bullet_list
+    (list_item)
+    (list_item
+      (paragraph))
+    (list_item)
+    (list_item
+      (paragraph))))
+
+===========
+Blank lines
+===========
+
+- a
+
+- b
+
+- c
+
+---
+
+(document
+  (bullet_list
+    (list_item
+      (paragraph)
+    (list_item
+      (paragraph)
+    (list_item
+      (paragraph)))))
+
+=========
+Multiline
+=========
+
+- abc
+  def
+- ghi
+  *jkl*
+
+---
+
+(document
+  (bullet_list
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph
+        (emphasis)))))
+
+======
+Nested
+======
+
+- a
+
+  * 1
+  * 2
+- b
+
+  1. b
+  2. a
+
+---
+
+(document
+  (bullet_list
+    (list_item
+      (paragraph)
+      (bullet_list
+        (list_item
+          (paragraph))
+        (list_item
+          (paragraph))))
+    (list_item
+      (paragraph)
+      (enumerated_list
+        (list_item
+          (paragraph))
+        (list_item
+          (paragraph))))))
+
+==============
+Combined lists
+==============
+
+1. One
+2. Two
+- Three
+- Four
+3) Five
+4) Six
+* Seven
+* Eight
++ Nine
+A) Ten
+
+---
+
+(document
+ (enumerated_list
+  (list_item
+    (paragraph))
+  (list_item
+    (paragraph)))
+ (bullet_list
+  (list_item
+    (paragraph))
+  (list_item
+    (paragraph)))
+ (enumerated_list
+  (list_item
+    (paragraph))
+  (list_item
+    (paragraph)))
+ (bullet_list
+  (list_item
+    (paragraph))
+  (list_item
+    (paragraph))
+  (list_item
+    (paragraph)))
+ (enumerated_list
+  (list_item
+    (paragraph))))

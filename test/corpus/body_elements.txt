@@ -43,7 +43,6 @@ Bullet lists
 
 - One
 - Two
-
 - Three
 
 |
@@ -59,16 +58,22 @@ Bullet lists
 
 (document
   (bullet_list
-    (list_item)
-    (list_item)
-    (list_item))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph)))
   (paragraph)
   (bullet_list
-    (list_item)
-    (list_item))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph)))
   (paragraph)
   (bullet_list
-    (list_item)))
+    (list_item
+      (paragraph))))
 
 ================
 Enumerated lists
@@ -76,7 +81,6 @@ Enumerated lists
 
 1. One
 2. Two
-
 3. Three
 
 |
@@ -97,173 +101,32 @@ Z. Six
 
 (document
   (enumerated_list
-    (list_item)
-    (list_item)
-    (list_item))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph)))
   (paragraph)
   (enumerated_list
-    (list_item)
-    (list_item))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph)))
   (paragraph)
   (enumerated_list
-    (list_item)
-    (list_item)
-    (list_item)
-    (list_item)
-    (list_item)
-    (list_item)))
-
-===========
-Field lists
-===========
-
-:Date: 2001-08-16
-:Version: 1
-:Authors: Me
-
-:Indentation: Since the field marker may be quite long, the second.
-:Parameter i: integer
-
-|
-
-:something with Space: -Is this real?
-:BASIC: YES
-
-|
-
-:I'm : valid: Yes
-:I'm \: valid: Yes
-
-:I'm valid\: No
-
----
-
-(document
- (field_list
-  (field
-   (field_name)
-   (field_body))
-  (field
-   (field_name)
-   (field_body))
-  (field
-   (field_name)
-   (field_body))
-  (field
-   (field_name)
-   (field_body))
-  (field
-   (field_name)
-   (field_body)))
- (paragraph)
- (field_list
-  (field
-   (field_name)
-   (field_body))
-  (field
-   (field_name)
-   (field_body)))
- (paragraph)
- (field_list
-  (field
-   (field_name)
-   (field_body))
-  (field
-   (field_name)
-   (field_body)))
-(paragraph))
-
-============
-Option lists
-============
-
--a         Output all.
--c arg     Output just arg.
---long     Output all day long.
-
--p         This option has two paragraphs in the description.
---very-long-option  A VMS-style option.  Note the adjustment for the required two spaces.
-
--2, --two  This option has two variants.
--f FILE, --file=FILE  These two options are synonyms; both have arguments.
-
-/V         A VMS/DOS-style option.
-
----
-
-(document
-  (option_list
-    (option_list_item)
-    (option_list_item)
-    (option_list_item))
-  (option_list
-    (option_list_item)
-    (option_list_item))
-  (option_list
-    (option_list_item)
-    (option_list_item))
-  (option_list
-    (option_list_item)))
-
-==============
-Combined lists
-==============
-
-1. One
-2. Two
-- Three
-- Four
-3) Five
-4) Six
-* Seven
-* Eight
-:author: Santos
-+ Nine
-A) Ten
-
----
-
-(document
- (enumerated_list
-  (list_item)
-  (list_item))
- (bullet_list
-  (list_item)
-  (list_item))
- (enumerated_list
-  (list_item)
-  (list_item))
- (bullet_list
-  (list_item)
-  (list_item))
- (field_list
-  (field
-   (field_name)
-   (field_body)))
- (bullet_list
-  (list_item))
- (enumerated_list
-  (list_item)))
-
-
-===========
-Line blocks
-===========
-
-| I'm a line block
-
-| Me too
-| With two lines!
-
-|
-
----
-
-(document
-  (line_block)
-  (line_block)
-  (line_block))
-
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))))
 
 =========
 Footnotes
@@ -275,31 +138,80 @@ Footnotes
 .. [#another_label] Body elements go here.
 .. [*] Body elements go here.
 
+.. [*] I'm a footnote
+   too.
+
+.. [*]
+   I'm a footnote *too*.
+
 ---
 
 (document
-  (footnote)
-  (footnote)
-  (footnote)
-  (footnote)
-  (footnote))
+  (footnote
+    (label)
+    (paragraph))
+  (footnote
+    (label)
+    (paragraph))
+  (footnote
+    (label)
+    (paragraph))
+  (footnote
+    (label)
+    (paragraph))
+  (footnote
+    (label)
+    (paragraph))
+  (footnote
+    (label)
+    (paragraph))
+  (footnote
+    (label)
+    (paragraph
+      (emphasis))))
 
 =========
 Citations
 =========
 
+.. [2c] Citation `with` body elements.
 .. [CIT2002] This is the citation.  It's just like a footnote.
 .. [foo-bar] This is the citation.  It's just like a footnote.
 .. [foo_bar] This is the citation.  It's just like a footnote.
 .. [foo.bar] This is the citation.  It's just like a footnote.
 
+.. [foo.bar] This is the citation.
+   I's just like a footnote.
+
+.. [foo.bar] This is the citation.
+   **I's just like a footnote**
+
 ---
 
 (document
-  (citation)
-  (citation)
-  (citation)
-  (citation))
+  (citation
+    (label)
+    (paragraph
+      (interpreted_text)))
+  (citation
+    (label)
+    (paragraph))
+  (citation
+    (label)
+    (paragraph))
+  (citation
+    (label)
+    (paragraph))
+  (citation
+    (label)
+    (paragraph))
+  (citation
+    (label)
+    (paragraph))
+  (citation
+    (label)
+    (paragraph
+      (strong))))
 
 =================
 Hyperlink targets
@@ -314,32 +226,56 @@ Hyperlink targets
 .. _hyperlink-one:
 .. _hyperlink-two:
 
+.. __: anonymous
+.. __:
 
 ---
 
 (document
-  (target)
-  (target)
-  (target)
-  (target)
-  (target)
-  (target))
+  (target
+    (reference)
+    (link))
+  (target
+    (reference)
+    (link))
+  (target
+    (reference)
+    (link))
+  (target
+    (reference)
+    (link))
+  (target
+    (reference))
+  (target
+    (reference))
+  (target
+    (reference)
+    (link))
+  (target
+    (reference)))
 
 ===========================
 Anonymous hyperlink targets
 ===========================
 
 __ foo
-__ I'm anonymouse
+__ I'm anonymous
 
 __ Bar
 __
 
+__
+
+
 ---
 
 (document
-  (target)
-  (target)
+  (target
+    (link))
+  (target
+    (link))
+  (target
+    (link))
   (target)
   (target))
 
@@ -354,13 +290,48 @@ Directives
 .. note:: This is a paragraph
 .. warning:: Modify at your own risk!
 
+.. note::
+  
+   This is a paragraph
+
+.. note::
+  
+   - a
+   - b
+
+.. note:: **Warning!**
+  
+   Just joking...
+
 ---
 
 (document
-  (directive)
-  (directive)
-  (directive)
-  (directive))
+  (directive
+    (type))
+  (directive
+    (type)
+    (paragraph))
+  (directive
+    (type)
+    (paragraph))
+  (directive
+    (type)
+    (paragraph))
+  (directive
+    (type)
+    (paragraph))
+  (directive
+    (type)
+    (bullet_list
+      (list_item
+        (paragraph))
+      (list_item
+        (paragraph))))
+  (directive
+    (type)
+    (paragraph
+      (strong))
+    (paragraph)))
 
 ========================
 Substitution definitions
@@ -374,30 +345,98 @@ Substitution definitions
 .. |bio hazard| image:: biohazard.png
 .. |bio|hazard| image:: biohazard.png
 
+.. |my-image| image:: /images/spade.png
+   :height: 11
+   :width: 11
+
 ---
 
 (document
-  (substitution_definition)
-  (substitution_definition)
-  (substitution_definition)
-  (substitution_definition)
-  (substitution_definition))
+  (substitution_definition
+    (substitution)
+    (directive
+      (type)
+      (paragraph)))
+  (substitution_definition
+    (substitution)
+    (directive
+      (type)
+      (paragraph)))
+  (substitution_definition
+    (substitution)
+    (directive
+      (type)
+      (paragraph)))
+  (substitution_definition
+    (substitution)
+    (directive
+      (type)
+      (paragraph)))
+  (substitution_definition
+    (substitution)
+    (directive
+      (type)
+      (paragraph)))
+  (substitution_definition
+    (substitution)
+    (directive
+      (type)
+      (paragraph))))
 
 ========
 Comments
 ========
 
 .. This is a comment
+.. []
+.. [a--b]
+.. [-a]
+.. [-1]
+.. [*]foo
+.. [#]foo
+.. [a]foo
+.. [1]foo
 
 .. I'm anothe comment
 .. Me too
+
+.. I'm a
+   **multiline** comment.
+
+..    I'm *another*
+      multiline comment.
 
 ..
 
 ---
 
 (document
-  (comment)
-  (comment)
-  (comment)
+  (comment
+    (paragraph))
+  (comment
+    (paragraph))
+  (comment
+    (paragraph))
+  (comment
+    (paragraph))
+  (comment
+    (paragraph))
+  (comment
+    (paragraph))
+  (comment
+    (paragraph))
+  (comment
+    (paragraph))
+  (comment
+    (paragraph))
+  (comment
+    (paragraph))
+  (comment
+    (paragraph))
+  (comment
+    (paragraph
+      (strong)))
+  (comment
+    (paragraph
+      (emphasis)))
   (comment))

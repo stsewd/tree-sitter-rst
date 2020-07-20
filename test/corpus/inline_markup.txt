@@ -16,6 +16,8 @@ I'm *valid\\*
 
 *Lonely*
 
+*hello**
+
 ---
 
 (document
@@ -30,6 +32,8 @@ I'm *valid\\*
   (paragraph
     (emphasis)
     (emphasis)
+    (emphasis))
+  (paragraph
     (emphasis))
   (paragraph
     (emphasis)))
@@ -50,6 +54,8 @@ I'm **valid\\**
 
 **Lonely**
 
+***hello***
+
 ---
 
 (document
@@ -62,6 +68,8 @@ I'm **valid\\**
   (paragraph
     (strong)
     (strong)
+    (strong))
+  (paragraph
     (strong))
   (paragraph
     (strong)))
@@ -81,6 +89,8 @@ I'm a `text`
 
 `lonely`
 
+`hello``
+
 ---
 
 (document
@@ -93,6 +103,8 @@ I'm a `text`
   (paragraph
     (interpreted_text)
     (interpreted_text)
+    (interpreted_text))
+  (paragraph
     (interpreted_text))
   (paragraph
     (interpreted_text)))
@@ -113,6 +125,8 @@ I'm a ``text``
 
 ``I'm``.``I'm not``
 
+``hello```
+
 ---
 
 (document
@@ -124,6 +138,8 @@ I'm a ``text``
   (literal))
  (paragraph
   (literal)
+  (literal))
+ (paragraph
   (literal))
  (paragraph
   (literal))
