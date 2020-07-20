@@ -7,6 +7,8 @@ Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>.
 
 **Note: this grammar is still under development, a lot of things may change!**
 
+Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
+
 # TODO
 
 - Quoted literal blocks
