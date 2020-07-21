@@ -262,12 +262,7 @@ bool parse_char_bullet(RSTScanner* scanner)
     return true;
   }
 
-  if (valid_symbols[T_TEXT]) {
-    lexer->mark_end(lexer);
-    lexer->result_symbol = T_TEXT;
-    return true;
-  }
-  return false;
+  return parse_text(scanner);
 }
 
 bool parse_numeric_bullet(RSTScanner* scanner)
@@ -312,14 +307,10 @@ bool parse_numeric_bullet(RSTScanner* scanner)
     if (ok) {
       return true;
     }
+  } else {
+    return parse_inline_reference(scanner);
   }
-
-  if (valid_symbols[T_TEXT]) {
-    lexer->mark_end(lexer);
-    lexer->result_symbol = T_TEXT;
-    return true;
-  }
-  return false;
+  return parse_text(scanner);
 }
 
 bool parse_explict_markup_start(RSTScanner* scanner)
