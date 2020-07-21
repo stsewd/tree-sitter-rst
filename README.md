@@ -11,7 +11,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## TODO
 
-- Strip spaces from sections/transitions
 - Quoted literal blocks
 - Line blocks
 - Block quotes

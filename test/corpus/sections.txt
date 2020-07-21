@@ -22,6 +22,10 @@ A
 Foo **bar**
 +++
 
+====  
+with whitespaces
+====  
+
 ---
 
 (document
@@ -36,8 +40,9 @@ Foo **bar**
    (emphasis)))
  (section
   (title
-   (strong))))
-
+   (strong)))
+ (section
+  (title)))
 
 =========================
 Invalid overline sections
@@ -82,6 +87,9 @@ Subtitle
 Foo **bar**
 +++
 
+with whitespaces
+====  
+
 ---
 
 (document
@@ -96,4 +104,6 @@ Foo **bar**
    (emphasis)))
  (section
   (title
-   (strong))))
+   (strong)))
+ (section
+   (title)))

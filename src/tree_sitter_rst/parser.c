@@ -135,6 +135,9 @@ bool parse_overline(RSTScanner* scanner)
           return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE);
         }
       }
+      if (is_space(scanner->lookahead)) {
+        break;
+      }
       return parse_text(scanner);
     }
     scanner->advance(scanner);
@@ -143,6 +146,19 @@ bool parse_overline(RSTScanner* scanner)
 
   // Mark the transition token
   lexer->mark_end(lexer);
+
+  // Consume all whitespaces.
+  while (is_space(scanner->lookahead) && !is_newline(scanner->lookahead)) {
+    scanner->advance(scanner);
+  }
+
+  if (!is_newline(scanner->lookahead)) {
+    if (valid_symbols[T_TEXT]) {
+      lexer->result_symbol = T_TEXT;
+      return true;
+    }
+    return false;
+  }
 
   scanner->advance(scanner);
 
@@ -173,6 +189,9 @@ bool parse_overline(RSTScanner* scanner)
 
   while (!is_newline(scanner->lookahead)) {
     if (scanner->lookahead != adornment) {
+      if (is_space(scanner->lookahead)) {
+        break;
+      }
       if (valid_symbols[T_TEXT]) {
         lexer->result_symbol = T_TEXT;
         return true;
@@ -181,6 +200,19 @@ bool parse_overline(RSTScanner* scanner)
     }
     scanner->advance(scanner);
     underline_length++;
+  }
+
+  // Consume all whitespaces.
+  while (is_space(scanner->lookahead) && !is_newline(scanner->lookahead)) {
+    scanner->advance(scanner);
+  }
+
+  if (!is_newline(scanner->lookahead)) {
+    if (valid_symbols[T_TEXT]) {
+      lexer->result_symbol = T_TEXT;
+      return true;
+    }
+    return false;
   }
 
   // The overline_length and the underline_length length must match
@@ -210,32 +242,37 @@ bool parse_underline(RSTScanner* scanner)
   int underline_length = 0;
   while (!is_newline(scanner->lookahead)) {
     if (scanner->lookahead != adornment) {
+      if (is_space(scanner->lookahead)) {
+        break;
+      }
       return false;
     }
     scanner->advance(scanner);
     underline_length++;
   }
 
+  lexer->mark_end(lexer);
+
+  // Consume all whitespaces.
+  while (is_space(scanner->lookahead) && !is_newline(scanner->lookahead)) {
+    scanner->advance(scanner);
+  }
+
+  if (!is_newline(scanner->lookahead)) {
+    if (valid_symbols[T_TEXT]) {
+      lexer->result_symbol = T_TEXT;
+      return true;
+    }
+    return false;
+  }
+
   // Transitions need to be at least 4 chars long
   if (underline_length >= 4 && valid_symbols[T_TRANSITION]) {
-    lexer->mark_end(lexer);
-
-    scanner->advance(scanner);
-
-    // Consume the rest of whitespaces
-    while (!is_newline(scanner->lookahead)) {
-      if (!is_space(scanner->lookahead)) {
-        return false;
-      }
-      scanner->advance(scanner);
-    }
-
     lexer->result_symbol = T_TRANSITION;
     return true;
   }
 
   if (underline_length >= 1 && valid_symbols[T_UNDERLINE]) {
-    lexer->mark_end(lexer);
     lexer->result_symbol = T_UNDERLINE;
     return true;
   }
