@@ -773,49 +773,32 @@ bool parse_inline_reference(RSTScanner* scanner)
     return false;
   }
 
-  scanner->advance(scanner);
-
-  while (true) {
-    // TODO: check proper valid chars
-    if (is_space(scanner->lookahead) || is_end_char(scanner->lookahead)) {
-      if (scanner->previous == '_') {
-        lexer->mark_end(lexer);
-        lexer->result_symbol = T_REFERENCE;
-        return true;
+  bool internal_symbol = false;
+  while (is_alphanumeric(scanner->lookahead) || is_internal_reference_char(scanner->lookahead)) {
+    if (is_internal_reference_char(scanner->lookahead)) {
+      if (internal_symbol) {
+        break;
       }
-      break;
+      internal_symbol = true;
+    } else {
+      internal_symbol = false;
     }
-
-    // Only an annonymous reference can contain
-    // and end with two consecutives '_'.
-    if (scanner->previous == '_' && scanner->lookahead == '_') {
-      scanner->advance(scanner);
-      if (is_space(scanner->lookahead) || is_end_char(scanner->lookahead)) {
-        lexer->mark_end(lexer);
-        lexer->result_symbol = T_REFERENCE;
-        return true;
-      }
-      return false;
-    }
-
-    // The reference should contain only alpha numerical chars
-    // or one non-consecutive special char.
-    if (
-        is_internal_reference_char(scanner->lookahead) && is_internal_reference_char(scanner->previous)
-        || (!is_alphanumeric(scanner->lookahead) && !is_internal_reference_char(scanner->lookahead))) {
-      return false;
-    }
-
     scanner->advance(scanner);
   }
 
-  if (valid_symbols[T_TEXT]) {
+  // Only an annonymous reference can contain
+  // and end with two consecutives '_'.
+  if (scanner->lookahead == '_' && scanner->previous == '_') {
+    scanner->advance(scanner);
+  }
+
+  if (scanner->previous == '_' && (is_space(scanner->lookahead) || is_end_char(scanner->lookahead))) {
     lexer->mark_end(lexer);
-    lexer->result_symbol = T_TEXT;
+    lexer->result_symbol = T_REFERENCE;
     return true;
   }
 
-  return false;
+  return parse_text(scanner);
 }
 
 bool parse_text(RSTScanner* scanner)
@@ -826,9 +809,8 @@ bool parse_text(RSTScanner* scanner)
     return false;
   }
 
-  scanner->advance(scanner);
-
   if (is_start_char(scanner->previous)) {
+    scanner->advance(scanner);
     lexer->mark_end(lexer);
     lexer->result_symbol = T_TEXT;
     return true;

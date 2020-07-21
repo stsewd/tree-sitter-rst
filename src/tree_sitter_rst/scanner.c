@@ -150,8 +150,8 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_char_bullet(scanner);
   }
 
-  if (!is_space(current) && (valid_symbols[T_REFERENCE] || valid_symbols[T_TEXT])) {
-    return parse_inline_reference(scanner) || parse_text(scanner);
+  if (is_alphanumeric(current) && valid_symbols[T_REFERENCE]) {
+    return parse_inline_reference(scanner);
   }
 
   if (is_space(current)) {

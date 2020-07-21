@@ -1,5 +1,8 @@
 build:
 	tree-sitter generate
+
+release: build
+	tree-sitter build-wasm
 	cp tree-sitter-rst.wasm docs/js/tree-sitter-rst.wasm
 
 test: build
@@ -15,4 +18,4 @@ format:
 	  src/scanner.c \
 	  src/tree_sitter_rst/*
 
-.PHONY: build test format serve
+.PHONY: build test format serve release

@@ -239,7 +239,7 @@ Hyperlink references
 ====================
 
 Please read the manual_.
-See our new_book_.
+See our new-book_.
 It was `on monday`_, and `tuesday`_.
 
 I'm a text_
