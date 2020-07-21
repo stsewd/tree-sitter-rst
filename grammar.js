@@ -1,4 +1,5 @@
 const WHITE_SPACE = choice(' ', '\t', '\v', '\f');
+const LINK = /\S(.*\S)?/;
 
 module.exports = grammar({
   name: 'rst',
@@ -186,7 +187,7 @@ module.exports = grammar({
     target: $ => seq(
       $._explicit_markup_start,
       alias($._target_name, $.reference),
-      optional(alias(/.+/, $.link)),
+      optional(alias(LINK, $.link)),
       $._dedent,
     ),
 
@@ -195,7 +196,7 @@ module.exports = grammar({
 
     _anonymous_target: $ => seq(
       $._anonymous_target_mark,
-      optional(alias(/.+/, $.link)),
+      optional(alias(LINK, $.link)),
       $._newline,
     ),
 

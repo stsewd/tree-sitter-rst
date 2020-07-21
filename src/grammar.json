@@ -368,7 +368,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": ".+"
+                "value": "\\S(.*\\S)?"
               },
               "named": true,
               "value": "link"
@@ -398,7 +398,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "PATTERN",
-                "value": ".+"
+                "value": "\\S(.*\\S)?"
               },
               "named": true,
               "value": "link"
