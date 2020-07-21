@@ -837,7 +837,7 @@ bool parse_text(RSTScanner* scanner)
     return false;
   }
 
-  if (is_start_char(scanner->previous)) {
+  if (is_start_char(scanner->lookahead)) {
     scanner->advance(scanner);
     lexer->mark_end(lexer);
     lexer->result_symbol = T_TEXT;

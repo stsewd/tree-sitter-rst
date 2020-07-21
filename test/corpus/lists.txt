@@ -133,3 +133,29 @@ A) Ten
  (enumerated_list
   (list_item
     (paragraph))))
+
+
+=========================
+Lists with other elements
+=========================
+
+Some text:
+
+- *a*
+- **b**
+- `c`
+
+---
+
+(document
+  (paragraph)
+  (bullet_list
+    (list_item
+      (paragraph
+        (emphasis)))
+    (list_item
+      (paragraph
+        (strong)))
+    (list_item
+      (paragraph
+        (interpreted_text)))))
