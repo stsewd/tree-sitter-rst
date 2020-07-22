@@ -17,7 +17,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - roles
 - doctest block
 - Parse external hyperlinks (standalone_hyperlink)
-- Allow lists with empty elements
 - Definition lists
 - Field lists
 - Option lists
