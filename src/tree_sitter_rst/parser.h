@@ -19,6 +19,7 @@ bool parse_underline(RSTScanner* scanner);
 
 bool parse_char_bullet(RSTScanner* scanner);
 bool parse_numeric_bullet(RSTScanner* scanner);
+bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized);
 bool parse_explict_markup_start(RSTScanner* scanner);
 bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum TokenType token_type);
 

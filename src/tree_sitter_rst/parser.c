@@ -107,6 +107,9 @@ bool parse_overline(RSTScanner* scanner)
               return true;
             }
           }
+          if (adornment == '(' && is_numeric_bullet(scanner->lookahead)) {
+            return parse_inner_numeric_bullet(scanner, true);
+          }
         }
       } else if (overline_length >= 2) {
         if (overline_length == 2
@@ -305,6 +308,27 @@ bool parse_char_bullet(RSTScanner* scanner)
 bool parse_numeric_bullet(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
+
+  if (!valid_symbols[T_NUMERIC_BULLET]) {
+    return false;
+  }
+
+  bool parenthesized = false;
+  if (scanner->lookahead == '(') {
+    scanner->advance(scanner);
+    parenthesized = true;
+  }
+
+  if (is_numeric_bullet(scanner->lookahead)) {
+    return parse_inner_numeric_bullet(scanner, parenthesized);
+  }
+
+  return false;
+}
+
+bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
   if (!is_numeric_bullet(scanner->lookahead) || !valid_symbols[T_NUMERIC_BULLET]) {
@@ -337,9 +361,11 @@ bool parse_numeric_bullet(RSTScanner* scanner)
     return false;
   }
 
-  if (scanner->lookahead == '.' || scanner->lookahead == ')') {
+  if ((parenthesized && scanner->lookahead == ')')
+      || (!parenthesized && (scanner->lookahead == '.' || scanner->lookahead == ')'))) {
     scanner->advance(scanner);
     consumed_chars++;
+    consumed_chars += parenthesized ? 1 : 0;
     bool ok = parse_inner_list_element(scanner, consumed_chars, T_NUMERIC_BULLET);
     if (ok) {
       return true;

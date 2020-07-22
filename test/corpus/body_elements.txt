@@ -97,6 +97,13 @@ V. Four
 a. Five
 Z. Six
 
+|
+
+(#) one
+(2) two
+(III) three
+(f) four
+
 ---
 
 (document
@@ -119,6 +126,16 @@ Z. Six
       (paragraph))
     (list_item
       (paragraph))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph)))
+  (paragraph)
+  (enumerated_list
     (list_item
       (paragraph))
     (list_item

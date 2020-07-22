@@ -17,7 +17,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - roles
 - doctest block
 - Parse external hyperlinks (standalone_hyperlink)
-- Enumerated lists that begin with `(` -> (1)
 - Allow lists with empty elements
 - Definition lists
 - Field lists

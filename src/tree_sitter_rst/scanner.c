@@ -142,7 +142,8 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_inline_markup(scanner);
   }
 
-  if (is_numeric_bullet(current) && valid_symbols[T_NUMERIC_BULLET]) {
+  if ((is_numeric_bullet(current) || current == '(')
+      && valid_symbols[T_NUMERIC_BULLET]) {
     return parse_numeric_bullet(scanner);
   }
 
