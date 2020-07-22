@@ -72,10 +72,9 @@ bool parse_overline(RSTScanner* scanner)
   }
 
   int overline_length = 0;
-  while (!is_newline(scanner->lookahead)) {
+  while (true) {
     if (scanner->lookahead != adornment) {
       if (overline_length == 1) {
-        // Exit and check for bullets and emphasis and strong
         if (is_space(scanner->lookahead)) {
           if (is_char_bullet(adornment)) {
             bool ok = parse_inner_list_element(scanner, 1, T_CHAR_BULLET);
@@ -112,30 +111,36 @@ bool parse_overline(RSTScanner* scanner)
           }
         }
       } else if (overline_length >= 2) {
-        if (overline_length == 2
-            && adornment == '.'
-            && is_space(scanner->lookahead)) {
-          return parse_inner_list_element(scanner, 2, T_EXPLICIT_MARKUP_START);
-        }
-        if (overline_length == 2
-            && adornment == '_'
-            && is_space(scanner->lookahead)
-            && valid_symbols[T_ANONYMOUS_TARGET_MARK]) {
-          lexer->mark_end(lexer);
-          lexer->result_symbol = T_ANONYMOUS_TARGET_MARK;
-          return true;
-        }
-        if (adornment == '*' && valid_symbols[T_STRONG]) {
-          return parse_inner_inline_markup(scanner, IM_STRONG);
-        }
-        if (adornment == '`' && valid_symbols[T_LITERAL]) {
-          return parse_inner_inline_markup(scanner, IM_LITERAL);
-        }
-        if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
-          return parse_inner_inline_markup(scanner, IM_SUBSTITUTION_REFERENCE);
-        }
-        if (adornment == '[' && valid_symbols[T_FOOTNOTE_REFERENCE]) {
-          return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE);
+        if (is_space(scanner->lookahead)) {
+          if (overline_length == 2
+              && adornment == '.') {
+            return parse_inner_list_element(scanner, 2, T_EXPLICIT_MARKUP_START);
+          }
+          if (overline_length == 2
+              && adornment == '_'
+              && valid_symbols[T_ANONYMOUS_TARGET_MARK]) {
+            lexer->mark_end(lexer);
+            lexer->result_symbol = T_ANONYMOUS_TARGET_MARK;
+            return true;
+          }
+          if (overline_length == 2
+              && adornment == ':'
+              && valid_symbols[T_LITERAL_BLOCK_MARK]) {
+            return parse_innner_literal_block_mark(scanner);
+          }
+        } else {
+          if (adornment == '*' && valid_symbols[T_STRONG]) {
+            return parse_inner_inline_markup(scanner, IM_STRONG);
+          }
+          if (adornment == '`' && valid_symbols[T_LITERAL]) {
+            return parse_inner_inline_markup(scanner, IM_LITERAL);
+          }
+          if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
+            return parse_inner_inline_markup(scanner, IM_SUBSTITUTION_REFERENCE);
+          }
+          if (adornment == '[' && valid_symbols[T_FOOTNOTE_REFERENCE]) {
+            return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE);
+          }
         }
       }
       if (is_space(scanner->lookahead)) {
@@ -661,6 +666,61 @@ bool parse_substitution_mark(RSTScanner* scanner)
     }
   }
   return false;
+}
+
+bool parse_literal_block_mark(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (scanner->lookahead != ':' || !valid_symbols[T_LITERAL_BLOCK_MARK]) {
+    return false;
+  }
+
+  scanner->advance(scanner);
+
+  if (scanner->lookahead != ':') {
+    return false;
+  }
+
+  scanner->advance(scanner);
+
+  return parse_innner_literal_block_mark(scanner);
+}
+
+bool parse_innner_literal_block_mark(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (!is_space(scanner->lookahead) || !valid_symbols[T_LITERAL_BLOCK_MARK]) {
+    return false;
+  }
+
+  lexer->mark_end(lexer);
+
+  // Consume all whitespaces.
+  while (is_space(scanner->lookahead) && !is_newline(scanner->lookahead)) {
+    scanner->advance(scanner);
+  }
+
+  if (!is_newline(scanner->lookahead)) {
+    return false;
+  }
+
+  scanner->advance(scanner);
+
+  // Make sure there is blank line
+  while (!is_newline(scanner->lookahead)) {
+    if (!is_space(scanner->lookahead)) {
+      return false;
+    }
+    scanner->advance(scanner);
+  }
+
+  scanner->push(scanner, scanner->back(scanner) + 1);
+  lexer->result_symbol = T_LITERAL_BLOCK_MARK;
+  return true;
 }
 
 bool parse_inline_markup(RSTScanner* scanner)

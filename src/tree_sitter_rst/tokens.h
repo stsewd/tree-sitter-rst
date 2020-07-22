@@ -18,6 +18,9 @@ enum TokenType {
   T_CHAR_BULLET,
   T_NUMERIC_BULLET,
 
+  // Literal blocks
+  T_LITERAL_BLOCK_MARK,
+
   // Inline markup
   T_TEXT,
   T_EMPHASIS,

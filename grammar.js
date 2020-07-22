@@ -21,6 +21,9 @@ module.exports = grammar({
     $._char_bullet,
     $._numeric_bullet,
 
+    // Literal blocks
+    $._literal_block_mark,
+
     // Inline markup
     $._text,
     $.emphasis,
@@ -117,6 +120,7 @@ module.exports = grammar({
       $.paragraph,
       $._list_block,
       $._explicit_markup_block,
+      $._literal_block,
     ),
 
     // Paragraph
@@ -153,6 +157,31 @@ module.exports = grammar({
     ),
 
     _numeric_list_item: $ => seq($._numeric_bullet, choice($._indented_block, $._dedent)),
+
+    // Literal blocks
+    // ==============
+
+    _literal_block: $ => seq(
+      $._literal_block_mark,
+      choice($.literal_block, $._dedent),
+    ),
+
+    literal_block: $ => seq(
+      repeat(
+        seq(
+          $._text_block,
+          $._blankline,
+        ),
+      ),
+      $._text_block,
+      $._dedent,
+    ),
+
+    _text_block: $ => repeat1($._text_line),
+    _text_line: $ => seq(
+      repeat1($._text),
+      $._newline,
+    ),
 
     // Markup blocks
     // =============

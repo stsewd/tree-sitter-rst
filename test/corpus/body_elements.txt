@@ -145,6 +145,45 @@ Z. Six
     (list_item
       (paragraph))))
 
+==============
+Literal blocks
+==============
+
+This is a typical paragraph. An indented literal block follows.
+
+::
+
+    for a in [5,4,3,2,1]:   # this is program code, shown as-is
+        print a
+    print "it's..."
+    # a literal block continues until the indentation ends
+
+Ordinary paragraph.
+
+Another indented block::
+
+ I'm the content
+
+Another indented block: ::
+
+                I'm the content
+
+indented block?::
+    
+    Indented
+ Still indented
+
+---
+
+(document
+  (paragraph)
+  (literal_block)
+  (paragraph)
+  (paragraph)
+  (literal_block)
+  (paragraph)
+  (literal_block))
+
 =========
 Footnotes
 =========

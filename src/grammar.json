@@ -135,6 +135,10 @@
         {
           "type": "SYMBOL",
           "name": "_explicit_markup_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_literal_block"
         }
       ]
     },
@@ -235,6 +239,80 @@
               "name": "_dedent"
             }
           ]
+        }
+      ]
+    },
+    "_literal_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_literal_block_mark"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "literal_block"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_dedent"
+            }
+          ]
+        }
+      ]
+    },
+    "literal_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_text_block"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_blankline"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_text_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_dedent"
+        }
+      ]
+    },
+    "_text_block": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_text_line"
+      }
+    },
+    "_text_line": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_text"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_newline"
         }
       ]
     },
@@ -673,6 +751,10 @@
     {
       "type": "SYMBOL",
       "name": "_numeric_bullet"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_literal_block_mark"
     },
     {
       "type": "SYMBOL",

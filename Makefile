@@ -1,7 +1,7 @@
 build:
 	tree-sitter generate
 
-release: build
+release: build format
 	tree-sitter build-wasm
 	cp tree-sitter-rst.wasm docs/js/tree-sitter-rst.wasm
 

@@ -151,8 +151,16 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_char_bullet(scanner);
   }
 
+  if (current == ':' && valid_symbols[T_LITERAL_BLOCK_MARK]) {
+    return parse_literal_block_mark(scanner);
+  }
+
   if (is_alphanumeric(current) && valid_symbols[T_REFERENCE]) {
     return parse_inline_reference(scanner);
+  }
+
+  if (!is_space(current) && valid_symbols[T_TEXT]) {
+    return parse_text(scanner);
   }
 
   if (is_space(current)) {
