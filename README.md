@@ -31,4 +31,7 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - in RST lists can be started in the same block if they are a different subtype
   (we only start a new one if it's a different type).
 - In RST sections are a big node that contains body elements, here is just a node that contains the title.
-- Comments don't contain inline markup in RST, but we still parse it here.
+  This is to avoid guessing the level of subtitles.
+- Comments don't contain inline markup in RST, but we still parse them as RST.
+- Literal blocks are part of the paragraph they precede, not a separate node,
+  except for the expander form of literal blocks.

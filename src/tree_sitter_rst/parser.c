@@ -376,7 +376,15 @@ bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized)
       return true;
     }
   } else {
-    return parse_inline_reference(scanner);
+    if (is_alphanumeric(scanner->lookahead) && valid_symbols[T_REFERENCE]) {
+      return parse_inline_reference(scanner);
+    }
+    if (valid_symbols[T_TEXT]) {
+      lexer->mark_end(lexer);
+      lexer->result_symbol = T_TEXT;
+      return true;
+    }
+    return false;
   }
   return parse_text(scanner);
 }
@@ -893,6 +901,8 @@ bool parse_inline_reference(RSTScanner* scanner)
       if (internal_symbol) {
         break;
       }
+      // Mark the end of the worl?d.
+      lexer->mark_end(lexer);
       internal_symbol = true;
     } else {
       internal_symbol = false;
@@ -912,7 +922,12 @@ bool parse_inline_reference(RSTScanner* scanner)
     return true;
   }
 
-  return parse_text(scanner);
+  if (valid_symbols[T_TEXT]) {
+    lexer->result_symbol = T_TEXT;
+    return true;
+  }
+
+  return false;
 }
 
 bool parse_text(RSTScanner* scanner)

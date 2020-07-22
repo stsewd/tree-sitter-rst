@@ -179,10 +179,12 @@ indented block?::
   (paragraph)
   (literal_block)
   (paragraph)
-  (paragraph)
-  (literal_block)
-  (paragraph)
-  (literal_block))
+  (paragraph
+    (literal_block))
+  (paragraph
+    (literal_block))
+  (paragraph
+    (literal_block)))
 
 =========
 Footnotes

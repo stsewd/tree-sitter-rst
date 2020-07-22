@@ -272,6 +272,7 @@ module.exports = grammar({
 
     _line: $ => seq(
       repeat1($._inline_markup),
+      optional($._literal_block),
       $._newline,
     ),
 

@@ -313,6 +313,10 @@
         {
           "type": "_inline_markup",
           "named": true
+        },
+        {
+          "type": "literal_block",
+          "named": true
         }
       ]
     }
@@ -380,6 +384,10 @@
       "types": [
         {
           "type": "_inline_markup",
+          "named": true
+        },
+        {
+          "type": "literal_block",
           "named": true
         }
       ]
