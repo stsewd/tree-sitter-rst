@@ -53,6 +53,12 @@ module.exports = grammar({
     [$.enumerated_list],
   ],
 
+  supertypes: $ => [
+    $._list,
+    $._markup_block,
+    $._inline_markup,
+  ],
+
   rules: {
     document: $ => repeat(
       choice(
