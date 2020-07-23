@@ -25,7 +25,7 @@ bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum Toke
 
 bool parse_literal_block_mark(RSTScanner* scanner);
 bool parse_innner_literal_block_mark(RSTScanner* scanner);
-bool parse_quoted_literal_block_mark(RSTScanner* scanner);
+bool parse_quoted_literal_block(RSTScanner* scanner);
 
 bool parse_label(RSTScanner* scanner);
 bool parse_inner_label(RSTScanner* scanner, enum TokenType token_type);

@@ -23,7 +23,7 @@ module.exports = grammar({
 
     // Literal blocks
     $._literal_block_mark,
-    $._quoted_literal_block_mark,
+    $._quoted_literal_block,
 
     // Inline markup
     $._text,
@@ -184,16 +184,6 @@ module.exports = grammar({
       ),
       $._text_block,
       $._dedent,
-    ),
-
-    _quoted_literal_block: $ => seq(
-      repeat1(
-        seq(
-          $._quoted_literal_block_mark,
-          $._text_line,
-        ),
-      ),
-      $._blankline,
     ),
 
     _text_block: $ => repeat1($._text_line),

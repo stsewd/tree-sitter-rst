@@ -209,13 +209,13 @@ Another indented block::
 
 Another indented block: ::
 
->               I'm the content
+|               I'm the content
 
 indented block?::
     
->   Indented
->
-> Still indented
+*   Indented
+*
+* Still indented
 
 ---
 

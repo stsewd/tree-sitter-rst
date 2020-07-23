@@ -95,10 +95,6 @@ bool rst_scanner_scan(RSTScanner* scanner)
   const bool* valid_symbols = scanner->valid_symbols;
   int32_t current = lexer->lookahead;
 
-  if (current == '>' && valid_symbols[T_QUOTED_LITERAL_BLOCK_MARK]) {
-    return parse_quoted_literal_block_mark(scanner);
-  }
-
   if (is_adornment_char(current)
       && (valid_symbols[T_OVERLINE] || valid_symbols[T_TRANSITION])) {
     return parse_overline(scanner);
@@ -107,6 +103,10 @@ bool rst_scanner_scan(RSTScanner* scanner)
   if (is_adornment_char(current)
       && (valid_symbols[T_UNDERLINE] || valid_symbols[T_TRANSITION])) {
     return parse_underline(scanner);
+  }
+
+  if (is_adornment_char(current) && valid_symbols[T_QUOTED_LITERAL_BLOCK]) {
+    return parse_quoted_literal_block(scanner);
   }
 
   if (current == '.' && valid_symbols[T_EXPLICIT_MARKUP_START]) {

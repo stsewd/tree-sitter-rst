@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <tree_sitter/parser.h>
 
+#include "tree_sitter_rst/scanner.h"
+
 #define CHAR_EOF 0
 #define CHAR_NEWLINE 10
 #define CHAR_CARRIAGE_RETURN 13
@@ -41,6 +43,6 @@ bool is_numeric_bullet_roman_upper(int32_t c);
 bool is_numeric_bullet_abc_lower(int32_t c);
 bool is_numeric_bullet_abc_upper(int32_t c);
 
-int get_indent_level(TSLexer* lexer);
+int get_indent_level(RSTScanner* scanner);
 
 #endif /* ifndef TREE_SITTER_RST_CHARS_H_ */

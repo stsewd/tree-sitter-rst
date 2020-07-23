@@ -429,7 +429,7 @@ bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum Toke
     lexer->result_symbol = token_type;
 
     // Set indent level to the first non-whitespace char
-    const int indent = scanner->back(scanner) + consumed_chars + get_indent_level(lexer);
+    const int indent = scanner->back(scanner) + consumed_chars + get_indent_level(scanner);
     scanner->push(scanner, indent);
 
     return true;
@@ -728,26 +728,39 @@ bool parse_innner_literal_block_mark(RSTScanner* scanner)
 
   // Check if it's a quoted literal block
   scanner->advance(scanner);
-  int indent = get_indent_level(lexer);
-  if (indent != scanner->back(scanner) && scanner->lookahead != '>') {
+  int indent = get_indent_level(scanner);
+  if (indent != scanner->back(scanner) || !is_adornment_char(scanner->lookahead)) {
     scanner->push(scanner, scanner->back(scanner) + 1);
   }
   lexer->result_symbol = T_LITERAL_BLOCK_MARK;
   return true;
 }
 
-bool parse_quoted_literal_block_mark(RSTScanner* scanner)
+bool parse_quoted_literal_block(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
-  if (scanner->lookahead != '>' || !valid_symbols[T_QUOTED_LITERAL_BLOCK_MARK]) {
+  if (!is_adornment_char(scanner->lookahead) || !valid_symbols[T_QUOTED_LITERAL_BLOCK]) {
     return false;
   }
 
-  scanner->advance(scanner);
-  lexer->mark_end(lexer);
-  lexer->result_symbol = T_QUOTED_LITERAL_BLOCK_MARK;
+  int32_t adornment = scanner->lookahead;
+
+  while (true) {
+    while (!is_newline(scanner->lookahead)) {
+      scanner->advance(scanner);
+    }
+    lexer->mark_end(lexer);
+
+    scanner->advance(scanner);
+
+    int indent = get_indent_level(scanner);
+    if (indent != scanner->back(scanner) || scanner->lookahead != adornment) {
+      break;
+    }
+  }
+  lexer->result_symbol = T_QUOTED_LITERAL_BLOCK;
   return true;
 }
 

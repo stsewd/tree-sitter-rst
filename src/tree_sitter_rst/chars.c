@@ -373,12 +373,13 @@ bool is_numeric_bullet_abc_upper(int32_t c)
   return is_abc_upper(c);
 }
 
-int get_indent_level(TSLexer* lexer)
+int get_indent_level(RSTScanner* scanner)
 {
-  int32_t current = lexer->lookahead;
+  int32_t current = scanner->lookahead;
   int indent = 0;
 
   while (true) {
+    current = scanner->lookahead;
     if (current == CHAR_SPACE || current == CHAR_VERTICAL_TAB || current == CHAR_FORM_FEED) {
       indent += 1;
     } else if (current == CHAR_TAB) {
@@ -386,8 +387,7 @@ int get_indent_level(TSLexer* lexer)
     } else {
       break;
     }
-    lexer->advance(lexer, false);
-    current = lexer->lookahead;
+    scanner->advance(scanner);
   }
 
   return indent;
