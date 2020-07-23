@@ -11,6 +11,7 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## TODO
 
+- Support all types of quoted literal block
 - Line blocks
 - Block quotes
 - roles
@@ -34,3 +35,4 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Comments don't contain inline markup in RST, but we still parse them as RST.
 - Literal blocks are part of the paragraph they precede, not a separate node,
   except for the expanded form of literal blocks.
+- Should we include the literal block mark as part of the literal block?
