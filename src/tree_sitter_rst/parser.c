@@ -726,8 +726,28 @@ bool parse_innner_literal_block_mark(RSTScanner* scanner)
     scanner->advance(scanner);
   }
 
-  scanner->push(scanner, scanner->back(scanner) + 1);
+  // Check if it's a quoted literal block
+  scanner->advance(scanner);
+  int indent = get_indent_level(lexer);
+  if (indent != scanner->back(scanner) && scanner->lookahead != '>') {
+    scanner->push(scanner, scanner->back(scanner) + 1);
+  }
   lexer->result_symbol = T_LITERAL_BLOCK_MARK;
+  return true;
+}
+
+bool parse_quoted_literal_block_mark(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (scanner->lookahead != '>' || !valid_symbols[T_QUOTED_LITERAL_BLOCK_MARK]) {
+    return false;
+  }
+
+  scanner->advance(scanner);
+  lexer->mark_end(lexer);
+  lexer->result_symbol = T_QUOTED_LITERAL_BLOCK_MARK;
   return true;
 }
 

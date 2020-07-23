@@ -20,6 +20,7 @@ enum TokenType {
 
   // Literal blocks
   T_LITERAL_BLOCK_MARK,
+  T_QUOTED_LITERAL_BLOCK_MARK,
 
   // Inline markup
   T_TEXT,

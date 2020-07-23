@@ -23,6 +23,7 @@ module.exports = grammar({
 
     // Literal blocks
     $._literal_block_mark,
+    $._quoted_literal_block_mark,
 
     // Inline markup
     $._text,
@@ -163,10 +164,18 @@ module.exports = grammar({
 
     _literal_block: $ => seq(
       $._literal_block_mark,
-      choice($.literal_block, $._dedent),
+      choice(
+        $.literal_block,
+        $._dedent
+      ),
     ),
 
-    literal_block: $ => seq(
+    literal_block: $ => choice(
+      $._indented_literal_block,
+      $._quoted_literal_block,
+    ),
+
+    _indented_literal_block: $ => seq(
       repeat(
         seq(
           $._text_block,
@@ -175,6 +184,16 @@ module.exports = grammar({
       ),
       $._text_block,
       $._dedent,
+    ),
+
+    _quoted_literal_block: $ => seq(
+      repeat1(
+        seq(
+          $._quoted_literal_block_mark,
+          $._text_line,
+        ),
+      ),
+      $._blankline,
     ),
 
     _text_block: $ => repeat1($._text_line),

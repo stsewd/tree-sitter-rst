@@ -145,9 +145,9 @@ Z. Six
     (list_item
       (paragraph))))
 
-==============
-Literal blocks
-==============
+=======================
+Indented literal blocks
+=======================
 
 This is a typical paragraph. An indented literal block follows.
 
@@ -178,6 +178,51 @@ indented block?::
 (document
   (paragraph)
   (literal_block)
+  (paragraph)
+  (paragraph
+    (literal_block))
+  (paragraph
+    (literal_block))
+  (paragraph
+    (literal_block)))
+
+=====================
+Quoted literal blocks
+=====================
+
+::
+
+> lonely
+> block
+
+John Doe wrote::
+
+>> Great idea!
+>
+> Why didn't I think of that?
+
+You just did!  ;-)
+
+Another indented block::
+
+> I'm the content
+
+Another indented block: ::
+
+>               I'm the content
+
+indented block?::
+    
+>   Indented
+>
+> Still indented
+
+---
+
+(document
+  (literal_block)
+  (paragraph
+   (literal_block))
   (paragraph)
   (paragraph
     (literal_block))
