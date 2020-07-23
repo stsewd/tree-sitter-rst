@@ -11,7 +11,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## TODO
 
-- Support all types of quoted literal block
 - Line blocks
 - Block quotes
 - roles

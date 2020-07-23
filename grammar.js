@@ -127,7 +127,12 @@ module.exports = grammar({
     // Paragraph
     // =========
 
-    paragraph: $ => repeat1($._line),
+    paragraph: $ => repeat1($._paragraph_line),
+    _paragraph_line: $ => seq(
+      repeat1($._inline_markup),
+      optional($._literal_block),
+      $._newline,
+    ),
 
     // Lists
     // =====
@@ -281,7 +286,6 @@ module.exports = grammar({
 
     _line: $ => seq(
       repeat1($._inline_markup),
-      optional($._literal_block),
       $._newline,
     ),
 

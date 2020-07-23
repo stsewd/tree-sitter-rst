@@ -217,6 +217,12 @@ indented block?::
 *
 * Still indented
 
+
+a::
+
+* b
+*a*:
+
 ---
 
 (document
@@ -224,6 +230,8 @@ indented block?::
   (paragraph
    (literal_block))
   (paragraph)
+  (paragraph
+    (literal_block))
   (paragraph
     (literal_block))
   (paragraph
