@@ -1,6 +1,6 @@
 # tree-sitter-rst
 
-![CI](https://github.com/stsewd/tree-sitter-rst/workflows/CI/badge.svg)
+[![CI](https://github.com/stsewd/tree-sitter-rst/workflows/CI/badge.svg)](https://github.com/stsewd/tree-sitter-rst/actions?query=workflow%3ACI+branch%3Amaster)
 
 reStructuredText grammar for [tree-sitter](https://tree-sitter.github.io/tree-sitter/).
 Based on <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>.
