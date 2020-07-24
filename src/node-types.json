@@ -121,6 +121,10 @@
           "named": true
         },
         {
+          "type": "line_block",
+          "named": true
+        },
+        {
           "type": "literal_block",
           "named": true
         },
@@ -148,6 +152,10 @@
           "named": true
         },
         {
+          "type": "line_block",
+          "named": true
+        },
+        {
           "type": "literal_block",
           "named": true
         },
@@ -172,6 +180,10 @@
         },
         {
           "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "line_block",
           "named": true
         },
         {
@@ -203,6 +215,10 @@
         },
         {
           "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "line_block",
           "named": true
         },
         {
@@ -260,11 +276,45 @@
           "named": true
         },
         {
+          "type": "line_block",
+          "named": true
+        },
+        {
           "type": "literal_block",
           "named": true
         },
         {
           "type": "paragraph",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "line",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "line_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "line",
           "named": true
         }
       ]
@@ -284,6 +334,10 @@
         },
         {
           "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "line_block",
           "named": true
         },
         {

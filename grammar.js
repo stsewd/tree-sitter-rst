@@ -25,6 +25,9 @@ module.exports = grammar({
     $._literal_block_mark,
     $._quoted_literal_block,
 
+    // Line blocks
+    $._line_block_mark,
+
     // Inline markup
     $._text,
     $.emphasis,
@@ -119,6 +122,7 @@ module.exports = grammar({
       $._list,
       $._explicit_markup_block,
       $._literal_block,
+      $.line_block,
     ),
 
     // Paragraph
@@ -188,6 +192,16 @@ module.exports = grammar({
     _text_line: $ => seq(
       repeat1($._text),
       $._newline,
+    ),
+
+    // Line blocks
+    // ===========
+
+    line_block: $ => repeat1($.line),
+    line: $ => seq(
+      $._line_block_mark,
+      repeat($._line),
+      $._dedent,
     ),
 
     // Markup blocks

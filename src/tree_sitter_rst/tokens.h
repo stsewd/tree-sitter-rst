@@ -22,6 +22,9 @@ enum TokenType {
   T_LITERAL_BLOCK_MARK,
   T_QUOTED_LITERAL_BLOCK,
 
+  // Line blocks
+  T_LINE_BLOCK_MARK,
+
   // Inline markup
   T_TEXT,
   T_EMPHASIS,

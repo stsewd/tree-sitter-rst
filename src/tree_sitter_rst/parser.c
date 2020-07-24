@@ -76,8 +76,13 @@ bool parse_overline(RSTScanner* scanner)
     if (scanner->lookahead != adornment) {
       if (overline_length == 1) {
         if (is_space(scanner->lookahead)) {
-          if (is_char_bullet(adornment)) {
+          if (is_char_bullet(adornment) && valid_symbols[T_CHAR_BULLET]) {
             bool ok = parse_inner_list_element(scanner, 1, T_CHAR_BULLET);
+            if (ok) {
+              return true;
+            }
+          } else if (adornment == '|' && valid_symbols[T_LINE_BLOCK_MARK]) {
+            bool ok = parse_inner_list_element(scanner, 1, T_LINE_BLOCK_MARK);
             if (ok) {
               return true;
             }
@@ -762,6 +767,24 @@ bool parse_quoted_literal_block(RSTScanner* scanner)
   }
   lexer->result_symbol = T_QUOTED_LITERAL_BLOCK;
   return true;
+}
+
+bool parse_line_block_mark(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (scanner->lookahead != '|' || !valid_symbols[T_LINE_BLOCK_MARK]) {
+    return false;
+  }
+
+  scanner->advance(scanner);
+
+  if (is_space(scanner->lookahead)) {
+    return parse_inner_list_element(scanner, 1, T_LINE_BLOCK_MARK);
+  }
+
+  return false;
 }
 
 bool parse_inline_markup(RSTScanner* scanner)
