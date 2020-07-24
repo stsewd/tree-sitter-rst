@@ -736,14 +736,7 @@
       "name": "__whitespace"
     }
   ],
-  "conflicts": [
-    [
-      "bullet_list"
-    ],
-    [
-      "enumerated_list"
-    ]
-  ],
+  "conflicts": [],
   "externals": [
     {
       "type": "SYMBOL",

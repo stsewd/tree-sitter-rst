@@ -18,27 +18,6 @@ Empty elements
     (list_item
       (paragraph))))
 
-===========
-Blank lines
-===========
-
-- a
-
-- b
-
-- c
-
----
-
-(document
-  (bullet_list
-    (list_item
-      (paragraph)
-    (list_item
-      (paragraph)
-    (list_item
-      (paragraph)))))
-
 =========
 Multiline
 =========

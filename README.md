@@ -11,6 +11,7 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## TODO
 
+- Allow lists with blank lines between items
 - Line blocks
 - Block quotes
 - roles
