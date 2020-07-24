@@ -52,10 +52,7 @@ module.exports = grammar({
     $.__whitespace,
   ],
 
-  conflicts: $ => [
-    [$.bullet_list],
-    [$.enumerated_list],
-  ],
+  conflicts: $ => [],
 
   supertypes: $ => [
     $._list,
