@@ -119,7 +119,7 @@ module.exports = grammar({
 
     _body_element: $ => choice(
       $.paragraph,
-      $._list_block,
+      $._list,
       $._explicit_markup_block,
       $._literal_block,
     ),
@@ -136,10 +136,6 @@ module.exports = grammar({
 
     // Lists
     // =====
-
-    _list_block: $ => seq(
-      repeat1($._list),
-    ),
 
     _list: $ => choice(
       $.bullet_list,

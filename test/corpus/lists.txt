@@ -95,45 +95,43 @@ Combined lists
 ==============
 
 1. One
-2. Two
+(2) Two
+
 - Three
-- Four
+* Four
+
 3) Five
-4) Six
+#. Six
+
 * Seven
 * Eight
 + Nine
-A) Ten
 
 ---
 
 (document
- (enumerated_list
-  (list_item
-    (paragraph))
-  (list_item
-    (paragraph)))
- (bullet_list
-  (list_item
-    (paragraph))
-  (list_item
-    (paragraph)))
- (enumerated_list
-  (list_item
-    (paragraph))
-  (list_item
-    (paragraph)))
- (bullet_list
-  (list_item
-    (paragraph))
-  (list_item
-    (paragraph))
-  (list_item
-    (paragraph)))
- (enumerated_list
-  (list_item
-    (paragraph))))
-
+  (enumerated_list
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph)))
+  (bullet_list
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph)))
+  (enumerated_list
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph)))
+  (bullet_list
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))
+    (list_item
+      (paragraph))))
 
 =========================
 Lists with other elements

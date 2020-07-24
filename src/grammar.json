@@ -130,7 +130,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_list_block"
+          "name": "_list"
         },
         {
           "type": "SYMBOL",
@@ -174,18 +174,6 @@
         {
           "type": "SYMBOL",
           "name": "_newline"
-        }
-      ]
-    },
-    "_list_block": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_list"
-          }
         }
       ]
     },

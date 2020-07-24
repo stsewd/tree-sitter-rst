@@ -27,11 +27,12 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## Design notes
 
-- in RST lists can be started in the same block if they are a different subtype
-  (we only start a new one if it's a different type).
 - In RST sections are a big node that contains body elements, here is just a node that contains the title.
   This is to avoid guessing the level of subtitles.
 - Comments don't contain inline markup in RST, but we still parse them as RST.
+- The content from directives is interpreted as RST,
+  but in the spec it's a literal block.
+  Maybe have a list of directives that don't interpret the content as RST?
 - Literal blocks are part of the paragraph they precede, not a separate node,
   except for the expanded form of literal blocks.
 - Should we include the literal block mark as part of the literal block?

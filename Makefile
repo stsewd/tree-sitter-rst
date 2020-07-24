@@ -3,6 +3,7 @@ build:
 
 release: build format
 	tree-sitter build-wasm
+	# GitHub pages doesn't like symbolic links
 	cp tree-sitter-rst.wasm docs/js/tree-sitter-rst.wasm
 
 test: build
