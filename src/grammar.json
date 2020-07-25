@@ -146,7 +146,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "block_quote"
+          "name": "_block_quote_block"
         }
       ]
     },
@@ -380,7 +380,7 @@
         }
       ]
     },
-    "block_quote": {
+    "_block_quote_block": {
       "type": "SEQ",
       "members": [
         {
@@ -389,31 +389,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_indented_block_quote"
+          "name": "block_quote"
         }
       ]
     },
-    "attribution": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_attribution_mark"
-        },
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_line"
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_dedent"
-        }
-      ]
-    },
-    "_indented_block_quote": {
+    "block_quote": {
       "type": "SEQ",
       "members": [
         {
@@ -444,6 +424,26 @@
               "name": "_body_element"
             }
           ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_dedent"
+        }
+      ]
+    },
+    "attribution": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_attribution_mark"
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_line"
+          }
         },
         {
           "type": "SYMBOL",

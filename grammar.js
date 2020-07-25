@@ -126,7 +126,7 @@ module.exports = grammar({
       $._explicit_markup_block,
       $._literal_block,
       $.line_block,
-      $.block_quote,
+      $._block_quote_block,
     ),
 
     // Paragraph
@@ -211,18 +211,12 @@ module.exports = grammar({
     // Block quotes
     // ============
 
-    block_quote: $ => seq(
+    _block_quote_block: $ => seq(
       $._indent,
-      $._indented_block_quote,
+      $.block_quote,
     ),
 
-    attribution: $ => seq(
-      $._attribution_mark,
-      repeat1($._line),
-      $._dedent,
-    ),
-
-    _indented_block_quote: $ => seq(
+    block_quote: $ => seq(
       repeat(
         seq(
           $._body_element,
@@ -233,6 +227,12 @@ module.exports = grammar({
         $.attribution,
         $._body_element,
       ),
+      $._dedent,
+    ),
+
+    attribution: $ => seq(
+      $._attribution_mark,
+      repeat1($._line),
       $._dedent,
     ),
 
