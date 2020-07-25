@@ -750,8 +750,17 @@
           "name": "_explicit_markup_start"
         },
         {
-          "type": "SYMBOL",
-          "name": "_indented_literal_block"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_indented_literal_block"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_dedent"
+            }
+          ]
         }
       ]
     },

@@ -331,7 +331,7 @@ module.exports = grammar({
 
     comment: $ => seq(
       $._explicit_markup_start,
-      $._indented_literal_block,
+      choice($._indented_literal_block, $._dedent),
     ),
 
     // =============
