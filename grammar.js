@@ -31,6 +31,9 @@ module.exports = grammar({
     // Block quotes
     $._attribution_mark,
 
+    // Doctest blocks
+    $._doctest_block_mark,
+
     // Inline markup
     $._text,
     $.emphasis,
@@ -127,6 +130,7 @@ module.exports = grammar({
       $._literal_block,
       $.line_block,
       $._block_quote_block,
+      $.doctest_block,
     ),
 
     // Paragraph
@@ -234,6 +238,15 @@ module.exports = grammar({
       $._attribution_mark,
       repeat1($._line),
       $._dedent,
+    ),
+
+    // Doctest blocks
+    // ==============
+
+    doctest_block: $ => seq(
+      $._doctest_block_mark,
+      $._text_block,
+      $._blankline,
     ),
 
     // Markup blocks

@@ -28,6 +28,9 @@ enum TokenType {
   // Block quotes
   T_ATTRIBUTION_MARK,
 
+  // Doctest blocks
+  T_DOCTEST_BLOCK_MARK,
+
   // Inline markup
   T_TEXT,
   T_EMPHASIS,

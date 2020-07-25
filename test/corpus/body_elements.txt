@@ -167,7 +167,8 @@ Ordinary paragraph.
 
 Another indented block::
 
- I'm the content
+ > I'm the *content*
+ I'm the *content*
 
 Another indented block: ::
 
@@ -178,12 +179,20 @@ indented block?::
     Indented
  Still indented
 
+The following is a literal block::
+
+    >>> This is not recognized as a doctest block by
+    reStructuredText.  It *will* be recognized by the doctest
+    module, though!
+
 ---
 
 (document
   (paragraph)
   (literal_block)
   (paragraph)
+  (paragraph
+    (literal_block))
   (paragraph
     (literal_block))
   (paragraph
@@ -361,6 +370,31 @@ This is a great quote
     (attribution
       (emphasis)
       (strong))))
+
+==============
+Doctest blocks
+==============
+
+This is an ordinary paragraph.
+
+>>> print 'this is a Doctest block'
+this is a Doctest block
+
+
+>>>I'm a paragraph.
+
+>>> print("hello")
+
+>>> print("world")
+
+---
+
+(document
+  (paragraph)
+  (doctest_block)
+  (paragraph)
+  (doctest_block)
+  (doctest_block))
 
 =========
 Footnotes

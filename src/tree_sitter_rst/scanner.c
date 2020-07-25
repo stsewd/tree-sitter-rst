@@ -138,6 +138,10 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_line_block_mark(scanner);
   }
 
+  if (current == '>' && valid_symbols[T_DOCTEST_BLOCK_MARK]) {
+    return parse_doctest_block_mark(scanner);
+  }
+
   if (is_alphanumeric(current) && valid_symbols[T_DIRECTIVE_MARK]) {
     return parse_directive_mark(scanner);
   }

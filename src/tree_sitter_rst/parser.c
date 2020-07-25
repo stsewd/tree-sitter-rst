@@ -117,8 +117,14 @@ bool parse_overline(RSTScanner* scanner)
         }
       } else if (overline_length >= 2) {
         if (is_space(scanner->lookahead)) {
-          if (overline_length == 2
-              && adornment == '.') {
+          if (overline_length == 3
+              && adornment == '>'
+              && valid_symbols[T_DOCTEST_BLOCK_MARK]) {
+            lexer->mark_end(lexer);
+            lexer->result_symbol = T_DOCTEST_BLOCK_MARK;
+            return true;
+          }
+          if (overline_length == 2 && adornment == '.') {
             return parse_inner_list_element(scanner, 2, T_EXPLICIT_MARKUP_START);
           }
           if (overline_length == 2
@@ -766,9 +772,18 @@ bool parse_quoted_literal_block(RSTScanner* scanner)
 
     scanner->advance(scanner);
 
+    // Check if it's an empty line.
     int indent = get_indent_level(scanner);
-    if (indent != scanner->back(scanner) || scanner->lookahead != adornment) {
+    if (indent == 0 && scanner->lookahead != adornment) {
       break;
+    }
+
+    if (scanner->lookahead != adornment) {
+      if (valid_symbols[T_TEXT]) {
+        lexer->result_symbol = T_TEXT;
+        return true;
+      }
+      return false;
     }
   }
   lexer->result_symbol = T_QUOTED_LITERAL_BLOCK;
@@ -818,6 +833,29 @@ bool parse_attribution_mark(RSTScanner* scanner)
   }
 
   return parse_inner_list_element(scanner, consumed_chars, T_ATTRIBUTION_MARK);
+}
+
+bool parse_doctest_block_mark(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (scanner->lookahead != '>' || !valid_symbols[T_DOCTEST_BLOCK_MARK]) {
+    return false;
+  }
+
+  int consumed_chars = 0;
+  while (scanner->lookahead == '>') {
+    consumed_chars++;
+    scanner->advance(scanner);
+  }
+
+  if (consumed_chars == 3 && is_space(scanner->lookahead)) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = T_DOCTEST_BLOCK_MARK;
+    return true;
+  }
+  return false;
 }
 
 bool parse_inline_markup(RSTScanner* scanner)

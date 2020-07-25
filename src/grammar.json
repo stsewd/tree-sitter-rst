@@ -147,6 +147,10 @@
         {
           "type": "SYMBOL",
           "name": "_block_quote_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "doctest_block"
         }
       ]
     },
@@ -448,6 +452,23 @@
         {
           "type": "SYMBOL",
           "name": "_dedent"
+        }
+      ]
+    },
+    "doctest_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_doctest_block_mark"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_text_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_blankline"
         }
       ]
     },
@@ -895,6 +916,10 @@
     {
       "type": "SYMBOL",
       "name": "_attribution_mark"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_doctest_block_mark"
     },
     {
       "type": "SYMBOL",

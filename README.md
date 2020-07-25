@@ -14,7 +14,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Allow lists with blank lines between items
 - roles
 - Nested line blocks
-- doctest block
 - Parse external hyperlinks (standalone_hyperlink)
 - Definition lists
 - Field lists
@@ -35,3 +34,4 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Literal blocks are part of the paragraph they precede, not a separate node,
   except for the expanded form of literal blocks.
 - Should we include the literal block mark as part of the literal block?
+- Add nodes for marks? This is like adornments, bullets, etc.

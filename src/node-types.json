@@ -125,6 +125,10 @@
           "named": true
         },
         {
+          "type": "doctest_block",
+          "named": true
+        },
+        {
           "type": "line_block",
           "named": true
         },
@@ -175,6 +179,10 @@
           "named": true
         },
         {
+          "type": "doctest_block",
+          "named": true
+        },
+        {
           "type": "label",
           "named": true
         },
@@ -219,6 +227,10 @@
           "named": true
         },
         {
+          "type": "doctest_block",
+          "named": true
+        },
+        {
           "type": "line_block",
           "named": true
         },
@@ -238,6 +250,11 @@
     }
   },
   {
+    "type": "doctest_block",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "document",
     "named": true,
     "fields": {},
@@ -255,6 +272,10 @@
         },
         {
           "type": "block_quote",
+          "named": true
+        },
+        {
+          "type": "doctest_block",
           "named": true
         },
         {
@@ -313,6 +334,10 @@
         },
         {
           "type": "block_quote",
+          "named": true
+        },
+        {
+          "type": "doctest_block",
           "named": true
         },
         {
@@ -382,6 +407,10 @@
         },
         {
           "type": "block_quote",
+          "named": true
+        },
+        {
+          "type": "doctest_block",
           "named": true
         },
         {
