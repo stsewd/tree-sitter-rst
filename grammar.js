@@ -159,7 +159,10 @@ module.exports = grammar({
       alias($._bullet_list_item, $.list_item),
     ),
 
-    _bullet_list_item: $ => seq($._char_bullet, choice($._indented_block, $._dedent)),
+    _bullet_list_item: $ => seq(
+      $._char_bullet,
+      choice($._indented_block, $._dedent),
+    ),
 
     // Enumerated list
     // ---------------
@@ -168,7 +171,10 @@ module.exports = grammar({
       alias($._numeric_list_item, $.list_item),
     ),
 
-    _numeric_list_item: $ => seq($._numeric_bullet, choice($._indented_block, $._dedent)),
+    _numeric_list_item: $ => seq(
+      $._numeric_bullet,
+      choice($._indented_block, $._dedent),
+    ),
 
     // Literal blocks
     // ==============
