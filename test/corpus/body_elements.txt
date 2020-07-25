@@ -303,6 +303,65 @@ And finally, an empty one:
   (line_block
     (line)))
 
+============
+Block quotes
+============
+
+  Can you quote me?
+
+This is a great quote
+
+    "It is my *business* to know things.  That is my trade."
+
+    + A
+    + B
+    
+    .. am i here?
+
+    -- Sherlock Holmes
+
+..
+
+    "It is my *business* to know things.  That is my trade."
+
+    -- Sherlock
+       *Holmes*
+
+..
+
+  And This is a real em-dash:
+
+  — the *m*-**dash**
+
+---
+
+(document
+  (block_quote
+    (paragraph))
+  (paragraph)
+  (block_quote
+    (paragraph
+      (emphasis))
+    (bullet_list
+      (list_item
+        (paragraph))
+      (list_item
+        (paragraph)))
+    (comment)
+    (attribution))
+  (comment)
+  (block_quote
+    (paragraph
+      (emphasis))
+    (attribution
+      (emphasis)))
+  (comment)
+  (block_quote
+    (paragraph)
+    (attribution
+      (emphasis)
+      (strong))))
+
 =========
 Footnotes
 =========
@@ -586,32 +645,17 @@ Comments
 ---
 
 (document
-  (comment
-    (paragraph))
-  (comment
-    (paragraph))
-  (comment
-    (paragraph))
-  (comment
-    (paragraph))
-  (comment
-    (paragraph))
-  (comment
-    (paragraph))
-  (comment
-    (paragraph))
-  (comment
-    (paragraph))
-  (comment
-    (paragraph))
-  (comment
-    (paragraph))
-  (comment
-    (paragraph))
-  (comment
-    (paragraph
-      (strong)))
-  (comment
-    (paragraph
-      (emphasis)))
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (comment)
+  (comment)
   (comment))

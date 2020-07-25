@@ -34,13 +34,13 @@ bool parse_indent(RSTScanner* scanner)
     scanner->skip(scanner);
   }
 
+  int current_indent = scanner->back(scanner);
+  if (indent > current_indent && valid_symbols[T_INDENT]) {
+    scanner->push(scanner, indent);
+    lexer->result_symbol = T_INDENT;
+    return true;
+  }
   if (newlines) {
-    int current_indent = scanner->back(scanner);
-    if (indent > current_indent && valid_symbols[T_INDENT]) {
-      scanner->push(scanner, indent);
-      lexer->result_symbol = T_INDENT;
-      return true;
-    }
     if (indent < current_indent && valid_symbols[T_DEDENT]) {
       scanner->pop(scanner);
       lexer->result_symbol = T_DEDENT;
@@ -435,8 +435,14 @@ bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum Toke
 
     // Set indent level to the first non-whitespace char
     const int indent = scanner->back(scanner) + consumed_chars + get_indent_level(scanner);
-    scanner->push(scanner, indent);
 
+    // If it's an empty line and T_EXPLICIT_MARKUP_START, then it's an empty comment.
+    // Empty comments don't consume any following indented text.
+    if (is_newline(scanner->lookahead) && token_type == T_EXPLICIT_MARKUP_START) {
+      return true;
+    }
+
+    scanner->push(scanner, indent);
     return true;
   }
 
@@ -785,6 +791,33 @@ bool parse_line_block_mark(RSTScanner* scanner)
   }
 
   return false;
+}
+
+bool parse_attribution_mark(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (!is_attribution_mark(scanner->lookahead) || !valid_symbols[T_ATTRIBUTION_MARK]) {
+    return false;
+  }
+
+  int consumed_chars = 0;
+  if (scanner->lookahead == '-') {
+    while (scanner->lookahead == '-') {
+      consumed_chars++;
+      scanner->advance(scanner);
+    }
+
+    if (consumed_chars < 2 || consumed_chars > 3) {
+      return false;
+    }
+  } else {
+    scanner->advance(scanner);
+    consumed_chars++;
+  }
+
+  return parse_inner_list_element(scanner, consumed_chars, T_ATTRIBUTION_MARK);
 }
 
 bool parse_inline_markup(RSTScanner* scanner)

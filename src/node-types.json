@@ -86,6 +86,60 @@
     ]
   },
   {
+    "type": "attribution",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "block_quote",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_list",
+          "named": true
+        },
+        {
+          "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "attribution",
+          "named": true
+        },
+        {
+          "type": "block_quote",
+          "named": true
+        },
+        {
+          "type": "line_block",
+          "named": true
+        },
+        {
+          "type": "literal_block",
+          "named": true
+        },
+        {
+          "type": "paragraph",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "bullet_list",
     "named": true,
     "fields": {},
@@ -117,6 +171,10 @@
           "named": true
         },
         {
+          "type": "block_quote",
+          "named": true
+        },
+        {
           "type": "label",
           "named": true
         },
@@ -138,33 +196,7 @@
   {
     "type": "comment",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "_list",
-          "named": true
-        },
-        {
-          "type": "_markup_block",
-          "named": true
-        },
-        {
-          "type": "line_block",
-          "named": true
-        },
-        {
-          "type": "literal_block",
-          "named": true
-        },
-        {
-          "type": "paragraph",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "directive",
@@ -180,6 +212,10 @@
         },
         {
           "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "block_quote",
           "named": true
         },
         {
@@ -215,6 +251,10 @@
         },
         {
           "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "block_quote",
           "named": true
         },
         {
@@ -269,6 +309,10 @@
         },
         {
           "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "block_quote",
           "named": true
         },
         {
@@ -334,6 +378,10 @@
         },
         {
           "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "block_quote",
           "named": true
         },
         {

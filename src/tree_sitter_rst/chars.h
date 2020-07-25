@@ -43,6 +43,10 @@ bool is_numeric_bullet_roman_upper(int32_t c);
 bool is_numeric_bullet_abc_lower(int32_t c);
 bool is_numeric_bullet_abc_upper(int32_t c);
 
+#define CHAR_EMDASH 8212
+
+bool is_attribution_mark(int32_t c);
+
 int get_indent_level(RSTScanner* scanner);
 
 #endif /* ifndef TREE_SITTER_RST_CHARS_H_ */

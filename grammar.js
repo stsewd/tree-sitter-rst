@@ -28,6 +28,9 @@ module.exports = grammar({
     // Line blocks
     $._line_block_mark,
 
+    // Block quotes
+    $._attribution_mark,
+
     // Inline markup
     $._text,
     $.emphasis,
@@ -123,6 +126,7 @@ module.exports = grammar({
       $._explicit_markup_block,
       $._literal_block,
       $.line_block,
+      $.block_quote,
     ),
 
     // Paragraph
@@ -201,6 +205,34 @@ module.exports = grammar({
     line: $ => seq(
       $._line_block_mark,
       repeat($._line),
+      $._dedent,
+    ),
+
+    // Block quotes
+    // ============
+
+    block_quote: $ => seq(
+      $._indent,
+      $._indented_block_quote,
+    ),
+
+    attribution: $ => seq(
+      $._attribution_mark,
+      repeat1($._line),
+      $._dedent,
+    ),
+
+    _indented_block_quote: $ => seq(
+      repeat(
+        seq(
+          $._body_element,
+          $._blankline,
+        ),
+      ),
+      choice(
+        $.attribution,
+        $._body_element,
+      ),
       $._dedent,
     ),
 
@@ -284,7 +316,7 @@ module.exports = grammar({
 
     comment: $ => seq(
       $._explicit_markup_start,
-      choice($._indented_block, $._dedent)
+      choice($._indented_literal_block, $._newline),
     ),
 
     // =============

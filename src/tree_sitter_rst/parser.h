@@ -29,6 +29,8 @@ bool parse_quoted_literal_block(RSTScanner* scanner);
 
 bool parse_line_block_mark(RSTScanner* scanner);
 
+bool parse_attribution_mark(RSTScanner* scanner);
+
 bool parse_label(RSTScanner* scanner);
 bool parse_inner_label(RSTScanner* scanner, enum TokenType token_type);
 bool parse_target_name(RSTScanner* scanner);

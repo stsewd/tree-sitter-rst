@@ -113,6 +113,10 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_explict_markup_start(scanner);
   }
 
+  if (is_attribution_mark(current) && valid_symbols[T_ATTRIBUTION_MARK]) {
+    return parse_attribution_mark(scanner);
+  }
+
   if (current == '['
       && (valid_symbols[T_FOOTNOTE_LABEL] || valid_symbols[T_CITATION_LABEL])) {
     return parse_label(scanner);

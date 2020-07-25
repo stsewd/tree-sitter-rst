@@ -373,6 +373,21 @@ bool is_numeric_bullet_abc_upper(int32_t c)
   return is_abc_upper(c);
 }
 
+bool is_attribution_mark(int32_t c)
+{
+  const int32_t valid_chars[] = {
+    '-',
+    CHAR_EMDASH,
+  };
+  const int length = 2;
+  for (int i = 0; i < length; i++) {
+    if (c == valid_chars[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
 int get_indent_level(RSTScanner* scanner)
 {
   int32_t current = scanner->lookahead;

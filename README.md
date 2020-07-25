@@ -12,9 +12,8 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 ## TODO
 
 - Allow lists with blank lines between items
-- Nested line blocks
-- Block quotes
 - roles
+- Nested line blocks
 - doctest block
 - Parse external hyperlinks (standalone_hyperlink)
 - Definition lists
@@ -30,7 +29,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 - In RST sections are a big node that contains body elements, here is just a node that contains the title.
   This is to avoid guessing the level of subtitles.
-- Comments don't contain inline markup in RST, but we still parse them as RST.
 - The content from directives is interpreted as RST,
   but in the spec it's a literal block.
   Maybe have a list of directives that don't interpret the content as RST?
