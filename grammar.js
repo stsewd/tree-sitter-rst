@@ -54,6 +54,7 @@ module.exports = grammar({
     $._anonymous_target_mark,
     $._directive_mark,
     $._substitution_mark,
+    $._empty_comment,
   ],
 
   extras: $ => [
@@ -262,6 +263,7 @@ module.exports = grammar({
       $.directive,
       $.substitution_definition,
       $.comment,
+      alias($._empty_comment, $.comment),
     ),
 
     // Footnotes
@@ -329,7 +331,7 @@ module.exports = grammar({
 
     comment: $ => seq(
       $._explicit_markup_start,
-      choice($._indented_literal_block, $._newline),
+      $._indented_literal_block,
     ),
 
     // =============

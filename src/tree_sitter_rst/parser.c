@@ -445,7 +445,19 @@ bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum Toke
     // If it's an empty line and T_EXPLICIT_MARKUP_START, then it's an empty comment.
     // Empty comments don't consume any following indented text.
     if (is_newline(scanner->lookahead) && token_type == T_EXPLICIT_MARKUP_START) {
-      return true;
+      bool is_empty = true;
+      scanner->advance(scanner);
+      while (!is_newline(scanner->lookahead)) {
+        if (!is_space(scanner->lookahead)) {
+          is_empty = false;
+          break;
+        }
+        scanner->advance(scanner);
+      }
+      if (is_empty && valid_symbols[T_EMPTY_COMMENT]) {
+        lexer->result_symbol = T_EMPTY_COMMENT;
+        return true;
+      }
     }
 
     scanner->push(scanner, indent);

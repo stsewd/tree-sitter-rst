@@ -675,10 +675,14 @@ Comments
       multiline comment.
 
 ..
+  I'm a comment
+
+..
 
 ---
 
 (document
+  (comment)
   (comment)
   (comment)
   (comment)

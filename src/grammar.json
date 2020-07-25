@@ -514,6 +514,15 @@
         {
           "type": "SYMBOL",
           "name": "comment"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_empty_comment"
+          },
+          "named": true,
+          "value": "comment"
         }
       ]
     },
@@ -741,17 +750,8 @@
           "name": "_explicit_markup_start"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_indented_literal_block"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_newline"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_indented_literal_block"
         }
       ]
     },
@@ -988,6 +988,10 @@
     {
       "type": "SYMBOL",
       "name": "_substitution_mark"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_empty_comment"
     }
   ],
   "inline": [],
