@@ -35,7 +35,8 @@ bool parse_attribution_mark(RSTScanner* scanner);
 bool parse_doctest_block_mark(RSTScanner* scanner);
 
 bool parse_label(RSTScanner* scanner);
-bool parse_inner_alphanumeric_label(RSTScanner* scanner, enum TokenType token_type);
+int parse_label_name(RSTScanner* scanner);
+bool parse_inner_alphanumeric_label(RSTScanner* scanner);
 bool parse_target_name(RSTScanner* scanner);
 bool parse_anonymous_target_mark(RSTScanner* scanner);
 bool parse_directive_mark(RSTScanner* scanner);

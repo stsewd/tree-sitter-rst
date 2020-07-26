@@ -475,50 +475,79 @@ bool parse_label(RSTScanner* scanner)
       || !(valid_symbols[T_FOOTNOTE_LABEL] || valid_symbols[T_CITATION_LABEL])) {
     return false;
   }
-  scanner->advance(scanner);
 
-  if (is_number(scanner->lookahead) && valid_symbols[T_FOOTNOTE_LABEL]) {
-    while (is_number(scanner->lookahead)) {
-      scanner->advance(scanner);
-    }
-    if (scanner->lookahead != ']' && valid_symbols[T_CITATION_LABEL]) {
-      return parse_inner_alphanumeric_label(scanner, T_CITATION_LABEL);
-    }
-  } else if (scanner->lookahead == '*' && valid_symbols[T_FOOTNOTE_LABEL]) {
+  int type = parse_label_name(scanner);
+  if ((type == IM_CITATION_REFERENCE && valid_symbols[T_CITATION_LABEL])
+      || (type == IM_FOOTNOTE_REFERENCE && valid_symbols[T_FOOTNOTE_LABEL])) {
     scanner->advance(scanner);
-  } else if (scanner->lookahead == '#' && valid_symbols[T_FOOTNOTE_LABEL]) {
-    scanner->advance(scanner);
-    if (is_alphanumeric(scanner->lookahead)) {
-      return parse_inner_alphanumeric_label(scanner, T_FOOTNOTE_LABEL);
+    if (is_space(scanner->lookahead)) {
+      lexer->mark_end(lexer);
+      if (type == IM_CITATION_REFERENCE) {
+        lexer->result_symbol = T_CITATION_LABEL;
+      } else if (type == IM_FOOTNOTE_REFERENCE) {
+        lexer->result_symbol = T_FOOTNOTE_LABEL;
+      }
+      return true;
     }
-  } else if (is_alphanumeric(scanner->lookahead) && valid_symbols[T_CITATION_LABEL]) {
-    return parse_inner_alphanumeric_label(scanner, T_CITATION_LABEL);
-  } else {
-    return false;
-  }
-
-  if (scanner->lookahead != ']') {
-    return false;
-  }
-
-  scanner->advance(scanner);
-
-  if (is_space(scanner->lookahead)) {
-    lexer->mark_end(lexer);
-    lexer->result_symbol = T_FOOTNOTE_LABEL;
-    return true;
   }
 
   return false;
 }
 
-bool parse_inner_alphanumeric_label(RSTScanner* scanner, enum TokenType token_type)
+int parse_label_name(RSTScanner *scanner) {
+  if (scanner->lookahead != '[') {
+    return -1;
+  }
+
+  scanner->advance(scanner);
+
+  int type = -1;
+
+  if (is_number(scanner->lookahead)) {
+    while (is_number(scanner->lookahead)) {
+      scanner->advance(scanner);
+    }
+    if (scanner->lookahead == ']') {
+      type = IM_FOOTNOTE_REFERENCE;
+    } else {
+      if (parse_inner_alphanumeric_label(scanner)) {
+        type = IM_CITATION_REFERENCE;
+      }
+    }
+  } else if (scanner->lookahead == '*') {
+    type = IM_FOOTNOTE_REFERENCE;
+    scanner->advance(scanner);
+  } else if (scanner->lookahead == '#') {
+    scanner->advance(scanner);
+    if (scanner->lookahead == ']') {
+      type = IM_FOOTNOTE_REFERENCE;
+    } else if (is_alphanumeric(scanner->lookahead)) {
+      if (parse_inner_alphanumeric_label(scanner)) {
+        type = IM_FOOTNOTE_REFERENCE;
+      }
+    }
+  } else if (is_alphanumeric(scanner->lookahead)) {
+    if (parse_inner_alphanumeric_label(scanner)) {
+      type = IM_CITATION_REFERENCE;
+    }
+  } else {
+    return -1;
+  }
+
+  if (scanner->lookahead == ']') {
+    return type;
+  }
+
+  return -1;
+}
+
+bool parse_inner_alphanumeric_label(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
-  if (!(is_alphanumeric(scanner->lookahead) || is_internal_reference_char(scanner->lookahead))
-      || !valid_symbols[token_type]) {
+  if (!(is_alphanumeric(scanner->lookahead)
+      || is_internal_reference_char(scanner->lookahead))) {
     return false;
   }
 
@@ -535,15 +564,7 @@ bool parse_inner_alphanumeric_label(RSTScanner* scanner, enum TokenType token_ty
     scanner->advance(scanner);
   }
 
-  if (scanner->lookahead != ']') {
-    return false;
-  }
-
-  scanner->advance(scanner);
-
-  if (is_space(scanner->lookahead)) {
-    lexer->mark_end(lexer);
-    lexer->result_symbol = token_type;
+  if (scanner->lookahead == ']') {
     return true;
   }
 
