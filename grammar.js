@@ -439,8 +439,8 @@ module.exports = grammar({
     */
     directive: $ => seq(
       alias($._explicit_markup_start, '..'),
-      alias($._directive_mark, $.type),
-      choice($._indented_block, $._dedent),
+      field('name', alias($._directive_mark, $.type)),
+      field('block', choice($._indented_block, $._dedent)),
     ),
 
     // Substitution definition
@@ -462,8 +462,8 @@ module.exports = grammar({
     ),
 
     _embedded_directive: $ => seq(
-      alias($._directive_mark, $.type),
-      choice($._indented_block, $._dedent),
+      field('name', alias($._directive_mark, $.type)),
+      field('block', choice($._indented_block, $._dedent)),
     ),
 
     // Comments

@@ -715,26 +715,34 @@
           "value": ".."
         },
         {
-          "type": "ALIAS",
+          "type": "FIELD",
+          "name": "name",
           "content": {
-            "type": "SYMBOL",
-            "name": "_directive_mark"
-          },
-          "named": true,
-          "value": "type"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_directive_mark"
+            },
+            "named": true,
+            "value": "type"
+          }
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_indented_block"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_dedent"
-            }
-          ]
+          "type": "FIELD",
+          "name": "block",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_indented_block"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_dedent"
+              }
+            ]
+          }
         }
       ]
     },
@@ -774,26 +782,34 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "ALIAS",
+          "type": "FIELD",
+          "name": "name",
           "content": {
-            "type": "SYMBOL",
-            "name": "_directive_mark"
-          },
-          "named": true,
-          "value": "type"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_directive_mark"
+            },
+            "named": true,
+            "value": "type"
+          }
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_indented_block"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_dedent"
-            }
-          ]
+          "type": "FIELD",
+          "name": "block",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_indented_block"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_dedent"
+              }
+            ]
+          }
         }
       ]
     },

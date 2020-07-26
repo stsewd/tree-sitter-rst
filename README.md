@@ -22,6 +22,9 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Validate length of adornments in sections? (the spec doesn't mention this)
 - Tables (maybe implemented without validations?)
 - Highlight queries
+- Local queries
+- Add some fields
+- Add some nodes to inline
 - tests, tests, and more tests!
 
 ## Design notes
