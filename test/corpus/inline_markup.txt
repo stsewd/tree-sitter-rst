@@ -234,6 +234,34 @@ I'm a [1]_
   (paragraph
     (footnote_reference)))
 
+===================
+Citation references
+===================
+
+Please read the manual [manual]_.
+It was on monday [monday]_, and tuesday.
+
+I'm a [number1]_
+
+[1one]_ a text
+[not\] a citation
+
+[not#] a citation.
+Not a [cita#tion].
+Not [a--citation] citation.
+
+---
+
+(document
+  (paragraph
+    (citation_reference)
+    (citation_reference))
+  (paragraph
+    (citation_reference))
+  (paragraph
+    (citation_reference))
+  (paragraph))
+
 ====================
 Hyperlink references
 ====================

@@ -11,7 +11,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## TODO
 
-- Citation references
 - Allow lists with blank lines between items
 - roles
 - Nested line blocks

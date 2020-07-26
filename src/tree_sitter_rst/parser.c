@@ -100,8 +100,8 @@ bool parse_overline(RSTScanner* scanner)
           if (adornment == '_' && scanner->lookahead == '`' && valid_symbols[T_INLINE_TARGET]) {
             return parse_inner_inline_markup(scanner, IM_INLINE_TARGET);
           }
-          if (adornment == '[' && valid_symbols[T_FOOTNOTE_REFERENCE]) {
-            return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE);
+          if (adornment == '[' && (valid_symbols[T_FOOTNOTE_REFERENCE] || valid_symbols[T_CITATION_REFERENCE])) {
+            return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE | IM_CITATION_REFERENCE);
           }
           if (adornment == '#'
               && (scanner->lookahead == '.' || scanner->lookahead == ')')) {
@@ -149,8 +149,8 @@ bool parse_overline(RSTScanner* scanner)
           if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
             return parse_inner_inline_markup(scanner, IM_SUBSTITUTION_REFERENCE);
           }
-          if (adornment == '[' && valid_symbols[T_FOOTNOTE_REFERENCE]) {
-            return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE);
+          if (adornment == '[' && (valid_symbols[T_FOOTNOTE_REFERENCE] || valid_symbols[T_CITATION_REFERENCE])) {
+            return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE | IM_CITATION_REFERENCE);
           }
         }
       }
@@ -475,8 +475,8 @@ bool parse_label(RSTScanner* scanner)
       || !(valid_symbols[T_FOOTNOTE_LABEL] || valid_symbols[T_CITATION_LABEL])) {
     return false;
   }
-
-  int type = parse_label_name(scanner);
+  scanner->advance(scanner);
+  int type = parse_inner_label_name(scanner);
   if ((type == IM_CITATION_REFERENCE && valid_symbols[T_CITATION_LABEL])
       || (type == IM_FOOTNOTE_REFERENCE && valid_symbols[T_FOOTNOTE_LABEL])) {
     scanner->advance(scanner);
@@ -494,15 +494,9 @@ bool parse_label(RSTScanner* scanner)
   return false;
 }
 
-int parse_label_name(RSTScanner *scanner) {
-  if (scanner->lookahead != '[') {
-    return -1;
-  }
-
-  scanner->advance(scanner);
-
+int parse_inner_label_name(RSTScanner* scanner)
+{
   int type = -1;
-
   if (is_number(scanner->lookahead)) {
     while (is_number(scanner->lookahead)) {
       scanner->advance(scanner);
@@ -547,7 +541,7 @@ bool parse_inner_alphanumeric_label(RSTScanner* scanner)
   TSLexer* lexer = scanner->lexer;
 
   if (!(is_alphanumeric(scanner->lookahead)
-      || is_internal_reference_char(scanner->lookahead))) {
+          || is_internal_reference_char(scanner->lookahead))) {
     return false;
   }
 
@@ -947,6 +941,27 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
   bool word_found = false;
   bool is_escaped = false;
 
+  if (type & IM_FOOTNOTE_REFERENCE || type & IM_CITATION_REFERENCE) {
+    int final_type = parse_inner_label_name(scanner);
+    if ((final_type == IM_FOOTNOTE_REFERENCE && type & IM_FOOTNOTE_REFERENCE)
+        || (final_type == IM_CITATION_REFERENCE && type & IM_CITATION_REFERENCE)) {
+      scanner->advance(scanner);
+      if (scanner->lookahead == '_') {
+        scanner->advance(scanner);
+        if (is_space(scanner->lookahead) || is_end_char(scanner->lookahead)) {
+          lexer->mark_end(lexer);
+          if (final_type == IM_CITATION_REFERENCE) {
+            lexer->result_symbol = T_CITATION_REFERENCE;
+          } else if (final_type == IM_FOOTNOTE_REFERENCE) {
+            lexer->result_symbol = T_FOOTNOTE_REFERENCE;
+          }
+          return true;
+        }
+      }
+    }
+    return parse_text(scanner);
+  }
+
   while (!is_newline(scanner->lookahead)) {
     // Skip escaped chars
     if (scanner->lookahead == '\\') {
@@ -1008,9 +1023,6 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
         }
       } else if ((type & IM_INTERPRETED_TEXT) && scanner->previous == '`') {
         lexer->result_symbol = T_INTERPRETED_TEXT;
-      } else if ((type & IM_FOOTNOTE_REFERENCE) && scanner->previous == ']' && scanner->lookahead == '_') {
-        lexer->result_symbol = T_FOOTNOTE_REFERENCE;
-        advance = true;
       } else if ((type & IM_SUBSTITUTION_REFERENCE) && scanner->previous == '|') {
         lexer->result_symbol = T_SUBSTITUTION_REFERENCE;
       } else {
