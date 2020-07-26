@@ -65,9 +65,9 @@
 
 ; Embedded
 
-(doctest_block) @injection.content
+(doctest_block) @embed
 (directive
-  block: (_) @injection.content)
+  block: (_) @embed)
 
 ; Others
 
