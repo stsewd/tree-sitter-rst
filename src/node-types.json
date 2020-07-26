@@ -4,6 +4,10 @@
     "named": true,
     "subtypes": [
       {
+        "type": "citation_reference",
+        "named": true
+      },
+      {
         "type": "emphasis",
         "named": true
       },
@@ -38,6 +42,10 @@
       {
         "type": "target",
         "named": true
+      },
+      {
+        "type": "text",
+        "named": false
       }
     ]
   },
@@ -521,6 +529,30 @@
     }
   },
   {
+    "type": "--",
+    "named": false
+  },
+  {
+    "type": "..",
+    "named": false
+  },
+  {
+    "type": "::",
+    "named": false
+  },
+  {
+    "type": "adornment",
+    "named": false
+  },
+  {
+    "type": "bullet",
+    "named": false
+  },
+  {
+    "type": "citation_reference",
+    "named": true
+  },
+  {
     "type": "emphasis",
     "named": true
   },
@@ -565,11 +597,19 @@
     "named": true
   },
   {
+    "type": "text",
+    "named": false
+  },
+  {
     "type": "transition",
     "named": true
   },
   {
     "type": "type",
     "named": true
+  },
+  {
+    "type": "|",
+    "named": false
   }
 ]

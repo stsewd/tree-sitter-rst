@@ -11,6 +11,7 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## TODO
 
+- Citation references
 - Allow lists with blank lines between items
 - roles
 - Nested line blocks
@@ -20,13 +21,13 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Option lists
 - Validate length of adornments in sections? (the spec doesn't mention this)
 - Tables (maybe implemented without validations?)
-- Group all chars as text?
-- Add fields in the grammar?
+- Highlight queries
 - tests, tests, and more tests!
 
 ## Design notes
 
-- In RST sections are a big node that contains body elements, here is just a node that contains the title.
+- In RST sections are a big node that contains body elements,
+  here they are just a node containing the title.
   This is to avoid guessing the level of subtitles.
 - The content from directives is interpreted as RST,
   but in the spec it's a literal block.
@@ -34,4 +35,3 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Literal blocks are part of the paragraph they precede, not a separate node,
   except for the expanded form of literal blocks.
 - Should we include the literal block mark as part of the literal block?
-- Add nodes for marks? This is like adornments, bullets, etc.

@@ -30,5 +30,13 @@
   },
   "devDependencies": {
     "tree-sitter-cli": "^0.16.8"
-  }
+  },
+  "tree-sitter": [
+    {
+      "scope": "text.rst",
+      "file-types": [
+        "rst"
+      ]
+    }
+  ]
 }
