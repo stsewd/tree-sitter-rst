@@ -25,6 +25,7 @@
   (literal_block)
   (line_block)
   (block_quote)
+  (doctest_block)
 ] @text.literal
 
 (substitution_definition
@@ -51,9 +52,7 @@
 [
   (interpreted_text)
   (literal)
-  (doctest_block)
 ] @text.literal
-
 
 [
   (target)
@@ -76,5 +75,6 @@
 (attribution) @text.emphasis
 
 (comment) @comment
+(comment "..") @comment
 
 (ERROR) @error
