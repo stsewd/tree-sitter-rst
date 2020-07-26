@@ -16,7 +16,7 @@
   name: (label) @local.definition)
 
 (target
-  (reference) @local.definition)
+  name: (reference) @local.definition)
 
 ; Inline targets
 (target) @local.definition
