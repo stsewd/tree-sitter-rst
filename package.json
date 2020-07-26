@@ -36,7 +36,8 @@
       "scope": "text.rst",
       "file-types": [
         "rst"
-      ]
+      ],
+      "injection-regex": "rst"
     }
   ]
 }
