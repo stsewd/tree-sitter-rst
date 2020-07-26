@@ -12,7 +12,7 @@
 #define ALIAS_COUNT 1
 #define TOKEN_COUNT 37
 #define EXTERNAL_TOKEN_COUNT 33
-#define FIELD_COUNT 2
+#define FIELD_COUNT 3
 #define MAX_ALIAS_SEQUENCE_LENGTH 4
 
 enum {
@@ -630,19 +630,24 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
 
 enum {
   field_block = 1,
-  field_name = 2,
+  field_link = 2,
+  field_name = 3,
 };
 
 static const char *ts_field_names[] = {
   [0] = NULL,
   [field_block] = "block",
+  [field_link] = "link",
   [field_name] = "name",
 };
 
-static const TSFieldMapSlice ts_field_map_slices[6] = {
+static const TSFieldMapSlice ts_field_map_slices[9] = {
   [3] = {.index = 0, .length = 2},
-  [4] = {.index = 2, .length = 4},
-  [5] = {.index = 6, .length = 2},
+  [4] = {.index = 2, .length = 1},
+  [5] = {.index = 3, .length = 4},
+  [6] = {.index = 7, .length = 1},
+  [7] = {.index = 8, .length = 2},
+  [8] = {.index = 10, .length = 2},
 };
 
 static const TSFieldMapEntry ts_field_map_entries[] = {
@@ -650,16 +655,23 @@ static const TSFieldMapEntry ts_field_map_entries[] = {
     {field_block, 2},
     {field_name, 1},
   [2] =
+    {field_name, 1},
+  [3] =
     {field_block, 2},
     {field_block, 2, .inherited = true},
     {field_name, 1},
     {field_name, 2, .inherited = true},
-  [6] =
+  [7] =
+    {field_link, 1},
+  [8] =
+    {field_link, 2},
+    {field_name, 1},
+  [10] =
     {field_block, 1},
     {field_name, 0},
 };
 
-static TSSymbol ts_alias_sequences[6][MAX_ALIAS_SEQUENCE_LENGTH] = {
+static TSSymbol ts_alias_sequences[9][MAX_ALIAS_SEQUENCE_LENGTH] = {
   [0] = {0},
   [1] = {
     [0] = alias_sym_title,
@@ -5491,14 +5503,14 @@ static TSParseActionEntry ts_parse_actions[] = {
   [311] = {.entry = {.count = 1, .reusable = true}}, SHIFT(201),
   [313] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__indented_block, 2),
   [315] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_comment, 2),
-  [317] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__embedded_directive, 2, .production_id = 5),
+  [317] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__embedded_directive, 2, .production_id = 8),
   [319] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym__indented_literal_block_repeat1, 2), SHIFT_REPEAT(138),
-  [322] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_target, 4),
+  [322] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_target, 4, .production_id = 7),
   [324] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__indented_literal_block, 2),
-  [326] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__anonymous_target, 3),
-  [328] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_substitution_definition, 3, .production_id = 4),
+  [326] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__anonymous_target, 3, .production_id = 6),
+  [328] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_substitution_definition, 3, .production_id = 5),
   [330] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_directive, 3, .production_id = 3),
-  [332] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_target, 3),
+  [332] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_target, 3, .production_id = 4),
   [334] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_citation, 3, .production_id = 3),
   [336] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_footnote, 3, .production_id = 3),
   [338] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__indented_literal_block, 3),

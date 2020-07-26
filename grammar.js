@@ -404,8 +404,8 @@ module.exports = grammar({
     */
     target: $ => seq(
       alias($._explicit_markup_start, '..'),
-      alias($._target_name, $.reference),
-      optional(alias(LINK, $.link)),
+      field('name', alias($._target_name, $.reference)),
+      field('link', optional(alias(LINK, $.link))),
       $._dedent,
     ),
 
@@ -421,7 +421,7 @@ module.exports = grammar({
     */
     _anonymous_target: $ => seq(
       alias($._anonymous_target_mark, '..'),
-      optional(alias(LINK, $.link)),
+      field('link', optional(alias(LINK, $.link))),
       $._newline,
     ),
 

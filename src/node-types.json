@@ -537,20 +537,27 @@
   {
     "type": "target",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "link",
-          "named": true
-        },
-        {
-          "type": "reference",
-          "named": true
-        }
-      ]
+    "fields": {
+      "link": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "link",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "reference",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
