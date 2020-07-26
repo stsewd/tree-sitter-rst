@@ -641,8 +641,8 @@ static const char *ts_field_names[] = {
 
 static const TSFieldMapSlice ts_field_map_slices[6] = {
   [3] = {.index = 0, .length = 2},
-  [4] = {.index = 2, .length = 2},
-  [5] = {.index = 4, .length = 2},
+  [4] = {.index = 2, .length = 4},
+  [5] = {.index = 6, .length = 2},
 };
 
 static const TSFieldMapEntry ts_field_map_entries[] = {
@@ -650,9 +650,11 @@ static const TSFieldMapEntry ts_field_map_entries[] = {
     {field_block, 2},
     {field_name, 1},
   [2] =
+    {field_block, 2},
     {field_block, 2, .inherited = true},
+    {field_name, 1},
     {field_name, 2, .inherited = true},
-  [4] =
+  [6] =
     {field_block, 1},
     {field_name, 0},
 };
@@ -5497,8 +5499,8 @@ static TSParseActionEntry ts_parse_actions[] = {
   [328] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_substitution_definition, 3, .production_id = 4),
   [330] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_directive, 3, .production_id = 3),
   [332] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_target, 3),
-  [334] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_citation, 3),
-  [336] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_footnote, 3),
+  [334] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_citation, 3, .production_id = 3),
+  [336] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_footnote, 3, .production_id = 3),
   [338] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__indented_literal_block, 3),
   [340] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym__text_block, 2), SHIFT_REPEAT(138),
   [343] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__indented_block, 3),

@@ -372,8 +372,8 @@ module.exports = grammar({
     */
     footnote: $ => seq(
       alias($._explicit_markup_start, '..'),
-      alias($._footnote_label, $.label),
-      choice($._indented_block, $._dedent),
+      field('name', alias($._footnote_label, $.label)),
+      field('block', choice($._indented_block, $._dedent)),
     ),
 
     // Citations
@@ -388,8 +388,8 @@ module.exports = grammar({
     */
     citation: $ => seq(
       alias($._explicit_markup_start, '..'),
-      alias($._citation_label, $.label),
-      choice($._indented_block, $._dedent),
+      field('name', alias($._citation_label, $.label)),
+      field('block', choice($._indented_block, $._dedent)),
     ),
 
     // Hyperlink targets
@@ -457,8 +457,8 @@ module.exports = grammar({
     */
     substitution_definition: $ => seq(
       alias($._explicit_markup_start, '..'),
-      alias($._substitution_mark, $.substitution),
-      alias($._embedded_directive, $.directive),
+      field('name', alias($._substitution_mark, $.substitution)),
+      field('block', alias($._embedded_directive, $.directive)),
     ),
 
     _embedded_directive: $ => seq(
