@@ -970,8 +970,13 @@
           "name": "citation_reference"
         },
         {
-          "type": "SYMBOL",
-          "name": "reference"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_inline_reference"
+          },
+          "named": true,
+          "value": "reference"
         },
         {
           "type": "SYMBOL",
@@ -1117,7 +1122,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "reference"
+      "name": "_inline_reference"
     },
     {
       "type": "SYMBOL",

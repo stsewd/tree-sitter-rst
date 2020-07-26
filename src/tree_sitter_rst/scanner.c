@@ -154,7 +154,8 @@ bool rst_scanner_scan(RSTScanner* scanner)
           || valid_symbols[T_SUBSTITUTION_REFERENCE]
           || valid_symbols[T_INLINE_TARGET]
           || valid_symbols[T_FOOTNOTE_REFERENCE]
-          || valid_symbols[T_REFERENCE])) {
+          || valid_symbols[T_CITATION_REFERENCE]
+          || valid_symbols[T_INLINE_REFERENCE])) {
     return parse_inline_markup(scanner);
   }
 
@@ -171,7 +172,7 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_literal_block_mark(scanner);
   }
 
-  if (is_alphanumeric(current) && valid_symbols[T_REFERENCE]) {
+  if (is_alphanumeric(current) && valid_symbols[T_INLINE_REFERENCE]) {
     return parse_inline_reference(scanner);
   }
 

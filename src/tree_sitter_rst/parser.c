@@ -91,7 +91,7 @@ bool parse_overline(RSTScanner* scanner)
           if (adornment == '*' && valid_symbols[T_EMPHASIS]) {
             return parse_inner_inline_markup(scanner, IM_EMPHASIS);
           }
-          if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_REFERENCE])) {
+          if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INLINE_REFERENCE])) {
             return parse_inner_inline_markup(scanner, IM_INTERPRETED_TEXT | IM_REFERENCE);
           }
           if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
@@ -387,7 +387,7 @@ bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized)
       return true;
     }
   } else {
-    if (is_alphanumeric(scanner->lookahead) && valid_symbols[T_REFERENCE]) {
+    if (is_alphanumeric(scanner->lookahead) && valid_symbols[T_INLINE_REFERENCE]) {
       return parse_inline_reference(scanner);
     }
     if (valid_symbols[T_TEXT]) {
@@ -425,7 +425,6 @@ bool parse_explict_markup_start(RSTScanner* scanner)
   return false;
 }
 
-/// The previous token had to be a valid bullet.
 bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum TokenType token_type)
 {
   const bool* valid_symbols = scanner->valid_symbols;
@@ -483,17 +482,17 @@ bool parse_label(RSTScanner* scanner)
       scanner->advance(scanner);
     }
     if (scanner->lookahead != ']' && valid_symbols[T_CITATION_LABEL]) {
-      return parse_inner_label(scanner, T_CITATION_LABEL);
+      return parse_inner_alphanumeric_label(scanner, T_CITATION_LABEL);
     }
   } else if (scanner->lookahead == '*' && valid_symbols[T_FOOTNOTE_LABEL]) {
     scanner->advance(scanner);
   } else if (scanner->lookahead == '#' && valid_symbols[T_FOOTNOTE_LABEL]) {
     scanner->advance(scanner);
     if (is_alphanumeric(scanner->lookahead)) {
-      return parse_inner_label(scanner, T_FOOTNOTE_LABEL);
+      return parse_inner_alphanumeric_label(scanner, T_FOOTNOTE_LABEL);
     }
   } else if (is_alphanumeric(scanner->lookahead) && valid_symbols[T_CITATION_LABEL]) {
-    return parse_inner_label(scanner, T_CITATION_LABEL);
+    return parse_inner_alphanumeric_label(scanner, T_CITATION_LABEL);
   } else {
     return false;
   }
@@ -513,7 +512,7 @@ bool parse_label(RSTScanner* scanner)
   return false;
 }
 
-bool parse_inner_label(RSTScanner* scanner, enum TokenType token_type)
+bool parse_inner_alphanumeric_label(RSTScanner* scanner, enum TokenType token_type)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -884,14 +883,14 @@ bool parse_inline_markup(RSTScanner* scanner)
     type = IM_EMPHASIS;
   } else if (scanner->previous == '`' && scanner->lookahead == '`' && valid_symbols[T_LITERAL]) {
     type = IM_LITERAL;
-  } else if (scanner->previous == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_REFERENCE])) {
+  } else if (scanner->previous == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INLINE_REFERENCE])) {
     type = IM_INTERPRETED_TEXT | IM_REFERENCE;
   } else if (scanner->previous == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
     type = IM_SUBSTITUTION_REFERENCE;
   } else if (scanner->previous == '_' && scanner->lookahead == '`' && valid_symbols[T_INLINE_TARGET]) {
     type = IM_INLINE_TARGET;
-  } else if (scanner->previous == '[' && valid_symbols[T_FOOTNOTE_REFERENCE]) {
-    type = IM_FOOTNOTE_REFERENCE;
+  } else if (scanner->previous == '[' && (valid_symbols[T_FOOTNOTE_REFERENCE] || valid_symbols[T_CITATION_REFERENCE])) {
+    type = IM_FOOTNOTE_REFERENCE | IM_CITATION_REFERENCE;
   }
 
   // Skip one char for tokens that start with a double char
@@ -978,7 +977,7 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
       } else if ((type & IM_INLINE_TARGET) && scanner->previous == '`') {
         lexer->result_symbol = T_INLINE_TARGET;
       } else if ((type & IM_REFERENCE) && scanner->previous == '`' && scanner->lookahead == '_') {
-        lexer->result_symbol = T_REFERENCE;
+        lexer->result_symbol = T_INLINE_REFERENCE;
 
         // Check for annonymous references
         scanner->advance(scanner);
@@ -1030,7 +1029,7 @@ bool parse_inline_reference(RSTScanner* scanner)
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
-  if (!is_alphanumeric(scanner->lookahead) || !valid_symbols[T_REFERENCE]) {
+  if (!is_alphanumeric(scanner->lookahead) || !valid_symbols[T_INLINE_REFERENCE]) {
     return false;
   }
 
@@ -1057,7 +1056,7 @@ bool parse_inline_reference(RSTScanner* scanner)
 
   if (scanner->previous == '_' && (is_space(scanner->lookahead) || is_end_char(scanner->lookahead))) {
     lexer->mark_end(lexer);
-    lexer->result_symbol = T_REFERENCE;
+    lexer->result_symbol = T_INLINE_REFERENCE;
     return true;
   }
 

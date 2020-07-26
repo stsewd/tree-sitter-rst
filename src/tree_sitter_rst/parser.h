@@ -11,7 +11,8 @@
 #define IM_SUBSTITUTION_REFERENCE 1u << 4u
 #define IM_INLINE_TARGET 1u << 5u
 #define IM_FOOTNOTE_REFERENCE 1u << 6u
-#define IM_REFERENCE 1u << 7u
+#define IM_CITATION_REFERENCE 1u << 7u
+#define IM_REFERENCE 1u << 8u
 
 bool parse_indent(RSTScanner* scanner);
 bool parse_overline(RSTScanner* scanner);
@@ -34,7 +35,7 @@ bool parse_attribution_mark(RSTScanner* scanner);
 bool parse_doctest_block_mark(RSTScanner* scanner);
 
 bool parse_label(RSTScanner* scanner);
-bool parse_inner_label(RSTScanner* scanner, enum TokenType token_type);
+bool parse_inner_alphanumeric_label(RSTScanner* scanner, enum TokenType token_type);
 bool parse_target_name(RSTScanner* scanner);
 bool parse_anonymous_target_mark(RSTScanner* scanner);
 bool parse_directive_mark(RSTScanner* scanner);

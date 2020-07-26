@@ -43,8 +43,8 @@ module.exports = grammar({
     $.substitution_reference,
     $._inline_target,
     $.footnote_reference,
-    $.citation_reference, // TODO
-    $.reference,
+    $.citation_reference,
+    $._inline_reference,
     $.standalone_hyperlink,  // TODO
 
     // Markup blocks
@@ -523,7 +523,7 @@ module.exports = grammar({
       alias($._inline_target, $.target),
       $.footnote_reference,
       $.citation_reference,
-      $.reference,
+      alias($._inline_reference, $.reference),
       $.standalone_hyperlink,
     ),
 
