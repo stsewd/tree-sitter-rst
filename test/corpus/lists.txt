@@ -13,10 +13,12 @@ Empty elements
   (bullet_list
     (list_item)
     (list_item
-      (paragraph))
+      (body
+        (paragraph)))
     (list_item)
     (list_item
-      (paragraph))))
+      (body
+        (paragraph)))))
 
 =========
 Multiline
@@ -32,10 +34,12 @@ Multiline
 (document
   (bullet_list
     (list_item
-      (paragraph))
+      (body
+       (paragraph)))
     (list_item
-      (paragraph
-        (emphasis)))))
+      (body
+        (paragraph
+          (emphasis))))))
 
 ======
 Nested
@@ -55,19 +59,21 @@ Nested
 (document
   (bullet_list
     (list_item
-      (paragraph)
-      (bullet_list
-        (list_item
-          (paragraph))
-        (list_item
-          (paragraph))))
+     (body
+        (paragraph)
+        (bullet_list
+          (list_item
+            (body (paragraph)))
+          (list_item
+            (body (paragraph))))))
     (list_item
-      (paragraph)
-      (enumerated_list
-        (list_item
-          (paragraph))
-        (list_item
-          (paragraph))))))
+     (body
+        (paragraph)
+        (enumerated_list
+          (list_item
+            (body (paragraph)))
+          (list_item
+            (body (paragraph))))))))
 
 ==============
 Combined lists
@@ -91,26 +97,26 @@ Combined lists
 (document
   (enumerated_list
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph)))
+      (body (paragraph))))
   (bullet_list
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph)))
+      (body (paragraph))))
   (enumerated_list
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph)))
+      (body (paragraph))))
   (bullet_list
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))))
+      (body (paragraph)))))
 
 =========================
 Lists with other elements
@@ -128,11 +134,8 @@ Some text:
   (paragraph)
   (bullet_list
     (list_item
-      (paragraph
-        (emphasis)))
+      (body (paragraph (emphasis))))
     (list_item
-      (paragraph
-        (strong)))
+      (body (paragraph (strong))))
     (list_item
-      (paragraph
-        (interpreted_text)))))
+      (body (paragraph (interpreted_text))))))

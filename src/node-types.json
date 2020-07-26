@@ -152,6 +152,45 @@
     }
   },
   {
+    "type": "body",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_list",
+          "named": true
+        },
+        {
+          "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "block_quote",
+          "named": true
+        },
+        {
+          "type": "doctest_block",
+          "named": true
+        },
+        {
+          "type": "line_block",
+          "named": true
+        },
+        {
+          "type": "literal_block",
+          "named": true
+        },
+        {
+          "type": "paragraph",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "bullet_list",
     "named": true,
     "fields": {},
@@ -170,40 +209,12 @@
     "type": "citation",
     "named": true,
     "fields": {
-      "block": {
+      "body": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "::",
-            "named": false
-          },
-          {
-            "type": "_list",
-            "named": true
-          },
-          {
-            "type": "_markup_block",
-            "named": true
-          },
-          {
-            "type": "block_quote",
-            "named": true
-          },
-          {
-            "type": "doctest_block",
-            "named": true
-          },
-          {
-            "type": "line_block",
-            "named": true
-          },
-          {
-            "type": "literal_block",
-            "named": true
-          },
-          {
-            "type": "paragraph",
+            "type": "body",
             "named": true
           }
         ]
@@ -229,40 +240,12 @@
     "type": "directive",
     "named": true,
     "fields": {
-      "block": {
+      "body": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "::",
-            "named": false
-          },
-          {
-            "type": "_list",
-            "named": true
-          },
-          {
-            "type": "_markup_block",
-            "named": true
-          },
-          {
-            "type": "block_quote",
-            "named": true
-          },
-          {
-            "type": "doctest_block",
-            "named": true
-          },
-          {
-            "type": "line_block",
-            "named": true
-          },
-          {
-            "type": "literal_block",
-            "named": true
-          },
-          {
-            "type": "paragraph",
+            "type": "body",
             "named": true
           }
         ]
@@ -350,40 +333,12 @@
     "type": "footnote",
     "named": true,
     "fields": {
-      "block": {
+      "body": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "::",
-            "named": false
-          },
-          {
-            "type": "_list",
-            "named": true
-          },
-          {
-            "type": "_markup_block",
-            "named": true
-          },
-          {
-            "type": "block_quote",
-            "named": true
-          },
-          {
-            "type": "doctest_block",
-            "named": true
-          },
-          {
-            "type": "line_block",
-            "named": true
-          },
-          {
-            "type": "literal_block",
-            "named": true
-          },
-          {
-            "type": "paragraph",
+            "type": "body",
             "named": true
           }
         ]
@@ -435,35 +390,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
-          "type": "_list",
-          "named": true
-        },
-        {
-          "type": "_markup_block",
-          "named": true
-        },
-        {
-          "type": "block_quote",
-          "named": true
-        },
-        {
-          "type": "doctest_block",
-          "named": true
-        },
-        {
-          "type": "line_block",
-          "named": true
-        },
-        {
-          "type": "literal_block",
-          "named": true
-        },
-        {
-          "type": "paragraph",
+          "type": "body",
           "named": true
         }
       ]
@@ -512,7 +443,7 @@
     "type": "substitution_definition",
     "named": true,
     "fields": {
-      "block": {
+      "body": {
         "multiple": false,
         "required": true,
         "types": [

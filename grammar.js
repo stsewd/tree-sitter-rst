@@ -91,11 +91,11 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      ================
-      Overline section
-      ================
+    ================
+    Overline section
+    ================
 
     */
     _overline_section: $ => seq(
@@ -106,10 +106,10 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      Underline section
-      -----------------
+    Underline section
+    -----------------
 
     */
     _underline_section: $ => seq(
@@ -123,13 +123,13 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      Paragraph
+    Paragraph
 
-      ----
+    ----
 
-      Some other paragraph
+    Some other paragraph
 
     */
     _transition_block: $ => seq(
@@ -146,7 +146,7 @@ module.exports = grammar({
       $._blankline,
     ),
 
-    _indented_block: $ => seq(
+    body: $ => seq(
       repeat(
         seq(
           $._body_element,
@@ -172,9 +172,9 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      I'm a simple paragraph.
+    I'm a simple paragraph.
 
     */
     paragraph: $ => repeat1($._paragraph_line),
@@ -197,10 +197,10 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      - One
-      - Two
+    - One
+    - Two
 
     */
     bullet_list: $ => repeat1(
@@ -209,7 +209,7 @@ module.exports = grammar({
 
     _bullet_list_item: $ => seq(
       alias($._char_bullet, 'bullet'),
-      choice($._indented_block, $._dedent),
+      choice($.body, $._dedent),
     ),
 
     // Enumerated list
@@ -217,10 +217,10 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      1. One
-      2. Two
+    1. One
+    2. Two
 
     */
     enumerated_list: $ => repeat1(
@@ -229,7 +229,7 @@ module.exports = grammar({
 
     _numeric_list_item: $ => seq(
       alias($._numeric_bullet, 'bullet'),
-      choice($._indented_block, $._dedent),
+      choice($.body, $._dedent),
     ),
 
     // Literal blocks
@@ -237,16 +237,16 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      This is a paragraph::
+    This is a paragraph::
 
         I'm an indented literal block
 
-      This is a paragraph::
+    This is a paragraph::
 
-      > I'm a quoted
-      > literal block
+    > I'm a quoted
+    > literal block
 
     */
     _literal_block: $ => seq(
@@ -255,11 +255,11 @@ module.exports = grammar({
     ),
 
     literal_block: $ => choice(
-      $._indented_literal_block,
+      $._indented_text_block,
       $._quoted_literal_block,
     ),
 
-    _indented_literal_block: $ => seq(
+    _indented_text_block: $ => seq(
       repeat(
         seq(
           $._text_block,
@@ -275,10 +275,10 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      | Line
-      | block
+    | Line
+    | block
 
     */
     line_block: $ => repeat1($.line),
@@ -293,9 +293,9 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      The next text is a quote
+    The next text is a quote
 
         "It is my *business* to know things.  That is my trade."
 
@@ -332,9 +332,9 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      >>> print("hello world")
+    >>> print("hello world")
 
     */
     doctest_block: $ => seq(
@@ -364,16 +364,16 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      .. [1] Footnote
-      .. [#python] Another footnote
+    .. [1] Footnote
+    .. [#python] Another footnote
 
     */
     footnote: $ => seq(
       alias($._explicit_markup_start, '..'),
       field('name', alias($._footnote_label, $.label)),
-      field('block', choice($._indented_block, $._dedent)),
+      field('body', choice($.body, $._dedent)),
     ),
 
     // Citations
@@ -381,15 +381,15 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      .. [citation] Citation
+    .. [citation] Citation
 
     */
     citation: $ => seq(
       alias($._explicit_markup_start, '..'),
       field('name', alias($._citation_label, $.label)),
-      field('block', choice($._indented_block, $._dedent)),
+      field('body', choice($.body, $._dedent)),
     ),
 
     // Hyperlink targets
@@ -397,9 +397,9 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      .. _hyperlink-name: link-block
+    .. _hyperlink-name: link-block
 
     */
     target: $ => seq(
@@ -414,9 +414,9 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      .. __: anonymous
+    .. __: anonymous
 
     */
     _anonymous_target: $ => seq(
@@ -430,17 +430,17 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      .. note::
+    .. note::
 
-         This is a directive
+       This is a directive
 
     */
     directive: $ => seq(
       alias($._explicit_markup_start, '..'),
       field('name', alias($._directive_mark, $.type)),
-      field('block', choice($._indented_block, $._dedent)),
+      field('body', choice($.body, $._dedent)),
     ),
 
     // Substitution definition
@@ -448,22 +448,22 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      .. |my-image| image:: /images/spade.png
-         :height: 11
-         :width: 11
+    .. |my-image| image:: /images/spade.png
+       :height: 11
+       :width: 11
 
     */
     substitution_definition: $ => seq(
       alias($._explicit_markup_start, '..'),
       field('name', alias($._substitution_mark, $.substitution)),
-      field('block', alias($._embedded_directive, $.directive)),
+      field('body', alias($._embedded_directive, $.directive)),
     ),
 
     _embedded_directive: $ => seq(
       field('name', alias($._directive_mark, $.type)),
-      field('block', choice($._indented_block, $._dedent)),
+      field('body', choice($.body, $._dedent)),
     ),
 
     // Comments
@@ -471,14 +471,14 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      .. This is a comment.
+    .. This is a comment.
 
     */
     comment: $ => seq(
       alias($._explicit_markup_start, '..'),
-      choice($._indented_literal_block, $._dedent),
+      choice($._indented_text_block, $._dedent),
     ),
 
     // =============
@@ -487,20 +487,20 @@ module.exports = grammar({
 
     /*
 
-      Example:
+    Example:
 
-      - Normal text
-      - *emphasis*
-      - **strong**
-      - `interpreted text`
-      - ``literal text``
-      - |substitution|
-      - _`Inline target`
-      - Footnote [1]_
-      - Citation [python]_
-      - reference_
-      - `reference`_
-      - Hyperlink https://stsewd.dev/
+    - Normal text
+    - *emphasis*
+    - **strong**
+    - `interpreted text`
+    - ``literal text``
+    - |substitution|
+    - _`Inline target`
+    - Footnote [1]_
+    - Citation [python]_
+    - reference_
+    - `reference`_
+    - Hyperlink https://stsewd.dev/
     */
     _line: $ => seq(
       repeat1($._inline_markup),

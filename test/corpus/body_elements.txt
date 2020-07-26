@@ -59,23 +59,23 @@ Bullet lists
 (document
   (bullet_list
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph)))
+      (body (paragraph))))
   (line_block
     (line))
   (bullet_list
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph)))
+      (body (paragraph))))
   (line_block
     (line))
   (bullet_list
     (list_item
-      (paragraph))))
+      (body (paragraph)))))
 
 ================
 Enumerated lists
@@ -111,44 +111,44 @@ Z. Six
 (document
   (enumerated_list
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph)))
+      (body (paragraph))))
   (line_block
     (line))
   (enumerated_list
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph)))
+      (body (paragraph))))
   (line_block
     (line))
   (enumerated_list
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph)))
+      (body (paragraph))))
   (line_block
     (line))
   (enumerated_list
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))
+      (body (paragraph)))
     (list_item
-      (paragraph))))
+      (body (paragraph)))))
 
 =======================
 Indented literal blocks
@@ -353,9 +353,9 @@ This is a great quote
       (emphasis))
     (bullet_list
       (list_item
-        (paragraph))
+       (body (paragraph)))
       (list_item
-        (paragraph)))
+       (body (paragraph))))
     (comment)
     (attribution))
   (comment)
@@ -417,26 +417,25 @@ Footnotes
 (document
   (footnote
     (label)
-    (paragraph))
+    (body (paragraph)))
   (footnote
     (label)
-    (paragraph))
+    (body (paragraph)))
   (footnote
     (label)
-    (paragraph))
+    (body (paragraph)))
   (footnote
     (label)
-    (paragraph))
+    (body (paragraph)))
   (footnote
     (label)
-    (paragraph))
+    (body (paragraph)))
   (footnote
     (label)
-    (paragraph))
+    (body (paragraph)))
   (footnote
     (label)
-    (paragraph
-      (emphasis))))
+    (body (paragraph (emphasis)))))
 
 =========
 Citations
@@ -459,27 +458,25 @@ Citations
 (document
   (citation
     (label)
-    (paragraph
-      (interpreted_text)))
+    (body (paragraph (interpreted_text))))
   (citation
     (label)
-    (paragraph))
+    (body (paragraph)))
   (citation
     (label)
-    (paragraph))
+    (body (paragraph)))
   (citation
     (label)
-    (paragraph))
+    (body (paragraph)))
   (citation
     (label)
-    (paragraph))
+    (body (paragraph)))
   (citation
     (label)
-    (paragraph))
+    (body (paragraph)))
   (citation
     (label)
-    (paragraph
-      (strong))))
+    (body (paragraph (strong)))))
 
 =================
 Hyperlink targets
@@ -578,28 +575,30 @@ Directives
     (type))
   (directive
     (type)
-    (paragraph))
+    (body (paragraph)))
   (directive
     (type)
-    (paragraph))
+    (body (paragraph)))
   (directive
     (type)
-    (paragraph))
+    (body (paragraph)))
   (directive
     (type)
-    (paragraph))
+    (body (paragraph)))
   (directive
     (type)
-    (bullet_list
-      (list_item
-        (paragraph))
-      (list_item
-        (paragraph))))
+    (body
+      (bullet_list
+        (list_item
+        (body (paragraph)))
+        (list_item
+        (body (paragraph))))))
   (directive
     (type)
-    (paragraph
-      (strong))
-    (paragraph)))
+    (body
+      (paragraph
+        (strong))
+      (paragraph))))
 
 ========================
 Substitution definitions
@@ -624,32 +623,32 @@ Substitution definitions
     (substitution)
     (directive
       (type)
-      (paragraph)))
+      (body (paragraph))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (paragraph)))
+      (body (paragraph))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (paragraph)))
+      (body (paragraph))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (paragraph)))
+      (body (paragraph))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (paragraph)))
+      (body (paragraph))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (paragraph))))
+      (body (paragraph)))))
 
 ========
 Comments

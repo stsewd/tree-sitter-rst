@@ -67,7 +67,7 @@
 
 (doctest_block) @embed
 (directive
-  block: (_) @embed)
+  body: (body) @embed)
 
 ; Others
 

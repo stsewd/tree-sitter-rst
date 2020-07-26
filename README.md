@@ -29,6 +29,8 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## Design notes
 
+- Nodes that contain body elements inside (like lists or directives),
+  are inside a node named 'body'.
 - In RST sections are a big node that contains body elements,
   here they are just a node containing the title.
   This is to avoid guessing the level of subtitles.
