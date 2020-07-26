@@ -7,13 +7,17 @@
   "::"
   "bullet"
   "adornment"
-] @punctuation.delimiter
+] @punctuation.special
 
-; Types
+; Directives
 
 (directive
-  (type) @type)
+  name: (type) @function)
 
 ; Strings
 
 (comment) @comment
+
+; Error
+
+(ERROR) @error

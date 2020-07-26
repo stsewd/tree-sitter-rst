@@ -1,0 +1,3 @@
+; Scopes
+
+(document) @local.scope
