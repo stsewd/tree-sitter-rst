@@ -37,3 +37,8 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Literal blocks are part of the paragraph they precede, not a separate node,
   except for the expanded form of literal blocks.
 - Should we include the literal block mark as part of the literal block?
+
+## Projects using this grammar
+
+- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+- Yours?
