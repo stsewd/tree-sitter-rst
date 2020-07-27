@@ -420,7 +420,7 @@ module.exports = grammar({
 
     */
     _anonymous_target: $ => seq(
-      alias($._anonymous_target_mark, '..'),
+      alias($._anonymous_target_mark, '__'),
       field('link', optional(alias(LINK, $.link))),
       $._newline,
     ),

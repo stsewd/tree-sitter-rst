@@ -701,7 +701,7 @@
             "name": "_anonymous_target_mark"
           },
           "named": false,
-          "value": ".."
+          "value": "__"
         },
         {
           "type": "FIELD",

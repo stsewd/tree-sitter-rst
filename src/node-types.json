@@ -519,6 +519,10 @@
     "named": false
   },
   {
+    "type": "__",
+    "named": false
+  },
+  {
     "type": "adornment",
     "named": false
   },
