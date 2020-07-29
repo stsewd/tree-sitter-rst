@@ -544,10 +544,11 @@ module.exports = grammar({
     - `Interpreted text with a suffix role`:suffix:role:
     */
     interpreted_text: $ => choice(
+      $._default_role,
       $._prefix_role,
       $._suffix_role,
-      $._interpreted_text,
     ),
+    _default_role: $ => alias($._interpreted_text, "interpreted_text"),
     _prefix_role: $ => seq(
       alias($._role_name_prefix, $.role),
       alias($._interpreted_text, 'interpreted_text'),
