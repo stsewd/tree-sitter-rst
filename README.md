@@ -11,14 +11,22 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## TODO
 
+- `-` is an valid start of word, check if things work with that.
+- Refactor parse_inline_markup to not include roles and interpreted_text.
 - Allow lists with blank lines between items
-- roles
 - Nested line blocks
 - Parse external hyperlinks (standalone_hyperlink)
 - Definition lists
 - Field lists
 - Option lists
-- Validate length of adornments in sections? (the spec doesn't mention this)
+- Validate length of adornments in sections?
+
+  The spec doesn't mention this, but this paragraph does.
+
+  > The underline/overline must be at least as long as the title text.
+
+  https://docutils.sourceforge.io/docs/user/rst/quickstart.html
+
 - Tables (maybe implemented without validations?)
 - Add some nodes to inline
 - tests, tests, and more tests!

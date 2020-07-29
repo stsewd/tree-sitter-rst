@@ -356,6 +356,21 @@
     }
   },
   {
+    "type": "interpreted_text",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "role",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "line",
     "named": true,
     "fields": {},
@@ -543,10 +558,6 @@
     "named": true
   },
   {
-    "type": "interpreted_text",
-    "named": true
-  },
-  {
     "type": "label",
     "named": true
   },
@@ -560,6 +571,10 @@
   },
   {
     "type": "reference",
+    "named": true
+  },
+  {
+    "type": "role",
     "named": true
   },
   {

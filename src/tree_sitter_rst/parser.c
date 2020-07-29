@@ -91,8 +91,11 @@ bool parse_overline(RSTScanner* scanner)
           if (adornment == '*' && valid_symbols[T_EMPHASIS]) {
             return parse_inner_inline_markup(scanner, IM_EMPHASIS);
           }
-          if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INLINE_REFERENCE])) {
-            return parse_inner_inline_markup(scanner, IM_INTERPRETED_TEXT | IM_REFERENCE);
+          if (adornment == ':' && (valid_symbols[T_ROLE_NAME_PREFIX] || valid_symbols[T_ROLE_NAME_SUFFIX])) {
+            return parse_inner_inline_markup(scanner, IM_ROLE_PREFIX | IM_ROLE_SUFFIX);
+          }
+          if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_INLINE_REFERENCE])) {
+            return parse_inner_inline_markup(scanner, IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_REFERENCE);
           }
           if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
             return parse_inner_inline_markup(scanner, IM_SUBSTITUTION_REFERENCE);
@@ -898,8 +901,12 @@ bool parse_inline_markup(RSTScanner* scanner)
     type = IM_EMPHASIS;
   } else if (scanner->previous == '`' && scanner->lookahead == '`' && valid_symbols[T_LITERAL]) {
     type = IM_LITERAL;
-  } else if (scanner->previous == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INLINE_REFERENCE])) {
-    type = IM_INTERPRETED_TEXT | IM_REFERENCE;
+  } else if (scanner->previous == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_INLINE_REFERENCE])) {
+    type = IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_REFERENCE;
+  } else if (scanner->previous == ':' && valid_symbols[T_ROLE_NAME_PREFIX]) {
+    type = IM_ROLE_PREFIX;
+  } else if (scanner->previous == ':' && valid_symbols[T_ROLE_NAME_SUFFIX]) {
+    type = IM_ROLE_SUFFIX;
   } else if (scanner->previous == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
     type = IM_SUBSTITUTION_REFERENCE;
   } else if (scanner->previous == '_' && scanner->lookahead == '`' && valid_symbols[T_INLINE_TARGET]) {
@@ -961,6 +968,27 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
     }
     return parse_text(scanner);
   }
+  if (type & IM_ROLE_PREFIX || type & IM_ROLE_SUFFIX) {
+    bool ok = parse_role_name(scanner);
+    if (ok) {
+      if (type & IM_ROLE_PREFIX && scanner->lookahead == '`' && valid_symbols[T_ROLE_NAME_PREFIX]) {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = T_ROLE_NAME_PREFIX;
+        return true;
+      }
+      if (type & IM_ROLE_SUFFIX
+          && valid_symbols[T_ROLE_NAME_SUFFIX]
+          && (is_space(scanner->lookahead) || is_end_char(scanner->lookahead))) {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = T_ROLE_NAME_SUFFIX;
+        return true;
+      }
+    }
+    if (valid_symbols[T_TEXT]) {
+      lexer->result_symbol = T_TEXT;
+      return true;
+    }
+  }
 
   while (!is_newline(scanner->lookahead)) {
     // Skip escaped chars
@@ -1021,8 +1049,23 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
         if (scanner->lookahead == '_') {
           advance = true;
         }
-      } else if ((type & IM_INTERPRETED_TEXT) && scanner->previous == '`') {
-        lexer->result_symbol = T_INTERPRETED_TEXT;
+      } else if ((type & IM_INTERPRETED_TEXT || type & IM_INTERPRETED_TEXT_PREFIX) && scanner->previous == '`') {
+        if (scanner->lookahead == ':' && type & IM_INTERPRETED_TEXT_PREFIX && valid_symbols[T_INTERPRETED_TEXT_PREFIX]) {
+          lexer->mark_end(lexer);
+          scanner->advance(scanner);
+          bool ok = parse_role_name(scanner);
+          if (ok) {
+            lexer->result_symbol = T_INTERPRETED_TEXT_PREFIX;
+            return true;
+          }
+          if (valid_symbols[T_INTERPRETED_TEXT]) {
+            lexer->result_symbol = T_INTERPRETED_TEXT;
+            return true;
+          }
+          is_valid = false;
+        } else {
+          lexer->result_symbol = T_INTERPRETED_TEXT;
+        }
       } else if ((type & IM_SUBSTITUTION_REFERENCE) && scanner->previous == '|') {
         lexer->result_symbol = T_SUBSTITUTION_REFERENCE;
       } else {
@@ -1095,6 +1138,38 @@ bool parse_inline_reference(RSTScanner* scanner)
 
   if (valid_symbols[T_TEXT]) {
     lexer->result_symbol = T_TEXT;
+    return true;
+  }
+
+  return false;
+}
+
+/// The previous token was `:` and it's already consumed.
+bool parse_role_name(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  // Mark the end of the word before going deeper.
+  if (!valid_symbols[T_INTERPRETED_TEXT_PREFIX]) {
+    lexer->mark_end(lexer);
+  }
+
+  bool internal_symbol = true;
+  while (is_alphanumeric(scanner->lookahead) || is_internal_reference_char(scanner->lookahead)) {
+    // TODO skip escaped : chars?
+    if (is_internal_reference_char(scanner->lookahead)) {
+      if (internal_symbol) {
+        return false;
+      }
+      internal_symbol = true;
+    } else {
+      internal_symbol = false;
+    }
+    scanner->advance(scanner);
+  }
+
+  if (scanner->previous == ':') {
     return true;
   }
 

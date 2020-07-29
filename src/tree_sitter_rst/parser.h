@@ -7,12 +7,15 @@
 #define IM_EMPHASIS 1u << 0u
 #define IM_STRONG 1u << 1u
 #define IM_INTERPRETED_TEXT 1u << 2u
-#define IM_LITERAL 1u << 3u
-#define IM_SUBSTITUTION_REFERENCE 1u << 4u
-#define IM_INLINE_TARGET 1u << 5u
-#define IM_FOOTNOTE_REFERENCE 1u << 6u
-#define IM_CITATION_REFERENCE 1u << 7u
-#define IM_REFERENCE 1u << 8u
+#define IM_INTERPRETED_TEXT_PREFIX 1u << 3u
+#define IM_ROLE_PREFIX 1u << 4u
+#define IM_ROLE_SUFFIX 1u << 5u
+#define IM_LITERAL 1u << 6u
+#define IM_SUBSTITUTION_REFERENCE 1u << 7u
+#define IM_INLINE_TARGET 1u << 8u
+#define IM_FOOTNOTE_REFERENCE 1u << 9u
+#define IM_CITATION_REFERENCE 1u << 10u
+#define IM_REFERENCE 1u << 11u
 
 bool parse_indent(RSTScanner* scanner);
 bool parse_overline(RSTScanner* scanner);
@@ -46,6 +49,7 @@ bool parse_field_name(RSTScanner* scanner);
 bool parse_inline_markup(RSTScanner* scanner);
 bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type);
 bool parse_inline_reference(RSTScanner* scanner);
+bool parse_role_name(RSTScanner* scanner);
 bool parse_text(RSTScanner* scanner);
 
 #endif /* TREE_SITTER_RST_PARSER_H_ */

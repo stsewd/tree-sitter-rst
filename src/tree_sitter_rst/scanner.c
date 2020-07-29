@@ -146,16 +146,7 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_directive_mark(scanner);
   }
 
-  if (is_inline_markup_start_char(current)
-      && (valid_symbols[T_EMPHASIS]
-          || valid_symbols[T_STRONG]
-          || valid_symbols[T_INTERPRETED_TEXT]
-          || valid_symbols[T_LITERAL]
-          || valid_symbols[T_SUBSTITUTION_REFERENCE]
-          || valid_symbols[T_INLINE_TARGET]
-          || valid_symbols[T_FOOTNOTE_REFERENCE]
-          || valid_symbols[T_CITATION_REFERENCE]
-          || valid_symbols[T_INLINE_REFERENCE])) {
+  if (is_inline_markup_start_char(current) && (valid_symbols[T_EMPHASIS] || valid_symbols[T_STRONG] || valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_ROLE_NAME_PREFIX] || valid_symbols[T_ROLE_NAME_SUFFIX] || valid_symbols[T_LITERAL] || valid_symbols[T_SUBSTITUTION_REFERENCE] || valid_symbols[T_INLINE_TARGET] || valid_symbols[T_FOOTNOTE_REFERENCE] || valid_symbols[T_CITATION_REFERENCE] || valid_symbols[T_INLINE_REFERENCE])) {
     return parse_inline_markup(scanner);
   }
 

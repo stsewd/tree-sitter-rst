@@ -38,7 +38,10 @@ module.exports = grammar({
     $._text,
     $.emphasis,
     $.strong,
-    $.interpreted_text,
+    $._interpreted_text,
+    $._interpreted_text_prefix,
+    $._role_name_prefix,
+    $._role_name_suffix,
     $.literal,
     $.substitution_reference,
     $._inline_target,
@@ -527,6 +530,31 @@ module.exports = grammar({
       $.citation_reference,
       alias($._inline_reference, $.reference),
       $.standalone_hyperlink,
+    ),
+
+    // Interpreted text
+    // ----------------
+
+    /*
+
+    Example:
+
+    - `simple interpreted text`
+    - :prefix:role:`Interpreted text with a prefix role`
+    - `Interpreted text with a suffix role`:suffix:role:
+    */
+    interpreted_text: $ => choice(
+      $._prefix_role,
+      $._suffix_role,
+      $._interpreted_text,
+    ),
+    _prefix_role: $ => seq(
+      alias($._role_name_prefix, $.role),
+      $._interpreted_text,
+    ),
+    _suffix_role: $ => seq(
+      $._interpreted_text_prefix,
+      alias($._role_name_suffix, $.role),
     ),
 
     __newline: $ => /\r?\n/,
