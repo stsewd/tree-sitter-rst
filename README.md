@@ -30,6 +30,8 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Tables (maybe implemented without validations?)
 - Add some nodes to inline
 - tests, tests, and more tests!
+- Parse some random files for testing like
+  https://github.com/tree-sitter/tree-sitter-javascript/blob/0711e93eb265f729c88c5555989d60bee3011873/script/parse-examples#L31-L33
 
 ## Design notes
 

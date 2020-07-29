@@ -550,10 +550,10 @@ module.exports = grammar({
     ),
     _prefix_role: $ => seq(
       alias($._role_name_prefix, $.role),
-      $._interpreted_text,
+      alias($._interpreted_text, "interpreted_text"),
     ),
     _suffix_role: $ => seq(
-      $._interpreted_text_prefix,
+      alias($._interpreted_text_prefix, "interpreted_text"),
       alias($._role_name_suffix, $.role),
     ),
 
