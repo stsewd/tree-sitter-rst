@@ -558,6 +558,10 @@
     "named": true
   },
   {
+    "type": "interpreted_text",
+    "named": false
+  },
+  {
     "type": "label",
     "named": true
   },

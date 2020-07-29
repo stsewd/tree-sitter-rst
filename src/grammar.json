@@ -1014,8 +1014,13 @@
           "value": "role"
         },
         {
-          "type": "SYMBOL",
-          "name": "_interpreted_text"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_interpreted_text"
+          },
+          "named": false,
+          "value": "interpreted_text"
         }
       ]
     },
@@ -1023,8 +1028,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "_interpreted_text_prefix"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_interpreted_text_prefix"
+          },
+          "named": false,
+          "value": "interpreted_text"
         },
         {
           "type": "ALIAS",
