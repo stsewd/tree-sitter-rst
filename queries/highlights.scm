@@ -1,4 +1,4 @@
-; Marks
+;; Marks
 
 [
   ".."
@@ -11,7 +11,7 @@
   (transition)
 ] @punctuation.special
 
-; Directives
+;; Directives
 
 (directive
   name: (type) @function)
@@ -20,7 +20,7 @@
   name: (type) @include)
  (#match? @include "^include::$"))
 
-; Blocks
+;; Blocks
 
 [
   (literal_block)
@@ -42,7 +42,7 @@
   name: (reference)? @constant
   link: (_) @text.literal)
 
-; Inline markup
+;; Inline markup
 
 (emphasis) @text.emphasis
 
@@ -50,8 +50,38 @@
 
 (standalone_hyperlink) @text.uri
 
+(role) @function
+
+((role) @function.builtin
+ (#match?
+  @function.builtin
+  ; https://docutils.sourceforge.io/docs/ref/rst/roles.html
+  "^:(emphasis|literal|code|math|pep-reference|rfc-reference|strong|subscript|superscript|title-reference|raw):$"))
+
+; Prefix role
+((interpreted_text
+  (role) @_role
+  "interpreted_text" @text.emphasis)
+ (#eq? @_role ":emphasis:"))
+
+((interpreted_text
+  (role) @_role
+  "interpreted_text" @text.strong)
+ (#eq? @_role ":strong:"))
+
+; Sufix role
+((interpreted_text
+  "interpreted_text" @text.emphasis
+  (role) @_role)
+ (#eq? @_role ":emphasis:"))
+
+((interpreted_text
+  "interpreted_text" @text.strong
+  (role) @_role)
+ (#eq? @_role ":strong:"))
+
 [
-  (interpreted_text)
+ "interpreted_text"
   (literal)
 ] @text.literal
 
@@ -63,13 +93,13 @@
   (reference)
 ] @constant
 
-; Embedded
+;; Embedded
 
 (doctest_block) @embed
 (directive
   body: (body) @embed)
 
-; Others
+;; Others
 
 (title) @text.title
 

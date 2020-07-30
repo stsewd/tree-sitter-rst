@@ -18,6 +18,8 @@ I'm *valid\\*
 
 *hello**
 
+-*a*-
+
 ---
 
 (document
@@ -32,6 +34,8 @@ I'm *valid\\*
   (paragraph
     (emphasis)
     (emphasis)
+    (emphasis))
+  (paragraph
     (emphasis))
   (paragraph
     (emphasis))
@@ -56,6 +60,8 @@ I'm **valid\\**
 
 ***hello***
 
+-**a**-
+
 ---
 
 (document
@@ -68,6 +74,8 @@ I'm **valid\\**
   (paragraph
     (strong)
     (strong)
+    (strong))
+  (paragraph
     (strong))
   (paragraph
     (strong))
@@ -145,7 +153,7 @@ Edge cases:
    (interpreted_text (role)))
   (paragraph)
   (paragraph
-    (interpreted_text (role))))
+    (interpreted_text)))
 
 ===============
 Inline literals

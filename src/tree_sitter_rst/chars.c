@@ -249,7 +249,6 @@ bool is_inline_markup_start_char(int32_t c)
     '|', // |substitution references|.
     '_', // _`inline internal target`.
     '[', // [foot-note]_.
-    ':', // Interpreted text with a role prefix.
   };
   const int length = 5;
   for (int i = 0; i < length; i++) {

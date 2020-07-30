@@ -11,8 +11,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## TODO
 
-- `-` is an valid start of word, check if things work with that.
-- Refactor parse_inline_markup to not include roles and interpreted_text.
 - Allow lists with blank lines between items
 - Nested line blocks
 - Parse external hyperlinks (standalone_hyperlink)
