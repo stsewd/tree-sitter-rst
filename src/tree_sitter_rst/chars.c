@@ -1,4 +1,5 @@
 #include "tree_sitter_rst/chars.h"
+#include <string.h>
 
 bool is_newline(int32_t c)
 {
@@ -406,4 +407,18 @@ int get_indent_level(RSTScanner* scanner)
   }
 
   return indent;
+}
+
+bool is_known_schema(char* string, unsigned string_len)
+{
+  char* valid_schemas[] = { "http", "https" };
+  const int length = 2;
+  bool is_valid = false;
+  for (int i = 0; i < length; i++) {
+    int result = memcmp(string, valid_schemas[i], string_len);
+    if (result == 0) {
+      return true;
+    }
+  }
+  return false;
 }

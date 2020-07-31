@@ -12,6 +12,7 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 ## TODO
 
 - Allow lists with blank lines between items
+- Substitution references that end with _ https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#substitution-references
 - Nested line blocks
 - Parse external hyperlinks (standalone_hyperlink)
 - Definition lists

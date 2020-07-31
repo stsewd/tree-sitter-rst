@@ -173,13 +173,19 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_literal_block_mark(scanner);
   }
 
-  if (current == ':' && (valid_symbols[T_ROLE_NAME_PREFIX] || valid_symbols[T_ROLE_NAME_PREFIX])) {
+  if (current == ':' && (valid_symbols[T_ROLE_NAME_PREFIX] || valid_symbols[T_ROLE_NAME_SUFFIX])) {
     return parse_role(scanner);
   }
 
   if (is_alphanumeric(current) && valid_symbols[T_INLINE_REFERENCE]) {
     return parse_inline_reference(scanner);
   }
+
+  /*
+  if (is_alphanumeric(current) && valid_symbols[T_REFERENCE]) {
+    return parse_reference(scanner);
+  }
+  */
 
   if (!is_space(current) && valid_symbols[T_TEXT]) {
     return parse_text(scanner);

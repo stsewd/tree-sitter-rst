@@ -42,6 +42,7 @@ bool is_numeric_bullet_roman_lower(int32_t c);
 bool is_numeric_bullet_roman_upper(int32_t c);
 bool is_numeric_bullet_abc_lower(int32_t c);
 bool is_numeric_bullet_abc_upper(int32_t c);
+bool is_known_schema(char* string, unsigned strlen);
 
 #define CHAR_EMDASH 8212
 

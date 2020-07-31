@@ -13,7 +13,7 @@
 #define IM_INLINE_TARGET 1u << 6u
 #define IM_FOOTNOTE_REFERENCE 1u << 7u
 #define IM_CITATION_REFERENCE 1u << 8u
-#define IM_REFERENCE 1u << 9u
+#define IM_INLINE_REFERENCE 1u << 9u
 
 bool parse_indent(RSTScanner* scanner);
 bool parse_overline(RSTScanner* scanner);

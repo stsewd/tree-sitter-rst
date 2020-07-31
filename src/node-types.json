@@ -499,7 +499,7 @@
         "required": false,
         "types": [
           {
-            "type": "reference",
+            "type": "target",
             "named": true
           }
         ]

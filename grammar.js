@@ -48,7 +48,7 @@ module.exports = grammar({
     $.footnote_reference,
     $.citation_reference,
     $._inline_reference,
-    $.standalone_hyperlink,  // TODO
+    $.standalone_hyperlink, // TODO: rename to reference
 
     // Markup blocks
     $._explicit_markup_start,
@@ -407,7 +407,7 @@ module.exports = grammar({
     */
     target: $ => seq(
       alias($._explicit_markup_start, '..'),
-      field('name', alias($._target_name, $.reference)),
+      field('name', alias($._target_name, $.target)),
       field('link', optional(alias(LINK, $.link))),
       $._dedent,
     ),
