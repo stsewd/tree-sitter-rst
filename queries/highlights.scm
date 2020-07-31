@@ -20,6 +20,13 @@
   name: (type) @include)
  (#match? @include "^include::$"))
 
+((directive
+   name: (type) @function.builtin)
+ (#match?
+  @function.builtin
+  ; https://docutils.sourceforge.io/docs/ref/rst/directives.html
+  "^(attention|caution|danger|error|hint|important|note|tip|warning|admonition)|(image|figure)|(topic|sidebar|line-block|parsed-literal|code|math|rubric|epigraph|highlights|pull-quote|compound|container)|(table|csv-table|list-table)|(contents|sectnum|section-numbering|header|footer)|(target-notes)|(meta)|(replace|unicode|date)|(raw|class|role|default-role|title|restructuredtext-test-directive)::$"))
+
 ;; Blocks
 
 [
