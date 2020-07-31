@@ -18,6 +18,7 @@ update-examples:
 	  -o test/examples/examples.zip
 	unzip -jq test/examples/examples.zip "*.txt" -d test/examples
 	rm test/examples/examples.zip
+	rename .txt .rst test/examples/*.txt
 
 parse-examples:
 	known_failures="$(cat tests/known_failures.txt)"
