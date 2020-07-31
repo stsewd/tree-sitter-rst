@@ -9,6 +9,22 @@ release: build format
 test: build
 	tree-sitter test
 
+update-examples:
+	# https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/input/
+	rm -rf test/examples/
+	curl \
+	  https://sourceforge.net/code-snapshots/svn/d/do/docutils/code/docutils-code-r8531-trunk-docutils-test-functional-input.zip \
+	  --create-dirs \
+	  -o test/examples/examples.zip
+	unzip -jq test/examples/examples.zip "*.txt" -d test/examples
+	rm test/examples/examples.zip
+
+parse-examples:
+	known_failures="$(cat tests/known_failures.txt)"
+	tree-sitter parse -q \
+	  'test/examples/*.txt' \
+	  $(for failure in $known_failures; do echo "!${failure}"; done)
+
 serve: build
 	tree-sitter build-wasm
 	tree-sitter web-ui
@@ -19,4 +35,4 @@ format:
 	  src/scanner.c \
 	  src/tree_sitter_rst/*
 
-.PHONY: build test format serve release
+.PHONY: build test format serve release update-examples parse-examples
