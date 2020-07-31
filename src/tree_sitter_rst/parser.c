@@ -1223,14 +1223,17 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
   consumed_chars = 0;
   bool is_escaped = false;
   while (true) {
+    lexer->mark_end(lexer);
     if (scanner->lookahead == '\\') {
       scanner->advance(scanner);
       is_escaped = true;
     } else {
       is_escaped = false;
     }
+    if (is_invalid_uri_char(scanner->lookahead)) {
+      break;
+    }
     if (is_space(scanner->lookahead)
-        || is_invalid_uri_char(scanner->lookahead)
         || (is_end_char(scanner->lookahead) && !is_escaped && scanner->lookahead != '/')) {
       if (is_end_char(scanner->lookahead)) {
         lexer->mark_end(lexer);
@@ -1248,7 +1251,6 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
   }
 
   if (consumed_chars > 0) {
-    lexer->mark_end(lexer);
     lexer->result_symbol = T_STANDALONE_HYPERLINK;
     return true;
   }

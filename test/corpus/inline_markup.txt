@@ -370,6 +370,8 @@ mailto:someone@somewhere.com
 
 someone@somewhere.com
 
+http://www.example.org\\using\\DOS\\paths\\
+
 This is an escaped url: https://fo\o.com.
 http://
 An email foo@bar
@@ -378,6 +380,7 @@ This isn't a standalone_hyperlink "http:"
 ---
 
 (document
+  (paragraph (standalone_hyperlink))
   (paragraph (standalone_hyperlink))
   (paragraph (standalone_hyperlink))
   (paragraph (standalone_hyperlink))
