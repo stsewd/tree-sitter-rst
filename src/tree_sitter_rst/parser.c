@@ -1068,7 +1068,7 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
       }
 
       // The next char should be a whitespace or an end char
-      if (is_valid && is_space(scanner->lookahead) || is_end_char(scanner->lookahead)) {
+      if (is_valid && (is_space(scanner->lookahead) || is_end_char(scanner->lookahead))) {
         lexer->mark_end(lexer);
         return true;
       }
@@ -1082,7 +1082,7 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
   if (valid_symbols[T_TEXT]) {
     lexer->result_symbol = T_TEXT;
     if (!word_found && is_newline(scanner->lookahead)) {
-      lexer->mark_end(lexer);
+      return parse_text(scanner);
     }
     return true;
   }
@@ -1207,6 +1207,19 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
   }
 
   scanner->advance(scanner);
+
+  if (scanner->lookahead == '/') {
+    scanner->advance(scanner);
+  } else if (!is_alphanumeric(scanner->lookahead)) {
+    if (valid_symbols[T_TEXT]) {
+      if (!is_word) {
+        return parse_text(scanner);
+      }
+      lexer->result_symbol = T_TEXT;
+      return true;
+    }
+  }
+
   consumed_chars = 0;
   bool is_escaped = false;
   while (true) {
@@ -1216,7 +1229,9 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
     } else {
       is_escaped = false;
     }
-    if (is_space(scanner->lookahead) || (is_end_char(scanner->lookahead) && !is_escaped && scanner->lookahead != '/')) {
+    if (is_space(scanner->lookahead)
+        || is_invalid_uri_char(scanner->lookahead)
+        || (is_end_char(scanner->lookahead) && !is_escaped && scanner->lookahead != '/')) {
       if (is_end_char(scanner->lookahead)) {
         lexer->mark_end(lexer);
         scanner->advance(scanner);

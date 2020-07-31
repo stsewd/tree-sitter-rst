@@ -173,6 +173,12 @@ I'm a ``text``
 
 ``hello```
 
+``!!!"""###$$$%%%&&&'''((()))***+++,,,---...///:::``
+
+``;;;<<<===>>>???@@@[[[\\\]]]^^^___```{{{|||}}}~~~``
+
+``xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx``
+
 ---
 
 (document
@@ -184,6 +190,12 @@ I'm a ``text``
   (literal))
  (paragraph
   (literal)
+  (literal))
+ (paragraph
+  (literal))
+ (paragraph
+  (literal))
+ (paragraph
   (literal))
  (paragraph
   (literal))
@@ -361,6 +373,7 @@ someone@somewhere.com
 This is an escaped url: https://fo\o.com.
 http://
 An email foo@bar
+This isn't a standalone_hyperlink "http:"
 
 ---
 

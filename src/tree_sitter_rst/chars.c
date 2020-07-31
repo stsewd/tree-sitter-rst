@@ -428,3 +428,20 @@ bool is_known_schema(char* string, unsigned string_len)
   }
   return false;
 }
+
+bool is_invalid_uri_char(int32_t c)
+{
+  const int32_t invalid_chars[] = {
+    '^',
+    '}',
+    '{',
+    '\\',
+  };
+  const int length = 4;
+  for (int i = 0; i < length; i++) {
+    if (c == invalid_chars[i]) {
+      return true;
+    }
+  }
+  return false;
+}
