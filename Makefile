@@ -23,7 +23,7 @@ update-examples:
 parse-examples:
 	known_failures="$(cat tests/known_failures.txt)"
 	tree-sitter parse -q \
-	  'test/examples/*.txt' \
+	  'test/examples/*.rst' \
 	  $(for failure in $known_failures; do echo "!${failure}"; done)
 
 serve: build
