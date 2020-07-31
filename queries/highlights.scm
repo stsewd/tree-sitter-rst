@@ -63,7 +63,7 @@
  (#match?
   @function.builtin
   ; https://docutils.sourceforge.io/docs/ref/rst/roles.html
-  "^:(emphasis|literal|code|math|pep-reference|rfc-reference|strong|subscript|superscript|title-reference|raw):$"))
+  "^:(emphasis|literal|code|math|pep-reference|PEP|rfc-reference|RFC|strong|subscript|sub|superscript|sup|title-reference|title|t|raw):$"))
 
 ; Prefix role
 ((interpreted_text
