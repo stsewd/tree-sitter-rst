@@ -156,7 +156,7 @@ bool rst_scanner_scan(RSTScanner* scanner)
           || valid_symbols[T_INLINE_TARGET]
           || valid_symbols[T_FOOTNOTE_REFERENCE]
           || valid_symbols[T_CITATION_REFERENCE]
-          || valid_symbols[T_INLINE_REFERENCE])) {
+          || valid_symbols[T_REFERENCE])) {
     return parse_inline_markup(scanner);
   }
 
@@ -177,15 +177,13 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_role(scanner);
   }
 
-  if (is_alphanumeric(current) && valid_symbols[T_INLINE_REFERENCE]) {
-    return parse_inline_reference(scanner);
+  if (is_abc(current) && valid_symbols[T_STANDALONE_HYPERLINK]) {
+    return parse_standalone_hyperlink(scanner);
   }
 
-  /*
   if (is_alphanumeric(current) && valid_symbols[T_REFERENCE]) {
     return parse_reference(scanner);
   }
-  */
 
   if (!is_space(current) && valid_symbols[T_TEXT]) {
     return parse_text(scanner);

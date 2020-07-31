@@ -95,9 +95,9 @@
 
 ;; Embedded
 
-(doctest_block) @embed
+(doctest_block) @embedded
 (directive
-  body: (body) @embed)
+  body: (body) @embedded)
 
 ;; Others
 

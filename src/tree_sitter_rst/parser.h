@@ -13,7 +13,7 @@
 #define IM_INLINE_TARGET 1u << 6u
 #define IM_FOOTNOTE_REFERENCE 1u << 7u
 #define IM_CITATION_REFERENCE 1u << 8u
-#define IM_INLINE_REFERENCE 1u << 9u
+#define IM_REFERENCE 1u << 9u
 
 bool parse_indent(RSTScanner* scanner);
 bool parse_overline(RSTScanner* scanner);
@@ -46,7 +46,10 @@ bool parse_substitution_mark(RSTScanner* scanner);
 bool parse_field_name(RSTScanner* scanner);
 bool parse_inline_markup(RSTScanner* scanner);
 bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type);
-bool parse_inline_reference(RSTScanner* scanner);
+bool parse_reference(RSTScanner* scanner);
+bool parse_inner_reference(RSTScanner* scanner);
+bool parse_standalone_hyperlink(RSTScanner* scanner);
+bool parse_inner_standalone_hyperlink(RSTScanner* scanner);
 bool parse_role(RSTScanner* scanner);
 bool parse_role_name(RSTScanner* scanner);
 bool parse_inner_role(RSTScanner* scanner);

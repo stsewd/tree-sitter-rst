@@ -411,9 +411,15 @@ int get_indent_level(RSTScanner* scanner)
 
 bool is_known_schema(char* string, unsigned string_len)
 {
-  char* valid_schemas[] = { "http", "https" };
-  const int length = 2;
-  bool is_valid = false;
+  char* valid_schemas[] = {
+    "http",
+    "https",
+    "ftp",
+    "mailto",
+    "telnet",
+    "ssh",
+  };
+  const int length = 6;
   for (int i = 0; i < length; i++) {
     int result = memcmp(string, valid_schemas[i], string_len);
     if (result == 0) {

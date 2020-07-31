@@ -343,3 +343,34 @@ lonely__
     (reference))
   (paragraph
     (reference)))
+
+=====================
+Standalone hyperlinks
+=====================
+
+See http://www.python.org for info.
+
+https://www.python.org
+
+ftp://ftp.python.org/pub/python
+
+mailto:someone@somewhere.com
+
+someone@somewhere.com
+
+This is an escaped url: https://fo\o.com.
+http://
+An email foo@bar
+
+---
+
+(document
+  (paragraph (standalone_hyperlink))
+  (paragraph (standalone_hyperlink))
+  (paragraph (standalone_hyperlink))
+  (paragraph (standalone_hyperlink))
+  (paragraph (standalone_hyperlink))
+  (paragraph
+   (standalone_hyperlink)
+   (standalone_hyperlink)
+   (standalone_hyperlink)))

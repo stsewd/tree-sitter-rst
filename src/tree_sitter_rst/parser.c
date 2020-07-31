@@ -99,8 +99,8 @@ bool parse_overline(RSTScanner* scanner)
               return true;
             }
           }
-          if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_INLINE_REFERENCE])) {
-            return parse_inner_inline_markup(scanner, IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_INLINE_REFERENCE);
+          if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_REFERENCE])) {
+            return parse_inner_inline_markup(scanner, IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_REFERENCE);
           }
           if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
             return parse_inner_inline_markup(scanner, IM_SUBSTITUTION_REFERENCE);
@@ -402,8 +402,11 @@ bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized)
       return true;
     }
   } else {
-    if (is_alphanumeric(scanner->lookahead) && valid_symbols[T_INLINE_REFERENCE]) {
-      return parse_inline_reference(scanner);
+    if (is_abc(scanner->lookahead) && valid_symbols[T_STANDALONE_HYPERLINK]) {
+      return parse_inner_standalone_hyperlink(scanner);
+    }
+    if (is_alphanumeric(scanner->lookahead) && valid_symbols[T_REFERENCE]) {
+      return parse_reference(scanner);
     }
     if (valid_symbols[T_TEXT]) {
       lexer->mark_end(lexer);
@@ -913,8 +916,8 @@ bool parse_inline_markup(RSTScanner* scanner)
     type = IM_EMPHASIS;
   } else if (scanner->previous == '`' && scanner->lookahead == '`' && valid_symbols[T_LITERAL]) {
     type = IM_LITERAL;
-  } else if (scanner->previous == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_INLINE_REFERENCE])) {
-    type = IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_INLINE_REFERENCE;
+  } else if (scanner->previous == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_REFERENCE])) {
+    type = IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_REFERENCE;
   } else if (scanner->previous == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
     type = IM_SUBSTITUTION_REFERENCE;
   } else if (scanner->previous == '_' && scanner->lookahead == '`' && valid_symbols[T_INLINE_TARGET]) {
@@ -1027,8 +1030,8 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
         }
       } else if ((type & IM_INLINE_TARGET) && scanner->previous == '`') {
         lexer->result_symbol = T_INLINE_TARGET;
-      } else if ((type & IM_INLINE_REFERENCE) && scanner->previous == '`' && scanner->lookahead == '_') {
-        lexer->result_symbol = T_INLINE_REFERENCE;
+      } else if ((type & IM_REFERENCE) && scanner->previous == '`' && scanner->lookahead == '_') {
+        lexer->result_symbol = T_REFERENCE;
 
         // Check for annonymous references
         scanner->advance(scanner);
@@ -1087,14 +1090,21 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
   return false;
 }
 
-bool parse_inline_reference(RSTScanner* scanner)
+bool parse_reference(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
-  if (!is_alphanumeric(scanner->lookahead) || !valid_symbols[T_INLINE_REFERENCE]) {
+  if (!is_alphanumeric(scanner->lookahead) || !valid_symbols[T_REFERENCE]) {
     return false;
   }
+  return parse_inner_reference(scanner);
+}
+
+bool parse_inner_reference(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
 
   bool internal_symbol = is_internal_reference_char(scanner->previous);
   bool is_word = false;
@@ -1123,7 +1133,7 @@ bool parse_inline_reference(RSTScanner* scanner)
 
   if (scanner->previous == '_' && (is_space(scanner->lookahead) || is_end_char(scanner->lookahead))) {
     lexer->mark_end(lexer);
-    lexer->result_symbol = T_INLINE_REFERENCE;
+    lexer->result_symbol = T_REFERENCE;
     return true;
   }
 
@@ -1135,6 +1145,105 @@ bool parse_inline_reference(RSTScanner* scanner)
     return true;
   }
 
+  return false;
+}
+
+bool parse_standalone_hyperlink(RSTScanner* scanner)
+{
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
+
+  if (!is_abc(scanner->lookahead) || !valid_symbols[T_STANDALONE_HYPERLINK]) {
+    return false;
+  }
+  scanner->advance(scanner);
+  return parse_inner_standalone_hyperlink(scanner);
+}
+
+bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
+{
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
+
+  const unsigned MAX_SCHEMA_LEN = 8;
+  char* schema = malloc(sizeof(char) * MAX_SCHEMA_LEN);
+  unsigned consumed_chars = 0;
+
+  // TODO: cast this more safely
+  schema[consumed_chars++] = (char)scanner->previous;
+  while (consumed_chars < MAX_SCHEMA_LEN) {
+    if (!is_alphanumeric(scanner->lookahead)) {
+      break;
+    }
+    // TODO: cast this more safely
+    schema[consumed_chars++] = (char)scanner->lookahead;
+    scanner->advance(scanner);
+  }
+
+  bool is_word = false;
+  if (is_start_char(scanner->lookahead)) {
+    lexer->mark_end(lexer);
+  }
+
+  bool is_valid = false;
+  if (scanner->lookahead == ':') {
+    is_valid = is_known_schema(schema, consumed_chars);
+  } else if (scanner->lookahead == '@') {
+    is_valid = true;
+  }
+
+  if (!is_valid) {
+    if (is_alphanumeric(scanner->lookahead) || is_internal_reference_char(scanner->lookahead)) {
+      return parse_inner_reference(scanner);
+    }
+    if (valid_symbols[T_TEXT]) {
+      if (!is_word) {
+        return parse_text(scanner);
+      }
+      lexer->result_symbol = T_TEXT;
+      return true;
+    }
+    return false;
+  }
+
+  scanner->advance(scanner);
+  consumed_chars = 0;
+  bool is_escaped = false;
+  while (true) {
+    if (scanner->lookahead == '\\') {
+      scanner->advance(scanner);
+      is_escaped = true;
+    } else {
+      is_escaped = false;
+    }
+    if (is_space(scanner->lookahead) || (is_end_char(scanner->lookahead) && !is_escaped && scanner->lookahead != '/')) {
+      if (is_end_char(scanner->lookahead)) {
+        lexer->mark_end(lexer);
+        scanner->advance(scanner);
+        if (!is_alphanumeric(scanner->lookahead)) {
+          lexer->result_symbol = T_STANDALONE_HYPERLINK;
+          return true;
+        }
+      } else {
+        break;
+      }
+    }
+    scanner->advance(scanner);
+    consumed_chars++;
+  }
+
+  if (consumed_chars > 0) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = T_STANDALONE_HYPERLINK;
+    return true;
+  }
+  if (valid_symbols[T_TEXT]) {
+    if (!is_word) {
+      return parse_text(scanner);
+    }
+    lexer->result_symbol = T_TEXT;
+    return true;
+  }
   return false;
 }
 
@@ -1223,60 +1332,6 @@ bool parse_role_name(RSTScanner* scanner)
 
   return false;
 }
-
-/*
-bool parse_reference(RSTScanner* scanner) {
-  TSLexer* lexer = scanner->lexer;
-  const bool* valid_symbols = scanner->valid_symbols;
-
-  if (!is_alphanumeric(scanner->lookahead) || !valid_symbols[T_REFERENCE]) {
-    return false;
-  }
-  scanner->advance(scanner);
-  bool ok = parse_inner_reference(scanner);
-  if (ok) {
-    lexer->result_symbol = T_REFERENCE;
-    return true;
-  }
-  return parse_text(scanner);
-}
-
-bool parse_inner_reference(RSTScanner* scanner) {
-  TSLexer* lexer = scanner->lexer;
-  const bool* valid_symbols = scanner->valid_symbols;
-
-  const unsigned MAX_SCHEMA_LEN = 7;
-  char *schema = malloc(sizeof(char) * MAX_SCHEMA_LEN);
-  unsigned consumed_chars = 0;
-  schema[consumed_chars++] = (char) scanner->previous;
-
-  while (scanner->lookahead != ':' && consumed_chars < MAX_SCHEMA_LEN) {
-    if (!is_alphanumeric(scanner->lookahead)) {
-      return false;
-    }
-    schema[consumed_chars++] = (char) scanner->lookahead;
-    scanner->advance(scanner);
-  }
-
-  if (scanner->lookahead != ':') {
-    return false;
-  }
-
-  bool is_valid = is_known_schema(schema, consumed_chars);
-
-  if (!is_valid) {
-    return false;
-  }
-
-  scanner->advance(scanner);
-  while(!is_space(scanner->lookahead) && !is_end_char(scanner->lookahead)) {
-    scanner->advance(scanner);
-    consumed_chars++;
-  }
-
-  return true;
-}
-*/
 
 bool parse_text(RSTScanner* scanner)
 {
