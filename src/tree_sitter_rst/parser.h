@@ -24,6 +24,9 @@ bool parse_numeric_bullet(RSTScanner* scanner);
 bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized);
 bool parse_explict_markup_start(RSTScanner* scanner);
 bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum TokenType token_type);
+bool parse_field_mark(RSTScanner* scanner);
+bool parse_field_mark_end(RSTScanner* scanner);
+bool parse_inner_field_mark(RSTScanner* scanner);
 
 bool parse_literal_block_mark(RSTScanner* scanner);
 bool parse_innner_literal_block_mark(RSTScanner* scanner);
@@ -43,7 +46,6 @@ bool parse_anonymous_target_mark(RSTScanner* scanner);
 bool parse_directive_mark(RSTScanner* scanner);
 bool parse_substitution_mark(RSTScanner* scanner);
 
-bool parse_field_name(RSTScanner* scanner);
 bool parse_inline_markup(RSTScanner* scanner);
 bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type);
 bool parse_reference(RSTScanner* scanner);

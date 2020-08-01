@@ -226,6 +226,10 @@
         {
           "type": "SYMBOL",
           "name": "definition_list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "field_list"
         }
       ]
     },
@@ -441,6 +445,66 @@
           }
         ]
       }
+    },
+    "field_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "field"
+      }
+    },
+    "field": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_field_mark"
+          },
+          "named": false,
+          "value": ":"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_inline_markup"
+            }
+          },
+          "named": true,
+          "value": "field_name"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_field_mark_end"
+          },
+          "named": false,
+          "value": ":"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "body"
+              },
+              "named": true,
+              "value": "field_body"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_dedent"
+            }
+          ]
+        }
+      ]
     },
     "_literal_block": {
       "type": "SEQ",
@@ -1269,6 +1333,14 @@
     {
       "type": "SYMBOL",
       "name": "_numeric_bullet"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_field_mark"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_field_mark_end"
     },
     {
       "type": "SYMBOL",

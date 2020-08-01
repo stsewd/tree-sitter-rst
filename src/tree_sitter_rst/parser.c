@@ -1,4 +1,5 @@
 #include "tree_sitter_rst/parser.h"
+#include <stdio.h>
 
 #include "tree_sitter_rst/chars.h"
 #include "tree_sitter_rst/tokens.h"
@@ -95,6 +96,12 @@ bool parse_overline(RSTScanner* scanner)
           }
           if (adornment == ':' && (valid_symbols[T_ROLE_NAME_PREFIX] || valid_symbols[T_ROLE_NAME_SUFFIX])) {
             bool ok = parse_inner_role(scanner);
+            if (ok) {
+              return true;
+            }
+          }
+          if (adornment == ':' && valid_symbols[T_FIELD_MARK]) {
+            bool ok = parse_inner_field_mark(scanner);
             if (ok) {
               return true;
             }
@@ -482,6 +489,101 @@ bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum Toke
   }
 
   return false;
+}
+
+bool parse_field_mark(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (scanner->lookahead != ':' || !valid_symbols[T_FIELD_MARK]) {
+    return false;
+  }
+
+  scanner->advance(scanner);
+  lexer->mark_end(lexer);
+
+  if (is_space(scanner->lookahead)) {
+    return parse_text(scanner);
+  }
+
+  bool ok = parse_inner_field_mark(scanner);
+  if (ok) {
+    return true;
+  }
+  if (valid_symbols[T_TEXT]) {
+    lexer->result_symbol = T_TEXT;
+    return true;
+  }
+  return false;
+}
+
+bool parse_inner_field_mark(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (!valid_symbols[T_FIELD_MARK]) {
+    return false;
+  }
+
+  bool is_escaped = false;
+  while (!is_newline(scanner->lookahead)) {
+    if (scanner->lookahead == '/') {
+      scanner->advance(scanner);
+      is_escaped = true;
+    } else {
+      is_escaped = false;
+    }
+
+    if (scanner->lookahead == ':' && !is_space(scanner->previous) && !is_escaped) {
+      scanner->advance(scanner);
+      if (is_space(scanner->lookahead)) {
+        break;
+      }
+    }
+
+    scanner->advance(scanner);
+  }
+
+  if (scanner->previous == ':' && is_space(scanner->lookahead)) {
+    lexer->result_symbol = T_FIELD_MARK;
+    return true;
+  }
+  return false;
+}
+
+bool parse_field_mark_end(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (scanner->lookahead != ':' || !valid_symbols[T_FIELD_MARK_END]) {
+    return false;
+  }
+
+  scanner->advance(scanner);
+  if (is_space(scanner->lookahead)) {
+    lexer->mark_end(lexer);
+
+    // The first line after the field name marker
+    // determines the indentation of the field body.
+    while (!is_newline(scanner->lookahead)) {
+      scanner->advance(scanner);
+    }
+    scanner->advance(scanner);
+    int indent = get_indent_level(scanner);
+    if (indent > 0) {
+      scanner->push(scanner, indent);
+    } else {
+      scanner->push(scanner, scanner->back(scanner) + 1);
+    }
+
+    lexer->result_symbol = T_FIELD_MARK_END;
+    return true;
+  }
+
+  return parse_text(scanner);
 }
 
 bool parse_label(RSTScanner* scanner)
@@ -1286,6 +1388,26 @@ bool parse_role(RSTScanner* scanner)
   // Mark the end of the word before going deeper.
   lexer->mark_end(lexer);
 
+  if (is_space(scanner->lookahead) && valid_symbols[T_FIELD_MARK_END]) {
+    lexer->mark_end(lexer);
+
+    // The first line after the field name marker
+    // determines the indentation of the field body.
+    while (!is_newline(scanner->lookahead)) {
+      scanner->advance(scanner);
+    }
+    scanner->advance(scanner);
+    int indent = get_indent_level(scanner);
+    if (indent > 0) {
+      scanner->push(scanner, indent);
+    } else {
+      scanner->push(scanner, scanner->back(scanner) + 1);
+    }
+
+    lexer->result_symbol = T_FIELD_MARK_END;
+    return true;
+  }
+
   if (is_alphanumeric(scanner->lookahead)) {
     bool ok = parse_inner_role(scanner);
     if (ok) {
@@ -1317,10 +1439,22 @@ bool parse_inner_role(RSTScanner* scanner)
       lexer->result_symbol = T_ROLE_NAME_PREFIX;
       return true;
     }
+
+    if (is_space(scanner->lookahead) && valid_symbols[T_FIELD_MARK]) {
+      lexer->result_symbol = T_FIELD_MARK;
+      return true;
+    }
+
     if ((is_space(scanner->lookahead) || is_end_char(scanner->lookahead))
         && valid_symbols[T_ROLE_NAME_SUFFIX]) {
       lexer->mark_end(lexer);
       lexer->result_symbol = T_ROLE_NAME_SUFFIX;
+      return true;
+    }
+  }
+  if (valid_symbols[T_FIELD_MARK]) {
+    ok = parse_inner_field_mark(scanner);
+    if (ok) {
       return true;
     }
   }

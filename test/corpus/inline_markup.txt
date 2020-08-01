@@ -152,8 +152,10 @@ Edge cases:
   (paragraph
    (interpreted_text (role)))
   (paragraph)
-  (paragraph
-    (interpreted_text)))
+  (field_list
+    (field
+      (field_name (interpreted_text))
+      (field_body (paragraph)))))
 
 ===============
 Inline literals

@@ -17,6 +17,8 @@ enum TokenType {
   // Lists
   T_CHAR_BULLET,
   T_NUMERIC_BULLET,
+  T_FIELD_MARK,
+  T_FIELD_MARK_END,
 
   // Literal blocks
   T_LITERAL_BLOCK_MARK,

@@ -195,6 +195,54 @@ term 4 : classifier one : classifier two
       (definition
         (paragraph)))))
 
+===========
+Field lists
+===========
+
+:Date: 2001-08-16
+:Version: 1
+:Authors: - Me
+          - Myself
+          - I
+:boolean value:
+:Indentation: Since the field marker may be quite long, the second
+   and subsequent lines of the field body do not have to line up
+   with the first line, but they must be indented relative to the
+   field name marker, and they must line up with each other.
+:Parameter i: integer
+
+---
+
+(document
+  (field_list
+    (field
+      (field_name)
+      (field_body (paragraph)))
+    (field
+      (field_name)
+      (field_body (paragraph)))
+    (field
+      (field_name)
+      (field_body
+        (bullet_list
+          (list_item
+            (body
+              (paragraph)))
+          (list_item
+            (body
+              (paragraph)))
+          (list_item
+            (body
+              (paragraph))))))
+    (field
+      (field_name))
+    (field
+      (field_name)
+      (field_body (paragraph)))
+    (field
+      (field_name)
+      (field_body (paragraph)))))
+
 =======================
 Indented literal blocks
 =======================

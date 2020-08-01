@@ -21,6 +21,8 @@ module.exports = grammar({
     // Lists
     $._char_bullet,
     $._numeric_bullet,
+    $._field_mark,
+    $._field_mark_end,
 
     // Literal blocks
     $._literal_block_mark,
@@ -195,6 +197,7 @@ module.exports = grammar({
       $.bullet_list,
       $.enumerated_list,
       $.definition_list,
+      $.field_list,
     ),
 
     // Bullet lists
@@ -240,6 +243,18 @@ module.exports = grammar({
     // Definition list
     // ---------------
 
+    /*
+
+    Example:
+
+    Term
+      Definition
+    Another term : classifier
+      Another definition
+    Another term : classifier : second classifier
+      Another definition
+
+    */
     definition_list: $ => repeat1(
       alias($._definition_list_item, $.list_item),
     ),
@@ -257,6 +272,31 @@ module.exports = grammar({
         alias(token(seq(repeat1(WHITE_SPACE), ':', repeat1(WHITE_SPACE))), ':'),
         alias(repeat1($._inline_markup), $.classifier),
       ),
+    ),
+
+    // Field lists
+    // -----------
+
+    /*
+
+    Example:
+
+    :Date: 2001-08-16
+    :Version: 1
+    :Authors: - Me
+              - Myself
+              - I
+    :parameter:
+    :Indentation: Since the field marker may be quite long, the second
+      and subsequent lines of the field body do not have to line up.
+    */
+    field_list: $ => repeat1($.field),
+
+    field: $ => seq(
+      alias($._field_mark, ':'),
+      alias(repeat1($._inline_markup), $.field_name),
+      alias($._field_mark_end, ':'),
+      choice(alias($.body, $.field_body), $._dedent),
     ),
 
     // Literal blocks

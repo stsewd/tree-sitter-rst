@@ -177,6 +177,14 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_role(scanner);
   }
 
+  if (current == ':' && valid_symbols[T_FIELD_MARK]) {
+    return parse_field_mark(scanner);
+  }
+
+  if (current == ':' && valid_symbols[T_FIELD_MARK_END]) {
+    return parse_field_mark_end(scanner);
+  }
+
   if (is_abc(current) && valid_symbols[T_STANDALONE_HYPERLINK]) {
     return parse_standalone_hyperlink(scanner);
   }
