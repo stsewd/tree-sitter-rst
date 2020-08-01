@@ -174,28 +174,24 @@ term 4 : classifier one : classifier two
   (definition_list
     (list_item
       (term)
-      (classifiers
-        (classifier))
+      (classifier)
       (definition
         (paragraph)))
     (list_item
       (term)
-      (classifiers
-        (classifier))
+      (classifier)
       (definition
         (paragraph)
         (paragraph)))
     (list_item
       (term)
-      (classifiers
-        (classifier))
+      (classifier)
       (definition
         (paragraph)))
     (list_item
       (term)
-      (classifiers
-        (classifier)
-        (classifier))
+      (classifier)
+      (classifier)
       (definition
         (paragraph)))))
 

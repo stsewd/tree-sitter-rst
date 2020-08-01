@@ -246,15 +246,15 @@ module.exports = grammar({
 
     _definition_list_item: $ => seq(
       alias(repeat1($._inline_markup), $.term),
-      $.classifiers,
+      $._classifiers,
       $._newline,
       $._indent,
       alias($.body, $.definition),
     ),
 
-    classifiers: $ => repeat1(
+    _classifiers: $ => repeat1(
       seq(
-        alias(/\s+:\s+/, ':'),
+        token(seq(repeat1(WHITE_SPACE), ':', repeat1(WHITE_SPACE))),
         alias(repeat1($._inline_markup), $.classifier),
       ),
     ),

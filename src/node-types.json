@@ -251,21 +251,6 @@
     }
   },
   {
-    "type": "classifiers",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "classifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "comment",
     "named": true,
     "fields": {}
@@ -501,7 +486,7 @@
           "named": true
         },
         {
-          "type": "classifiers",
+          "type": "classifier",
           "named": true
         },
         {
@@ -642,10 +627,6 @@
   },
   {
     "type": "..",
-    "named": false
-  },
-  {
-    "type": ":",
     "named": false
   },
   {

@@ -336,7 +336,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "classifiers"
+          "name": "_classifiers"
         },
         {
           "type": "SYMBOL",
@@ -357,19 +357,70 @@
         }
       ]
     },
-    "classifiers": {
+    "_classifiers": {
       "type": "REPEAT1",
       "content": {
         "type": "SEQ",
         "members": [
           {
-            "type": "ALIAS",
+            "type": "TOKEN",
             "content": {
-              "type": "PATTERN",
-              "value": "\\s+:\\s+"
-            },
-            "named": false,
-            "value": ":"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "REPEAT1",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": " "
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "\t"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "\u000b"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "\f"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "REPEAT1",
+                  "content": {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": " "
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "\t"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "\u000b"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "\f"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
           },
           {
             "type": "ALIAS",
