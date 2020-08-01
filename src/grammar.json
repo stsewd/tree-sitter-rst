@@ -366,7 +366,7 @@
             "type": "ALIAS",
             "content": {
               "type": "PATTERN",
-              "value": "\\s:\\s"
+              "value": "\\s+:\\s+"
             },
             "named": false,
             "value": ":"
