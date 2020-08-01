@@ -254,7 +254,7 @@ module.exports = grammar({
 
     classifiers: $ => repeat1(
       seq(
-        alias(/\s:\s/, ':'),
+        alias(/\s+:\s+/, ':'),
         alias(repeat1($._inline_markup), $.classifier),
       ),
     ),
