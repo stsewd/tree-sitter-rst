@@ -1,5 +1,4 @@
 #include "tree_sitter_rst/parser.h"
-#include <stdio.h>
 
 #include "tree_sitter_rst/chars.h"
 #include "tree_sitter_rst/tokens.h"
@@ -1398,7 +1397,7 @@ bool parse_role(RSTScanner* scanner)
     }
     scanner->advance(scanner);
     int indent = get_indent_level(scanner);
-    if (indent > 0) {
+    if (indent > scanner->back(scanner)) {
       scanner->push(scanner, indent);
     } else {
       scanner->push(scanner, scanner->back(scanner) + 1);

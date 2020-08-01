@@ -211,6 +211,12 @@ Field lists
    field name marker, and they must line up with each other.
 :Parameter i: integer
 
+I'm a quoted block:
+
+  :one: one
+  :two: two
+  :|three|: three
+
 ---
 
 (document
@@ -241,7 +247,19 @@ Field lists
       (field_body (paragraph)))
     (field
       (field_name)
-      (field_body (paragraph)))))
+      (field_body (paragraph))))
+    (paragraph)
+    (block_quote
+      (field_list
+        (field
+          (field_name)
+          (field_body (paragraph)))
+        (field
+          (field_name)
+          (field_body (paragraph)))
+        (field
+          (field_name (substitution_reference))
+          (field_body (paragraph))))))
 
 =======================
 Indented literal blocks
