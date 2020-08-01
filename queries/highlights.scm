@@ -5,6 +5,7 @@
   "|"
   "--"
   "__"
+  ":"
   "::"
   "bullet"
   "adornment"
@@ -111,6 +112,9 @@
 (title) @text.title
 
 (attribution) @text.emphasis
+
+(term) @text.strong
+(classifier) @text.emphasis
 
 (comment) @comment
 (comment "..") @comment
