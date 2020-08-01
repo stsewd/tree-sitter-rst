@@ -153,6 +153,52 @@ Z. Six
     (list_item
       (body (paragraph)))))
 
+================
+Definition lists
+================
+
+term 1 : bar
+    Definition 1.
+term 2 : foo
+    Definition 2, paragraph 1.
+
+    Definition 2, paragraph 2.
+term 3 : classifier
+    Definition 3.
+term 4 : classifier one : classifier two
+    Definition 4.
+
+---
+
+(document
+  (definition_list
+    (list_item
+      (term)
+      (classifiers
+        (classifier))
+      (definition
+        (paragraph)))
+    (list_item
+      (term)
+      (classifiers
+        (classifier))
+      (definition
+        (paragraph)
+        (paragraph)))
+    (list_item
+      (term)
+      (classifiers
+        (classifier))
+      (definition
+        (paragraph)))
+    (list_item
+      (term)
+      (classifiers
+        (classifier)
+        (classifier))
+      (definition
+        (paragraph)))))
+
 =======================
 Indented literal blocks
 =======================

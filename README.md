@@ -15,7 +15,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Refactor parse citation and footer reference
 - Inline markup can be expanded to the next line if it has the same indentation level.
 - Nested line blocks
-- Definition lists
 - Field lists
 - Option lists
 - Tables (maybe implemented without validations?)
@@ -23,6 +22,9 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
   leverage this to language injection when language injection in Neovim is done (or maybe before?).
 - Add some nodes to inline?
 - Check if there is a way to re-implement some nodes to JS instead of C?
+- Definition lists without classifiers are recognized as block quotes.
+  We need to validate if a block quote is followed by a paragraph,
+  it should have an empty line.
 - tests, tests, and more tests!
 
 ## Design notes

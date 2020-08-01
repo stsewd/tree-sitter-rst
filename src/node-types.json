@@ -58,6 +58,10 @@
         "named": true
       },
       {
+        "type": "definition_list",
+        "named": true
+      },
+      {
         "type": "enumerated_list",
         "named": true
       }
@@ -232,9 +236,93 @@
     }
   },
   {
+    "type": "classifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "classifiers",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "classifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "comment",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_list",
+          "named": true
+        },
+        {
+          "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "block_quote",
+          "named": true
+        },
+        {
+          "type": "doctest_block",
+          "named": true
+        },
+        {
+          "type": "line_block",
+          "named": true
+        },
+        {
+          "type": "literal_block",
+          "named": true
+        },
+        {
+          "type": "paragraph",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "definition_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "list_item",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "directive",
@@ -405,11 +493,23 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
         {
           "type": "body",
+          "named": true
+        },
+        {
+          "type": "classifiers",
+          "named": true
+        },
+        {
+          "type": "definition",
+          "named": true
+        },
+        {
+          "type": "term",
           "named": true
         }
       ]
@@ -507,6 +607,21 @@
     }
   },
   {
+    "type": "term",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_inline_markup",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "title",
     "named": true,
     "fields": {},
@@ -527,6 +642,10 @@
   },
   {
     "type": "..",
+    "named": false
+  },
+  {
+    "type": ":",
     "named": false
   },
   {

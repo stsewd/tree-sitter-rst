@@ -1,4 +1,5 @@
 const WHITE_SPACE = choice(' ', '\t', '\v', '\f');
+const NEWLINE = /\r?\n/;
 const LINK = /\S(.*\S)?/;
 
 module.exports = grammar({
@@ -193,6 +194,7 @@ module.exports = grammar({
     _list: $ => choice(
       $.bullet_list,
       $.enumerated_list,
+      $.definition_list,
     ),
 
     // Bullet lists
@@ -233,6 +235,28 @@ module.exports = grammar({
     _numeric_list_item: $ => seq(
       alias($._numeric_bullet, 'bullet'),
       choice($.body, $._dedent),
+    ),
+
+    // Definition list
+    // ---------------
+
+    definition_list: $ => repeat1(
+      alias($._definition_list_item, $.list_item),
+    ),
+
+    _definition_list_item: $ => seq(
+      alias(repeat1($._inline_markup), $.term),
+      $.classifiers,
+      $._newline,
+      $._indent,
+      alias($.body, $.definition),
+    ),
+
+    classifiers: $ => repeat1(
+      seq(
+        alias(/\s:\s/, ':'),
+        alias(repeat1($._inline_markup), $.classifier),
+      ),
     ),
 
     // Literal blocks
@@ -558,7 +582,7 @@ module.exports = grammar({
       alias($._role_name_suffix, $.role),
     ),
 
-    __newline: $ => /\r?\n/,
+    __newline: $ => NEWLINE,
     __whitespace: $ => token(repeat1(WHITE_SPACE)),
   },
 });

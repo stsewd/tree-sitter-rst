@@ -222,6 +222,10 @@
         {
           "type": "SYMBOL",
           "name": "enumerated_list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "definition_list"
         }
       ]
     },
@@ -302,6 +306,85 @@
           ]
         }
       ]
+    },
+    "definition_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "ALIAS",
+        "content": {
+          "type": "SYMBOL",
+          "name": "_definition_list_item"
+        },
+        "named": true,
+        "value": "list_item"
+      }
+    },
+    "_definition_list_item": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_inline_markup"
+            }
+          },
+          "named": true,
+          "value": "term"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "classifiers"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_newline"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_indent"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "body"
+          },
+          "named": true,
+          "value": "definition"
+        }
+      ]
+    },
+    "classifiers": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "PATTERN",
+              "value": "\\s:\\s"
+            },
+            "named": false,
+            "value": ":"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "REPEAT1",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_inline_markup"
+              }
+            },
+            "named": true,
+            "value": "classifier"
+          }
+        ]
+      }
     },
     "_literal_block": {
       "type": "SEQ",
