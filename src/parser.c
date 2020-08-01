@@ -120,7 +120,7 @@ enum {
 
 static const char *ts_symbol_names[] = {
   [ts_builtin_sym_end] = "end",
-  [aux_sym__classifiers_token1] = "_classifiers_token1",
+  [aux_sym__classifiers_token1] = ":",
   [aux_sym_target_token1] = "link",
   [sym___newline] = "__newline",
   [sym___whitespace] = "__whitespace",
@@ -332,7 +332,7 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .named = true,
   },
   [aux_sym__classifiers_token1] = {
-    .visible = false,
+    .visible = true,
     .named = false,
   },
   [aux_sym_target_token1] = {
