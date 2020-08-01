@@ -15,7 +15,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Refactor parse citation and footer reference
 - Inline markup can be expanded to the next line if it has the same indentation level.
 - Nested line blocks
-- Field lists
 - Option lists
 - Tables (maybe implemented without validations?)
 - The content from directives is interpreted as RST,

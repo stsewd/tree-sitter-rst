@@ -116,6 +116,8 @@
 (term) @text.strong
 (classifier) @text.emphasis
 
+(field_name) @text.strong
+
 (comment) @comment
 (comment "..") @comment
 
