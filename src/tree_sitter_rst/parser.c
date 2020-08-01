@@ -1058,6 +1058,13 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
         }
       } else if ((type & IM_SUBSTITUTION_REFERENCE) && scanner->previous == '|') {
         lexer->result_symbol = T_SUBSTITUTION_REFERENCE;
+        // Substitution references can end with '__'.
+        if (scanner->lookahead == '_') {
+          scanner->advance(scanner);
+          if (scanner->lookahead == '_') {
+            advance = true;
+          }
+        }
       } else {
         is_valid = false;
       }

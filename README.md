@@ -12,8 +12,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 ## TODO
 
 - Allow lists with blank lines between items
-- Substitution references that end with _
-  https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#substitution-references
 - Inline markup can be expanded to the next line if it has the same indentation level.
 - Nested line blocks
 - Definition lists
@@ -21,6 +19,7 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Option lists
 - Tables (maybe implemented without validations?)
 - Add some nodes to inline?
+- Check if there is a way to re-implement some nodes to JS instead of C?
 - tests, tests, and more tests!
 
 ## Design notes

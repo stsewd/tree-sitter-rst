@@ -220,6 +220,10 @@ I'm a |text|
 
 |I am|.|I'm not|
 
+This is a combination |substitution and hyperlink reference|_.  In
+addition to being replaced, the replacement text or element will
+refer to the "substitution and hyperlink reference" |target|__.
+
 ---
 
 (document
@@ -234,6 +238,9 @@ I'm a |text|
  (paragraph
   (substitution_reference))
  (paragraph
+  (substitution_reference))
+ (paragraph
+  (substitution_reference)
   (substitution_reference)))
 
 =======================
