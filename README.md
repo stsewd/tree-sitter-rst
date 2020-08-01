@@ -19,6 +19,8 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Field lists
 - Option lists
 - Tables (maybe implemented without validations?)
+- The content from directives is interpreted as RST,
+  leverage this to language injection when language injection in Neovim is done (or maybe before?).
 - Add some nodes to inline?
 - Check if there is a way to re-implement some nodes to JS instead of C?
 - tests, tests, and more tests!
@@ -39,10 +41,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## Design decisions
 
-- The content from directives is interpreted as RST,
-  but in the spec it's a literal block.
-  Maybe have a list of directives that don't interpret the content as RST?
-  Or leverage this to language injection?
 - Should we include the literal block mark as part of the literal block?
 - Validate length of adornments in sections?
 
