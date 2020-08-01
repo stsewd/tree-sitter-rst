@@ -12,6 +12,7 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 ## TODO
 
 - Allow lists with blank lines between items
+- Refactor parse citation and footer reference
 - Inline markup can be expanded to the next line if it has the same indentation level.
 - Nested line blocks
 - Definition lists
