@@ -254,7 +254,7 @@ module.exports = grammar({
 
     _classifiers: $ => repeat1(
       seq(
-        token(seq(repeat1(WHITE_SPACE), ':', repeat1(WHITE_SPACE))),
+        token(seq(repeat1(WHITE_SPACE), alias(':', ':'), repeat1(WHITE_SPACE))),
         alias(repeat1($._inline_markup), $.classifier),
       ),
     ),
