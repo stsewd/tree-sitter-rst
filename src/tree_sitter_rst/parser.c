@@ -566,14 +566,22 @@ bool parse_field_mark_end(RSTScanner* scanner)
     // Consume all whitespaces.
     get_indent_level(scanner);
     lexer->mark_end(lexer);
-
-    // The first line after the field name marker
-    // determines the indentation of the field body.
+    // Go the next line
     while (!is_newline(scanner->lookahead)) {
       scanner->advance(scanner);
     }
     scanner->advance(scanner);
-    int indent = get_indent_level(scanner);
+
+    // The first non-empty line after the field name marker
+    // determines the indentation of the field body.
+    int indent = 0;
+    while (true) {
+      indent = get_indent_level(scanner);
+      if (!is_newline(scanner->lookahead) || scanner->lookahead == CHAR_EOF) {
+        break;
+      }
+      scanner->advance(scanner);
+    }
     if (indent > scanner->back(scanner)) {
       scanner->push(scanner, indent);
     } else {
@@ -1393,14 +1401,22 @@ bool parse_role(RSTScanner* scanner)
     // Consume all whitespaces.
     get_indent_level(scanner);
     lexer->mark_end(lexer);
-
-    // The first line after the field name marker
-    // determines the indentation of the field body.
+    // Go the next line
     while (!is_newline(scanner->lookahead)) {
       scanner->advance(scanner);
     }
     scanner->advance(scanner);
-    int indent = get_indent_level(scanner);
+
+    // The first non-empty line after the field name marker
+    // determines the indentation of the field body.
+    int indent = 0;
+    while (true) {
+      indent = get_indent_level(scanner);
+      if (!is_newline(scanner->lookahead) || scanner->lookahead == CHAR_EOF) {
+        break;
+      }
+      scanner->advance(scanner);
+    }
     if (indent > scanner->back(scanner)) {
       scanner->push(scanner, indent);
     } else {

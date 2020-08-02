@@ -213,6 +213,16 @@ Field lists
 :weird indentation:        I'm a normal paragraph
 :weird indentation:        I'm a normal paragraph
   I follow!
+:weird indentation:        I'm a normal paragraph
+
+
+  I follow!
+:weird indentation:
+
+
+
+
+  I follow!
 
 I'm a quoted block:
 
@@ -254,6 +264,12 @@ I'm a quoted block:
     (field
       (field_name)
       (field_body (paragraph)))
+    (field
+      (field_name)
+      (field_body (paragraph)))
+    (field
+      (field_name)
+      (field_body (paragraph) (paragraph)))
     (field
       (field_name)
       (field_body (paragraph))))
