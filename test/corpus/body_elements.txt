@@ -210,6 +210,9 @@ Field lists
    with the first line, but they must be indented relative to the
    field name marker, and they must line up with each other.
 :Parameter i: integer
+:weird indentation:        I'm a normal paragraph
+:weird indentation:        I'm a normal paragraph
+  I follow!
 
 I'm a quoted block:
 
@@ -242,6 +245,12 @@ I'm a quoted block:
               (paragraph))))))
     (field
       (field_name))
+    (field
+      (field_name)
+      (field_body (paragraph)))
+    (field
+      (field_name)
+      (field_body (paragraph)))
     (field
       (field_name)
       (field_body (paragraph)))

@@ -563,6 +563,8 @@ bool parse_field_mark_end(RSTScanner* scanner)
 
   scanner->advance(scanner);
   if (is_space(scanner->lookahead)) {
+    // Consume all whitespaces.
+    get_indent_level(scanner);
     lexer->mark_end(lexer);
 
     // The first line after the field name marker
@@ -1388,6 +1390,8 @@ bool parse_role(RSTScanner* scanner)
   lexer->mark_end(lexer);
 
   if (is_space(scanner->lookahead) && valid_symbols[T_FIELD_MARK_END]) {
+    // Consume all whitespaces.
+    get_indent_level(scanner);
     lexer->mark_end(lexer);
 
     // The first line after the field name marker
