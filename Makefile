@@ -21,10 +21,14 @@ update-examples:
 	rename .txt .rst test/examples/*.txt
 
 parse-examples:
-	known_failures="$(cat tests/known_failures.txt)"
+	# Tables aren't supported yet
+	# Inline markup that wraps to the next line aren't supported yet
+	# Definition lists without classifiers aren't supported yet
 	tree-sitter parse -q \
-	  'test/examples/*.rst' \
-	  $(for failure in $known_failures; do echo "!${failure}"; done)
+	  test/examples/*.rst \
+	  !test/examples/latex_literal_block.rst \
+	  !test/examples/math.rst \
+	  !test/examples/standalone_rst_html5.rst
 
 serve: build
 	tree-sitter build-wasm
