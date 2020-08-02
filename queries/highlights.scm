@@ -52,6 +52,8 @@
   name: (reference)? @constant
   link: (_) @text.literal)
 
+;; Lists
+
 ; Definition lists
 (list_item
   (term) @text.strong
