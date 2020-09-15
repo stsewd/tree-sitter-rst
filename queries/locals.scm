@@ -6,6 +6,8 @@
 
 ;; Definitions
 
+(title) @local.definition
+
 (substitution_definition
   name: (substitution) @local.definition)
 
