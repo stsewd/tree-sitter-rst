@@ -18,10 +18,9 @@
   name: (label) @local.definition)
 
 (target
-  name: (reference) @local.definition)
+  name: (name) @local.definition)
 
-; Inline targets
-(target) @local.definition
+(inline_target) @local.definition
 
 ; The role directive can define a new role
 ((directive

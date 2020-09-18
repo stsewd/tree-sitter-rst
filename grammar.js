@@ -47,7 +47,7 @@ module.exports = grammar({
     $._role_name_suffix,
     $.literal,
     $.substitution_reference,
-    $._inline_target,
+    $.inline_target,
     $.footnote_reference,
     $.citation_reference,
     $.reference,
@@ -471,7 +471,7 @@ module.exports = grammar({
     */
     target: $ => seq(
       alias($._explicit_markup_start, '..'),
-      field('name', alias($._target_name, $.target)),
+      field('name', alias($._target_name, $.name)),
       field('link', optional(alias(LINK, $.link))),
       $._dedent,
     ),
@@ -589,7 +589,7 @@ module.exports = grammar({
       $.interpreted_text,
       $.literal,
       $.substitution_reference,
-      alias($._inline_target, $.target),
+      $.inline_target,
       $.footnote_reference,
       $.citation_reference,
       $.reference,

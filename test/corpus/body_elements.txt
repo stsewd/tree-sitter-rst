@@ -634,26 +634,26 @@ Hyperlink targets
 
 (document
   (target
-    (target)
+    (name)
     (link))
   (target
-    (target)
+    (name)
     (link))
   (target
-    (target)
+    (name)
     (link))
   (target
-    (target)
+    (name)
     (link))
   (target
-    (target))
+    (name))
   (target
-    (target))
+    (name))
   (target
-    (target)
+    (name)
     (link))
   (target
-    (target)))
+    (name)))
 
 ===========================
 Anonymous hyperlink targets

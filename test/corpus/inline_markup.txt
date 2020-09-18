@@ -265,17 +265,17 @@ _`I'm`._`I'm not`
 
 (document
   (paragraph
-    (target)
-    (target)
-    (target))
+    (inline_target)
+    (inline_target)
+    (inline_target))
   (paragraph
-    (target))
+    (inline_target))
   (paragraph
-    (target))
+    (inline_target))
   (paragraph
-    (target))
+    (inline_target))
   (paragraph
-    (target)))
+    (inline_target)))
 
 ===================
 Footnote references

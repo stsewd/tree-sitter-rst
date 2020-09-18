@@ -864,7 +864,7 @@
               "name": "_target_name"
             },
             "named": true,
-            "value": "target"
+            "value": "name"
           }
         },
         {
@@ -1156,13 +1156,8 @@
           "name": "substitution_reference"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_inline_target"
-          },
-          "named": true,
-          "value": "target"
+          "type": "SYMBOL",
+          "name": "inline_target"
         },
         {
           "type": "SYMBOL",
@@ -1400,7 +1395,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_inline_target"
+      "name": "inline_target"
     },
     {
       "type": "SYMBOL",
