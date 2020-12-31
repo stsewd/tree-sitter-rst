@@ -40,7 +40,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## Design decisions
 
-- Should we include the literal block mark as part of the literal block?
 - Validate length of adornments in sections?
 
   The spec doesn't mention this, but this paragraph does.
