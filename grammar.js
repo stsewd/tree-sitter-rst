@@ -509,11 +509,14 @@ module.exports = grammar({
     directive: $ => seq(
       alias($._explicit_markup_start, '..'),
       field('name', alias($._directive_mark, $.type)),
-      field('body', choice(alias($._indented_text_block, $.body), $._dedent)),
+      field('body', choice($._directive_body, $._dedent)),
     ),
 
     _directive_body: $ => seq(
-      $._indented_text_block,
+      // argument?
+      // optional($._text_line),
+      // options?
+      alias($._indented_text_block, $.body),
     ),
 
     // Substitution definition
@@ -536,7 +539,7 @@ module.exports = grammar({
 
     _embedded_directive: $ => seq(
       field('name', alias($._directive_mark, $.type)),
-      field('body', choice(alias($._directive_body, $.body), $._dedent)),
+      field('body', choice($._directive_body, $._dedent)),
     ),
 
     // Comments
