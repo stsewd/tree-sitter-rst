@@ -711,30 +711,22 @@ Directives
     (type))
   (directive
     (type)
-    (body (paragraph)))
+    (body))
   (directive
     (type)
-    (body (paragraph)))
+    (body))
   (directive
     (type)
-    (body (paragraph)))
+    (body))
   (directive
     (type)
-    (body (paragraph)))
+    (body))
   (directive
     (type)
-    (body
-      (bullet_list
-        (list_item
-        (body (paragraph)))
-        (list_item
-        (body (paragraph))))))
+    (body))
   (directive
     (type)
-    (body
-      (paragraph
-        (strong))
-      (paragraph))))
+    (body)))
 
 ========================
 Substitution definitions
@@ -759,32 +751,32 @@ Substitution definitions
     (substitution)
     (directive
       (type)
-      (body (paragraph))))
+      (body)))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (paragraph))))
+      (body)))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (paragraph))))
+      (body)))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (paragraph))))
+      (body)))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (paragraph))))
+      (body)))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (paragraph)))))
+      (body))))
 
 ========
 Comments

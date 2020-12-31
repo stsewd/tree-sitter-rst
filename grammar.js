@@ -509,7 +509,15 @@ module.exports = grammar({
     directive: $ => seq(
       alias($._explicit_markup_start, '..'),
       field('name', alias($._directive_mark, $.type)),
-      field('body', choice($.body, $._dedent)),
+      '::',
+      field('body', choice($._directive_body, $._dedent)),
+    ),
+
+    _directive_body: $ => seq(
+      // argument?
+      // optional($._text_line),
+      // options?
+      alias($._indented_text_block, $.body),
     ),
 
     // Substitution definition
@@ -532,7 +540,8 @@ module.exports = grammar({
 
     _embedded_directive: $ => seq(
       field('name', alias($._directive_mark, $.type)),
-      field('body', choice($.body, $._dedent)),
+      '::',
+      field('body', choice($._directive_body, $._dedent)),
     ),
 
     // Comments
@@ -612,7 +621,7 @@ module.exports = grammar({
       $._prefix_role,
       $._suffix_role,
     ),
-    _default_role: $ => alias($._interpreted_text, "interpreted_text"),
+    _default_role: $ => alias($._interpreted_text, 'interpreted_text'),
     _prefix_role: $ => seq(
       alias($._role_name_prefix, $.role),
       alias($._interpreted_text, 'interpreted_text'),

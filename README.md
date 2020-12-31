@@ -17,8 +17,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Nested line blocks
 - Option lists
 - Tables (maybe implemented without validations?)
-- The content from directives is interpreted as RST,
-  leverage this to language injection when language injection in Neovim is done (or maybe before?).
 - Add some nodes to inline?
 - Check if there is a way to re-implement some nodes to JS instead of C?
 - Definition lists without classifiers are recognized as block quotes.
@@ -42,7 +40,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## Design decisions
 
-- Should we include the literal block mark as part of the literal block?
 - Validate length of adornments in sections?
 
   The spec doesn't mention this, but this paragraph does.
