@@ -804,6 +804,7 @@ bool parse_directive_mark(RSTScanner* scanner)
         break;
       }
       internal_symbol = true;
+      lexer->mark_end(lexer);
     } else {
       internal_symbol = false;
     }
@@ -816,7 +817,6 @@ bool parse_directive_mark(RSTScanner* scanner)
   scanner->advance(scanner);
 
   if (is_space(scanner->lookahead)) {
-    lexer->mark_end(lexer);
     lexer->result_symbol = T_DIRECTIVE_MARK;
     return true;
   }

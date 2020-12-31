@@ -509,6 +509,7 @@ module.exports = grammar({
     directive: $ => seq(
       alias($._explicit_markup_start, '..'),
       field('name', alias($._directive_mark, $.type)),
+      '::',
       field('body', choice($._directive_body, $._dedent)),
     ),
 
@@ -539,6 +540,7 @@ module.exports = grammar({
 
     _embedded_directive: $ => seq(
       field('name', alias($._directive_mark, $.type)),
+      '::',
       field('body', choice($._directive_body, $._dedent)),
     ),
 

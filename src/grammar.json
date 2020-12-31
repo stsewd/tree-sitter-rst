@@ -959,6 +959,10 @@
           }
         },
         {
+          "type": "STRING",
+          "value": "::"
+        },
+        {
           "type": "FIELD",
           "name": "body",
           "content": {
@@ -1046,6 +1050,10 @@
             "named": true,
             "value": "type"
           }
+        },
+        {
+          "type": "STRING",
+          "value": "::"
         },
         {
           "type": "FIELD",
