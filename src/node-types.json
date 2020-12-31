@@ -218,11 +218,19 @@
     "named": true,
     "fields": {
       "body": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "adornment",
+            "named": false
+          },
+          {
             "type": "body",
+            "named": true
+          },
+          {
+            "type": "title",
             "named": true
           }
         ]
@@ -318,11 +326,19 @@
     "named": true,
     "fields": {
       "body": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "adornment",
+            "named": false
+          },
+          {
             "type": "body",
+            "named": true
+          },
+          {
+            "type": "title",
             "named": true
           }
         ]
@@ -499,11 +515,19 @@
     "named": true,
     "fields": {
       "body": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
           {
+            "type": "adornment",
+            "named": false
+          },
+          {
             "type": "body",
+            "named": true
+          },
+          {
+            "type": "title",
             "named": true
           }
         ]
