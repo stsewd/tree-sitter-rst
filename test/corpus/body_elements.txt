@@ -12,9 +12,12 @@ I'm another paragraph
 
 (fg_*ff*)
 
+I'm not a ("::") literal block.
+
 ---
 
 (document
+  (paragraph)
   (paragraph)
   (paragraph)
   (paragraph)

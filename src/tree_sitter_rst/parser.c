@@ -885,6 +885,10 @@ bool parse_innner_literal_block_mark(RSTScanner* scanner)
   }
 
   if (!is_newline(scanner->lookahead)) {
+    if (valid_symbols[T_TEXT]) {
+      lexer->result_symbol = T_TEXT;
+      return true;
+    }
     return false;
   }
 
