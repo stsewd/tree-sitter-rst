@@ -27,7 +27,6 @@ parse-examples:
 	tree-sitter parse -q \
 	  test/examples/*.rst \
 	  !test/examples/latex_literal_block.rst \
-	  !test/examples/math.rst \
 	  !test/examples/standalone_rst_html5.rst
 
 serve: build

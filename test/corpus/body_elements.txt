@@ -14,9 +14,12 @@ I'm another paragraph
 
 I'm not a ("::") literal block.
 
+Me neither:
+
 ---
 
 (document
+  (paragraph)
   (paragraph)
   (paragraph)
   (paragraph)
@@ -28,8 +31,7 @@ I'm not a ("::") literal block.
 Blank lines
 ===========
 
-One
-                two
+One with spaces at the end      
 three
 
 This has spaces below on purpose
@@ -170,6 +172,10 @@ term 3 : classifier
     Definition 3.
 term 4 : classifier one : classifier two
     Definition 4.
+Term only
+    Foo
+One
+                two
 
 ---
 
@@ -195,6 +201,14 @@ term 4 : classifier one : classifier two
       (term)
       (classifier)
       (classifier)
+      (definition
+        (paragraph)))
+    (list_item
+      (term)
+      (definition
+        (paragraph)))
+    (list_item
+      (term)
       (definition
         (paragraph)))))
 

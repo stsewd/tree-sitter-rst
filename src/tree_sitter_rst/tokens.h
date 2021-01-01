@@ -5,6 +5,7 @@ enum TokenType {
   T_NEWLINE,
   T_BLANKLINE,
   T_INDENT,
+  T_NEWLINE_INDENT,
   T_DEDENT,
 
   // Sections

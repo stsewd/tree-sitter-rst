@@ -23,9 +23,6 @@ I'm *valid\\*
 I'm *he
 re*
 
-I'm *he
- re*
-
 ---
 
 (document
@@ -48,8 +45,7 @@ I'm *he
   (paragraph
     (emphasis))
   (paragraph
-    (emphasis))
-  (paragraph))
+    (emphasis)))
 
 ===============
 Strong emphasis
@@ -74,9 +70,6 @@ I'm **valid\\**
 I'm **he
 re**
 
-I'm **he
- re**
-
 ---
 
 (document
@@ -97,8 +90,7 @@ I'm **he
   (paragraph
     (strong))
   (paragraph
-    (strong))
-  (paragraph))
+    (strong)))
 
 ================
 Interpreted text
@@ -120,9 +112,6 @@ I'm a `text`
 `I'm a long
 interpreted_text`
 
-`I'm a long
- interpreted_text`
-
 ---
 
 (document
@@ -141,8 +130,7 @@ interpreted_text`
   (paragraph
     (interpreted_text))
   (paragraph
-    (interpreted_text))
-  (paragraph))
+    (interpreted_text)))
 
 ===========================
 Interpreted text with roles

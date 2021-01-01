@@ -9,6 +9,7 @@ module.exports = grammar({
     $._newline,
     $._blankline,
     $._indent,
+    $._newline_indent,  // A newline followed by an indent
     $._dedent,
 
     // Sections
@@ -261,9 +262,8 @@ module.exports = grammar({
 
     _definition_list_item: $ => seq(
       alias(repeat1($._inline_markup), $.term),
-      $._classifiers,
-      $._newline,
-      $._indent,
+      optional($._classifiers),
+      $._newline_indent,
       alias($.body, $.definition),
     ),
 
