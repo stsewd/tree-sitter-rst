@@ -1091,7 +1091,20 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
     return parse_text(scanner);
   }
 
-  while (!is_newline(scanner->lookahead)) {
+  while (scanner->lookahead != CHAR_EOF) {
+    // Skip indentation
+    if (is_newline(scanner->lookahead)) {
+      if (!word_found) {
+        word_found = true;
+        lexer->mark_end(lexer);
+      }
+      scanner->advance(scanner);
+      int indent = get_indent_level(scanner);
+      if (indent != scanner->back(scanner) || is_newline(scanner->lookahead)) {
+        break;
+      }
+    }
+
     // Skip escaped chars
     if (scanner->lookahead == '\\') {
       is_escaped = true;
