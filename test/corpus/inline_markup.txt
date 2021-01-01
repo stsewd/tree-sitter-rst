@@ -20,6 +20,12 @@ I'm *valid\\*
 
 -*a*-
 
+I'm *he
+re*
+
+I'm *he
+ re*
+
 ---
 
 (document
@@ -40,7 +46,10 @@ I'm *valid\\*
   (paragraph
     (emphasis))
   (paragraph
-    (emphasis)))
+    (emphasis))
+  (paragraph
+    (emphasis))
+  (paragraph))
 
 ===============
 Strong emphasis
@@ -62,6 +71,12 @@ I'm **valid\\**
 
 -**a**-
 
+I'm **he
+re**
+
+I'm **he
+ re**
+
 ---
 
 (document
@@ -80,7 +95,10 @@ I'm **valid\\**
   (paragraph
     (strong))
   (paragraph
-    (strong)))
+    (strong))
+  (paragraph
+    (strong))
+  (paragraph))
 
 ================
 Interpreted text
@@ -99,6 +117,12 @@ I'm a `text`
 
 `hello``
 
+`I'm a long
+interpreted_text`
+
+`I'm a long
+ interpreted_text`
+
 ---
 
 (document
@@ -115,7 +139,10 @@ I'm a `text`
   (paragraph
     (interpreted_text))
   (paragraph
-    (interpreted_text)))
+    (interpreted_text))
+  (paragraph
+    (interpreted_text))
+  (paragraph))
 
 ===========================
 Interpreted text with roles
@@ -132,6 +159,9 @@ I'm also another :role-name:a-little-longer:`than usual`.
 
 :code:`not a field name`: paragraph with interpreted text
 
+:code:`I'm 
+here`
+
 Edge cases:
 
 :field\:`name`: interpreted text (standard role) requires
@@ -146,6 +176,8 @@ Edge cases:
    (interpreted_text (role)))
   (paragraph
    (interpreted_text (role))
+   (interpreted_text (role)))
+  (paragraph
    (interpreted_text (role)))
   (paragraph
    (interpreted_text (role)))
@@ -181,6 +213,9 @@ I'm a ``text``
 
 ``xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx``
 
+``I'm
+here``
+
 ---
 
 (document
@@ -192,6 +227,8 @@ I'm a ``text``
   (literal))
  (paragraph
   (literal)
+  (literal))
+ (paragraph
   (literal))
  (paragraph
   (literal))
@@ -226,6 +263,9 @@ This is a combination |substitution and hyperlink reference|_.  In
 addition to being replaced, the replacement text or element will
 refer to the "substitution and hyperlink reference" |target|__.
 
+|I'm
+here|
+
 ---
 
 (document
@@ -243,6 +283,8 @@ refer to the "substitution and hyperlink reference" |target|__.
   (substitution_reference))
  (paragraph
   (substitution_reference)
+  (substitution_reference))
+ (paragraph
   (substitution_reference)))
 
 =======================

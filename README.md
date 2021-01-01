@@ -12,7 +12,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 ## TODO
 
 - Allow lists with blank lines between items
-- Inline markup can be expanded to the next line if it has the same indentation level.
 - Break the directive content into arguments, options, and content.
 - Refactor parse citation and footer reference
 - Nested line blocks
