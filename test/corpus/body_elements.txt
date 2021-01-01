@@ -707,6 +707,9 @@ Directives
 
    Just joking...
 
+.. note::
+.. note::
+
 ---
 
 (document
@@ -729,7 +732,11 @@ Directives
     (body))
   (directive
     (type)
-    (body)))
+    (body))
+  (directive
+    (type))
+  (directive
+    (type)))
 
 ========================
 Substitution definitions
