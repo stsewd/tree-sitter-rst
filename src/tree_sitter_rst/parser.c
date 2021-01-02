@@ -1333,6 +1333,10 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
     is_valid = true;
   }
 
+  // Clean up
+  free(schema);
+  schema = NULL;
+
   if (!is_valid) {
     if (is_alphanumeric(scanner->lookahead) || is_internal_reference_char(scanner->lookahead)) {
       return parse_inner_reference(scanner);
