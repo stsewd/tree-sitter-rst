@@ -1306,7 +1306,7 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
   TSLexer* lexer = scanner->lexer;
   const bool* valid_symbols = scanner->valid_symbols;
 
-  const unsigned MAX_SCHEMA_LEN = 8;
+  const unsigned MAX_SCHEMA_LEN = 20;
   char* schema = malloc(sizeof(char) * MAX_SCHEMA_LEN);
   unsigned consumed_chars = 0;
 
