@@ -142,8 +142,8 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_doctest_block_mark(scanner);
   }
 
-  if (is_alphanumeric(current) && valid_symbols[T_DIRECTIVE_MARK]) {
-    return parse_directive_mark(scanner);
+  if (is_alphanumeric(current) && valid_symbols[T_DIRECTIVE_NAME]) {
+    return parse_directive_name(scanner);
   }
 
   if (is_inline_markup_start_char(current)

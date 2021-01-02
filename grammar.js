@@ -60,7 +60,7 @@ module.exports = grammar({
     $._citation_label,
     $._target_name,
     $._anonymous_target_mark,
-    $._directive_mark,
+    $._directive_name,
     $._substitution_mark,
     $._empty_comment,
   ],
@@ -513,7 +513,7 @@ module.exports = grammar({
     */
     directive: $ => seq(
       alias($._explicit_markup_start, '..'),
-      field('name', alias($._directive_mark, $.type)),
+      field('name', alias($._directive_name, $.type)),
       '::',
       field('body', choice($._directive_body, $._dedent)),
     ),
@@ -544,7 +544,7 @@ module.exports = grammar({
     ),
 
     _embedded_directive: $ => seq(
-      field('name', alias($._directive_mark, $.type)),
+      field('name', alias($._directive_name, $.type)),
       seq('::', choice(WHITE_SPACE, $._newline)),
       field('body', choice($._directive_body, $._dedent)),
     ),

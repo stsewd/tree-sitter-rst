@@ -956,7 +956,7 @@
             "type": "ALIAS",
             "content": {
               "type": "SYMBOL",
-              "name": "_directive_mark"
+              "name": "_directive_name"
             },
             "named": true,
             "value": "type"
@@ -1049,7 +1049,7 @@
             "type": "ALIAS",
             "content": {
               "type": "SYMBOL",
-              "name": "_directive_mark"
+              "name": "_directive_name"
             },
             "named": true,
             "value": "type"
@@ -1500,7 +1500,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_directive_mark"
+      "name": "_directive_name"
     },
     {
       "type": "SYMBOL",

@@ -792,12 +792,12 @@ bool parse_anonymous_target_mark(RSTScanner* scanner)
   return false;
 }
 
-bool parse_directive_mark(RSTScanner* scanner)
+bool parse_directive_name(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
-  if (!is_alphanumeric(scanner->lookahead) || !valid_symbols[T_DIRECTIVE_MARK]) {
+  if (!is_alphanumeric(scanner->lookahead) || !valid_symbols[T_DIRECTIVE_NAME]) {
     return false;
   }
 
@@ -823,7 +823,7 @@ bool parse_directive_mark(RSTScanner* scanner)
   scanner->advance(scanner);
 
   if (is_space(scanner->lookahead)) {
-    lexer->result_symbol = T_DIRECTIVE_MARK;
+    lexer->result_symbol = T_DIRECTIVE_NAME;
     return true;
   }
 
