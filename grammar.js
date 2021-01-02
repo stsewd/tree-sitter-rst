@@ -9,6 +9,7 @@ module.exports = grammar({
     $._newline,
     $._blankline,
     $._indent,
+    $._newline_indent,  // A newline followed by an indent
     $._dedent,
 
     // Sections
@@ -254,6 +255,11 @@ module.exports = grammar({
     Another term : classifier : second classifier
       Another definition
 
+    .. note::
+       
+       The difference between a block quote and a definition list
+       is that the definition list can't have a blank line before the definition.
+
     */
     definition_list: $ => repeat1(
       alias($._definition_list_item, $.list_item),
@@ -261,9 +267,8 @@ module.exports = grammar({
 
     _definition_list_item: $ => seq(
       alias(repeat1($._inline_markup), $.term),
-      $._classifiers,
-      $._newline,
-      $._indent,
+      optional($._classifiers),
+      $._newline_indent,
       alias($.body, $.definition),
     ),
 

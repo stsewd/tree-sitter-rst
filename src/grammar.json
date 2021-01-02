@@ -339,16 +339,20 @@
           "value": "term"
         },
         {
-          "type": "SYMBOL",
-          "name": "_classifiers"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_classifiers"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "SYMBOL",
-          "name": "_newline"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_indent"
+          "name": "_newline_indent"
         },
         {
           "type": "ALIAS",
@@ -1361,6 +1365,10 @@
     {
       "type": "SYMBOL",
       "name": "_indent"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_newline_indent"
     },
     {
       "type": "SYMBOL",

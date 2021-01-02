@@ -52,6 +52,12 @@ bool parse_indent(RSTScanner* scanner)
       return true;
     }
 
+    if (newlines == 1 && valid_symbols[T_NEWLINE_INDENT] && indent > current_indent) {
+      scanner->push(scanner, indent);
+      lexer->result_symbol = T_NEWLINE_INDENT;
+      return true;
+    }
+
     if (valid_symbols[T_NEWLINE]) {
       lexer->result_symbol = T_NEWLINE;
       return true;
