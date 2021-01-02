@@ -255,6 +255,11 @@ module.exports = grammar({
     Another term : classifier : second classifier
       Another definition
 
+    .. note::
+       
+       The difference between a block quote and a definition list
+       is that the definition list can't have a blank line before the definition.
+
     */
     definition_list: $ => repeat1(
       alias($._definition_list_item, $.list_item),
