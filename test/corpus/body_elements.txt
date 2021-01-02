@@ -735,6 +735,41 @@ Directives
 .. note::
 .. note::
 
+.. code:: python
+   :name: python code
+
+   print("hello")
+
+.. code:: python
+   :name: empty content
+
+.. figure:: figure.png
+   :alt: My figure
+   :align: center
+
+.. figure:: figure.png
+   :alt: My figure
+   :align: center
+
+   An amazing figure
+
+.. Important::
+   - Wash behind your ears.
+   - Clean up your room.
+   - Call your mother.
+   - Back up your data.
+
+.. note::
+   :warning: true
+
+.. list-table::
+   :class: borderless
+
+   Foobar
+
+.. WARNING:: Strong prose may provoke extreme mental exertion.
+   Reader discretion is strongly advised.
+
 ---
 
 (document
@@ -742,29 +777,90 @@ Directives
     (type))
   (directive
     (type)
-    (body))
+    (body (arguments)))
   (directive
     (type)
-    (body))
+    (body (arguments)))
   (directive
     (type)
-    (body))
+    (body (arguments)))
   (directive
     (type)
-    (body))
+    (body (content)))
   (directive
     (type)
-    (body))
+    (body (content)))
   (directive
     (type)
-    (body))
+    (body (arguments) (content)))
   (directive
     (type)
-    (body))
+    (body (content)))
   (directive
     (type))
   (directive
-    (type)))
+    (type))
+  (directive
+    (type)
+    (body
+      (arguments)
+      (options
+        (field
+          (field_name)
+          (field_body (paragraph))))
+      (content)))
+  (directive
+    (type)
+    (body
+      (arguments)
+      (options
+        (field
+          (field_name)
+          (field_body (paragraph))))))
+  (directive
+    (type)
+    (body
+      (arguments)
+      (options
+        (field
+          (field_name)
+          (field_body (paragraph)))
+        (field
+          (field_name)
+          (field_body (paragraph))))))
+  (directive
+    (type)
+    (body
+      (arguments)
+      (options
+        (field
+          (field_name)
+          (field_body (paragraph)))
+        (field
+          (field_name)
+          (field_body (paragraph))))
+      (content)))
+  (directive
+    (type)
+    (body (content)))
+  (directive
+    (type)
+    (body
+      (options
+        (field
+          (field_name)
+          (field_body (paragraph))))))
+  (directive
+    (type)
+    (body
+      (options
+        (field
+          (field_name)
+          (field_body (paragraph))))
+       (content)))
+  (directive
+    (type)
+    (body (arguments) (content))))
 
 ========================
 Substitution definitions
@@ -782,6 +878,15 @@ Substitution definitions
    :height: 11
    :width: 11
 
+.. |reST| class::
+
+.. |reST| class::
+   :foo: bar
+
+.. |reST| note::
+
+   I'm here
+
 ---
 
 (document
@@ -789,32 +894,58 @@ Substitution definitions
     (substitution)
     (directive
       (type)
-      (body)))
+      (body (arguments))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body)))
+      (body (arguments))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body)))
+      (body (arguments))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body)))
+      (body (arguments))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body)))
+      (body (arguments))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body))))
+      (body
+        (arguments)
+        (options
+          (field
+            (field_name)
+            (field_body (paragraph)))
+          (field
+            (field_name)
+            (field_body (paragraph)))))))
+  (substitution_definition
+    (substitution)
+    (directive
+      (type)))
+  (substitution_definition
+    (substitution)
+    (directive
+      (type)
+      (body
+        (options
+          (field
+            (field_name)
+            (field_body (paragraph)))))))
+  (substitution_definition
+    (substitution)
+    (directive
+      (type)
+      (body (content)))))
 
 ========
 Comments

@@ -12,11 +12,9 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 ## TODO
 
 - Allow lists with blank lines between items
-- Break the directive content into arguments, options, and content.
 - Refactor parse citation and footer reference
 - Nested line blocks
 - Option lists
-- Tables (maybe implemented without validations?)
 - Add some nodes to inline?
 - Check if there is a way to re-implement some nodes to JS instead of C?
 - A definition list with classifiers can't be separated by a blank line.
@@ -38,6 +36,7 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## Design decisions
 
+- Implement tables?
 - Validate length of adornments in sections?
 
   The spec doesn't mention this, but this paragraph does.
