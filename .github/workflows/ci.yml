@@ -8,13 +8,12 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
+      - run: echo ./node_modules/.bin/ >> $GITHUB_PATH
       - run: npm ci
-      - run: npm run build
-      - run: npm test
+      - run: make test
       - run: make parse-examples
