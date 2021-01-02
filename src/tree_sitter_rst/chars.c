@@ -421,6 +421,9 @@ bool is_known_schema(char* string, unsigned string_len)
   };
   const int length = 6;
   for (int i = 0; i < length; i++) {
+    if (string_len != strlen(valid_schemas[i])) {
+      continue;
+    }
     int result = memcmp(string, valid_schemas[i], string_len);
     if (result == 0) {
       return true;

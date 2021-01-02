@@ -240,6 +240,10 @@ Field lists
 
 
   I follow!
+:s:
+
+   .. role::
+
 
 I'm a quoted block:
 
@@ -289,7 +293,10 @@ I'm a quoted block:
       (field_body (paragraph) (paragraph)))
     (field
       (field_name)
-      (field_body (paragraph))))
+      (field_body (paragraph)))
+    (field
+      (field_name)
+      (field_body (directive (type)))))
     (paragraph)
     (block_quote
       (field_list
