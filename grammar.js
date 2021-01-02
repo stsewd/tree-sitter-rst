@@ -509,7 +509,7 @@ module.exports = grammar({
     directive: $ => seq(
       alias($._explicit_markup_start, '..'),
       field('name', alias($._directive_mark, $.type)),
-      seq('::', choice(WHITE_SPACE, $._newline)),
+      '::',
       field('body', choice($._directive_body, $._dedent)),
     ),
 
