@@ -33,6 +33,8 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
   (that are a `reference` node).
 - Literal blocks are part of the paragraph they precede, not a separate node,
   except for the expanded form of literal blocks.
+- In rst directives only have "body" node,
+  here the body is parsed as arguments/options/content.
 
 ## Design decisions
 
