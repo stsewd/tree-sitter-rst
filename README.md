@@ -11,7 +11,6 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 
 ## TODO
 
-- The content from directives can be indented with 1 space at least
 - Allow lists with blank lines between items
 - Break the directive content into arguments, options, and content.
 - Refactor parse citation and footer reference

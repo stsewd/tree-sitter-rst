@@ -729,6 +729,10 @@ Directives
    Just joking...
 
 .. note::
+
+ First line from the body is the indentation.
+
+.. note::
 .. note::
 
 ---
@@ -736,6 +740,9 @@ Directives
 (document
   (directive
     (type))
+  (directive
+    (type)
+    (body))
   (directive
     (type)
     (body))
@@ -835,6 +842,9 @@ Comments
 ..
   I'm a comment
 
+.. I'm
+ a comment
+
 ..
 
 ..
@@ -843,6 +853,7 @@ Comments
 ---
 
 (document
+  (comment)
   (comment)
   (comment)
   (comment)

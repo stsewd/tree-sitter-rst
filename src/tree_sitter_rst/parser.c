@@ -469,7 +469,7 @@ bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum Toke
     lexer->result_symbol = token_type;
 
     // Set indent level to the first non-whitespace char
-    const int indent = scanner->back(scanner) + consumed_chars + get_indent_level(scanner);
+    int indent = scanner->back(scanner) + consumed_chars + get_indent_level(scanner);
 
     // If it's an empty line and T_EXPLICIT_MARKUP_START, then it's an empty comment.
     // Empty comments don't consume any following indented text.
@@ -486,6 +486,25 @@ bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum Toke
       if (is_empty && valid_symbols[T_EMPTY_COMMENT]) {
         lexer->result_symbol = T_EMPTY_COMMENT;
         return true;
+      }
+    } else if (token_type == T_EXPLICIT_MARKUP_START) {
+      // Go to the next line.
+      while (!is_newline(scanner->lookahead)) {
+        scanner->advance(scanner);
+      }
+      scanner->advance(scanner);
+
+      // The first non-empty line after the marker
+      // determines the indentation of the body.
+      while (true) {
+        indent = get_indent_level(scanner);
+        if (!is_newline(scanner->lookahead) || scanner->lookahead == CHAR_EOF) {
+          break;
+        }
+        scanner->advance(scanner);
+      }
+      if (indent <= scanner->back(scanner)) {
+        indent = scanner->back(scanner) + 1;
       }
     }
 
@@ -572,7 +591,7 @@ bool parse_field_mark_end(RSTScanner* scanner)
     // Consume all whitespaces.
     get_indent_level(scanner);
     lexer->mark_end(lexer);
-    // Go the next line
+    // Go the next line.
     while (!is_newline(scanner->lookahead)) {
       scanner->advance(scanner);
     }
