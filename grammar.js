@@ -256,7 +256,7 @@ module.exports = grammar({
       Another definition
 
     .. note::
-       
+
        The difference between a block quote and a definition list
        is that the definition list can't have a blank line before the definition.
 
@@ -515,14 +515,40 @@ module.exports = grammar({
       alias($._explicit_markup_start, '..'),
       field('name', alias($._directive_name, $.type)),
       '::',
-      field('body', choice($._directive_body, $._dedent)),
+      field('body', choice(alias($._directive_body, $.body), $._dedent)),
     ),
 
-    _directive_body: $ => seq(
-      // argument?
-      // optional($._text_line),
-      // options?
-      alias($._indented_text_block, $.body),
+    _directive_body: $ => choice(
+      // Directives with content
+      seq(
+        optional(alias($._text_line, $.arguments)),
+        optional(alias($.field_list, $.options)),
+        $._blankline,
+        alias($._indented_text_block, $.content),
+      ),
+      // Directives without content
+      seq(
+        choice(
+          alias($._text_line, $.arguments),
+          alias($.field_list, $.options),
+          seq(alias($._text_line, $.arguments), alias($.field_list, $.options)),
+        ),
+        $._dedent,
+      ),
+      // Directives with content at the first line
+      seq(
+        $._newline,
+        choice(
+          seq(alias($.field_list, $.options), $._dedent),
+          alias($._indented_text_block, $.content),
+          seq(alias($.field_list, $.options), $._blankline, alias($._indented_text_block, $.content)),
+        ),
+      ),
+      // Directives with multiline arguments are split as arguments + content
+      seq(
+        alias($._text_line, $.arguments),
+        alias($._indented_text_block, $.content),
+      ),
     ),
 
     // Substitution definition
@@ -546,7 +572,7 @@ module.exports = grammar({
     _embedded_directive: $ => seq(
       field('name', alias($._directive_name, $.type)),
       seq('::', choice(WHITE_SPACE, $._newline)),
-      field('body', choice($._directive_body, $._dedent)),
+      field('body', choice(alias($._directive_body, $.body), $._dedent)),
     ),
 
     // Comments

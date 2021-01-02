@@ -102,6 +102,11 @@
     ]
   },
   {
+    "type": "arguments",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "attribution",
     "named": true,
     "fields": {},
@@ -176,7 +181,15 @@
           "named": true
         },
         {
+          "type": "arguments",
+          "named": true
+        },
+        {
           "type": "block_quote",
+          "named": true
+        },
+        {
+          "type": "content",
           "named": true
         },
         {
@@ -189,6 +202,10 @@
         },
         {
           "type": "literal_block",
+          "named": true
+        },
+        {
+          "type": "options",
           "named": true
         },
         {
@@ -260,6 +277,11 @@
   },
   {
     "type": "comment",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "content",
     "named": true,
     "fields": {}
   },
@@ -608,6 +630,21 @@
     "type": "literal_block",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "options",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "field",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "paragraph",
