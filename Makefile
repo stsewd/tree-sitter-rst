@@ -22,10 +22,8 @@ update-examples:
 
 parse-examples:
 	# Tables aren't supported yet
-	# Tables aren't supported yet
 	tree-sitter parse -q \
 	  test/examples/*.rst \
-	  !test/examples/latex_literal_block.rst \
 	  !test/examples/table_colspan.rst
 
 serve: build
