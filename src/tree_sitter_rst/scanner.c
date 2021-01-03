@@ -85,8 +85,12 @@ unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer)
 
 void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned length)
 {
-  memcpy((void*)buffer, scanner->indent_stack, length);
-  scanner->length = length;
+  if (buffer != NULL && length > 0) {
+    memcpy((void*)buffer, scanner->indent_stack, length);
+    scanner->length = length;
+  } else {
+    scanner->length = 0;
+  }
 }
 
 bool rst_scanner_scan(RSTScanner* scanner)
