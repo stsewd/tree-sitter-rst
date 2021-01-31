@@ -8,7 +8,7 @@ bool is_newline(int32_t c)
     CHAR_NEWLINE,
     CHAR_CARRIAGE_RETURN,
   };
-  const int length = 3;
+  const int length = sizeof(newline_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == newline_chars[i]) {
       return true;
@@ -25,7 +25,7 @@ bool is_space(int32_t c)
     CHAR_TAB,
     CHAR_VERTICAL_TAB,
   };
-  const int length = 4;
+  const int length = sizeof(space_chars) / sizeof(int32_t);
   bool is_space_char = false;
   for (int i = 0; i < length; i++) {
     if (c == space_chars[i]) {
@@ -50,7 +50,7 @@ bool is_number(int32_t c)
     '8',
     '9',
   };
-  const int length = 10;
+  const int length = sizeof(numbers) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == numbers[i]) {
       return true;
@@ -89,7 +89,7 @@ bool is_abc_lower(int32_t c)
     'y',
     'z',
   };
-  const int length = 26;
+  const int length = sizeof(abc) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == abc[i]) {
       return true;
@@ -128,7 +128,7 @@ bool is_abc_upper(int32_t c)
     'Y',
     'Z',
   };
-  const int length = 26;
+  const int length = sizeof(abc) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == abc[i]) {
       return true;
@@ -186,7 +186,7 @@ bool is_adornment_char(int32_t c)
     '}',
     '~',
   };
-  const int length = 32;
+  const int length = sizeof(adornment_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == adornment_chars[i]) {
       return true;
@@ -211,7 +211,7 @@ bool is_start_char(int32_t c)
     '[',
     '{',
   };
-  const int length = 9;
+  const int length = sizeof(valid_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == valid_chars[i]) {
       return true;
@@ -242,7 +242,7 @@ bool is_end_char(int32_t c)
     '}',
     '>',
   };
-  const int length = 15;
+  const int length = sizeof(valid_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == valid_chars[i]) {
       return true;
@@ -260,7 +260,7 @@ bool is_inline_markup_start_char(int32_t c)
     '_', // _`inline internal target`.
     '[', // [foot-note]_.
   };
-  const int length = 5;
+  const int length = sizeof(inline_markup_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == inline_markup_chars[i]) {
       return true;
@@ -278,7 +278,7 @@ bool is_inline_markup_end_char(int32_t c)
     '|', // |substitution references|.
     ']', // [foot-note]_.
   };
-  const int length = 4;
+  const int length = sizeof(inline_markup_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == inline_markup_chars[i]) {
       return true;
@@ -293,7 +293,7 @@ bool is_inline_markup_end_char(int32_t c)
 bool is_internal_reference_char(int32_t c)
 {
   const int32_t internal_chars[] = { '-', '_', '.', ':', '+' };
-  const int length = 5;
+  const int length = sizeof(internal_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == internal_chars[i]) {
       return true;
@@ -315,7 +315,7 @@ bool is_char_bullet(int32_t c)
     8227, // '‣'
     8259, // '⁃'
   };
-  const int length = 6;
+  const int length = sizeof(bullets) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == bullets[i]) {
       return true;
@@ -353,7 +353,7 @@ bool is_numeric_bullet_roman_lower(int32_t c)
     'd',
     'm',
   };
-  const int length = 7;
+  const int length = sizeof(valid_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == valid_chars[i]) {
       return true;
@@ -373,7 +373,7 @@ bool is_numeric_bullet_roman_upper(int32_t c)
     'D',
     'M',
   };
-  const int length = 7;
+  const int length = sizeof(valid_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == valid_chars[i]) {
       return true;
@@ -401,7 +401,7 @@ bool is_attribution_mark(int32_t c)
     '-',
     CHAR_EMDASH,
   };
-  const int length = 2;
+  const int length = sizeof(valid_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == valid_chars[i]) {
       return true;
@@ -443,7 +443,7 @@ bool is_known_schema(char* string, unsigned string_len)
     "telnet",
     "ssh",
   };
-  const int length = 6;
+  const int length = sizeof(valid_schemas) / sizeof(char*);
   for (int i = 0; i < length; i++) {
     if (string_len != strlen(valid_schemas[i])) {
       continue;
@@ -464,7 +464,7 @@ bool is_invalid_uri_char(int32_t c)
     '{',
     '\\',
   };
-  const int length = 4;
+  const int length = sizeof(invalid_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == invalid_chars[i]) {
       return true;
