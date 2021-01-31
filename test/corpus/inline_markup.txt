@@ -373,6 +373,8 @@ I'm a text__
 `I'm`__ a text
 `I'm not\`_ a reference.
 
+Canción_ 12áéíóú__
+
 lonely_
 
 lonely__
@@ -389,6 +391,9 @@ lonely__
     (reference)
     (reference))
   (paragraph
+    (reference))
+  (paragraph
+    (reference)
     (reference))
   (paragraph
     (reference))

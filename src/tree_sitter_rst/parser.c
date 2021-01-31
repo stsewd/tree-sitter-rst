@@ -1255,9 +1255,10 @@ bool parse_reference(RSTScanner* scanner)
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
-  if (!is_alphanumeric(scanner->lookahead) || !valid_symbols[T_REFERENCE]) {
+  if (is_space(scanner->lookahead) || is_internal_reference_char(scanner->lookahead) || !valid_symbols[T_REFERENCE]) {
     return false;
   }
+  scanner->advance(scanner);
   return parse_inner_reference(scanner);
 }
 
@@ -1268,7 +1269,7 @@ bool parse_inner_reference(RSTScanner* scanner)
 
   bool internal_symbol = is_internal_reference_char(scanner->previous);
   bool is_word = false;
-  while (is_alphanumeric(scanner->lookahead) || is_internal_reference_char(scanner->lookahead)) {
+  while ((!is_space(scanner->lookahead) && !is_end_char(scanner->lookahead)) || is_internal_reference_char(scanner->lookahead)) {
     // Mark the end of the worl?d.
     if (is_start_char(scanner->lookahead) && !is_word) {
       is_word = true;
@@ -1357,7 +1358,7 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
   schema = NULL;
 
   if (!is_valid) {
-    if (is_alphanumeric(scanner->lookahead) || is_internal_reference_char(scanner->lookahead)) {
+    if ((!is_space(scanner->lookahead) && !is_end_char(scanner->lookahead)) || is_internal_reference_char(scanner->lookahead)) {
       return parse_inner_reference(scanner);
     }
     if (valid_symbols[T_TEXT]) {
