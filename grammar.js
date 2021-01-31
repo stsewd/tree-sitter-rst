@@ -6,6 +6,7 @@ module.exports = grammar({
   name: 'rst',
 
   externals: $ => [
+    // Whitespace
     $._newline,
     $._blankline,
     $._indent,

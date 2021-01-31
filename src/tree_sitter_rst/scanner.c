@@ -6,6 +6,9 @@
 #include "tree_sitter_rst/parser.c"
 #include "tree_sitter_rst/tokens.h"
 
+/// Build a new `RSTScanner` object.
+///
+/// `destroy_rst_scanner` should be called to safely destroy this object.
 RSTScanner* new_rst_scanner()
 {
   RSTScanner* scanner = malloc(sizeof(RSTScanner));

@@ -2,6 +2,7 @@
 #define TREE_SITTER_RST_TOKENS_H_
 
 enum TokenType {
+  // Whitespace
   T_NEWLINE,
   T_BLANKLINE,
   T_INDENT,

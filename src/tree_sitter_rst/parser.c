@@ -1527,7 +1527,7 @@ bool parse_inner_role(RSTScanner* scanner)
   return false;
 }
 
-/// The previous token was `:` and it's already consumed.
+/// This function assumes the previous token was `:` and it's already consumed.
 bool parse_role_name(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;

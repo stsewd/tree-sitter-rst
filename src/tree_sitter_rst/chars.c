@@ -147,6 +147,9 @@ bool is_alphanumeric(int32_t c)
   return is_abc(c) || is_number(c);
 }
 
+/// Check if it's an adornment char.
+///
+/// Adorment characters are used for sections and transitions.
 bool is_adornment_char(int32_t c)
 {
   const int32_t adornment_chars[] = {
@@ -192,6 +195,9 @@ bool is_adornment_char(int32_t c)
   return false;
 }
 
+/// Check if it's a start char.
+///
+/// Some tokens can start after non-whitespace chars.
 bool is_start_char(int32_t c)
 {
   const int32_t valid_chars[] = {
@@ -214,6 +220,9 @@ bool is_start_char(int32_t c)
   return false;
 }
 
+/// Check if it's an end char.
+///
+/// Some tokens can end after non-whitespace chars.
 bool is_end_char(int32_t c)
 {
   const int32_t valid_chars[] = {
@@ -278,6 +287,9 @@ bool is_inline_markup_end_char(int32_t c)
   return false;
 }
 
+/// Check if it's an internal reference char.
+///
+/// References and some other names can't have two consecutive internal characters.
 bool is_internal_reference_char(int32_t c)
 {
   const int32_t internal_chars[] = { '-', '_', '.', ':', '+' };
@@ -290,6 +302,9 @@ bool is_internal_reference_char(int32_t c)
   return false;
 }
 
+/// Check if it's a bullet char.
+///
+/// Lists use these characters to start an item.
 bool is_char_bullet(int32_t c)
 {
   const int32_t bullets[] = {
@@ -309,6 +324,9 @@ bool is_char_bullet(int32_t c)
   return false;
 }
 
+/// Check if it's a numeric bullet char.
+///
+/// Lists cacn use different number formats to start an item.
 bool is_numeric_bullet(int32_t c)
 {
   return (
@@ -374,6 +392,9 @@ bool is_numeric_bullet_abc_upper(int32_t c)
   return is_abc_upper(c);
 }
 
+/// Check if it's a valid attribution char.
+///
+/// Attribution chars are used to denot the author of a quote.
 bool is_attribution_mark(int32_t c)
 {
   const int32_t valid_chars[] = {
@@ -389,6 +410,9 @@ bool is_attribution_mark(int32_t c)
   return false;
 }
 
+/// Get the current indentation level.
+///
+/// The scanner should be set to a char after a newline.
 int get_indent_level(RSTScanner* scanner)
 {
   int32_t current = scanner->lookahead;
