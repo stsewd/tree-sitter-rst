@@ -38,103 +38,23 @@ bool is_space(int32_t c)
 
 bool is_number(int32_t c)
 {
-  const int32_t numbers[] = {
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-  };
-  const int length = sizeof(numbers) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == numbers[i]) {
-      return true;
-    }
-  }
-  return false;
+  const int32_t upper = 48;
+  const int32_t lower = 57;
+  return c >= upper && c <= lower;
 }
 
 bool is_abc_lower(int32_t c)
 {
-  const int32_t abc[] = {
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'k',
-    'l',
-    'm',
-    'n',
-    'o',
-    'p',
-    'q',
-    'r',
-    's',
-    't',
-    'u',
-    'v',
-    'w',
-    'x',
-    'y',
-    'z',
-  };
-  const int length = sizeof(abc) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == abc[i]) {
-      return true;
-    }
-  }
-  return false;
+  const int32_t upper = 97;
+  const int32_t lower = 122;
+  return c >= upper && c <= lower;
 }
 
 bool is_abc_upper(int32_t c)
 {
-  const int32_t abc[] = {
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z',
-  };
-  const int length = sizeof(abc) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == abc[i]) {
-      return true;
-    }
-  }
-  return false;
+  const int32_t upper = 65;
+  const int32_t lower = 90;
+  return c >= upper && c <= lower;
 }
 
 bool is_abc(int32_t c)
