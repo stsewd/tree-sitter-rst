@@ -1,0 +1,25 @@
+[package]
+name = "tree-sitter-rst"
+description = "rst grammar for the tree-sitter parsing library"
+version = "0.0.1"
+keywords = ["incremental", "parsing", "rst"]
+categories = ["parsing", "text-editors"]
+repository = "https://github.com/stsewd/tree-sitter-rst"
+edition = "2018"
+
+build = "bindings/rust/build.rs"
+include = [
+  "bindings/rust/*",
+  "grammar.js",
+  "queries/*",
+  "src/*",
+]
+
+[lib]
+path = "bindings/rust/lib.rs"
+
+[dependencies]
+tree-sitter = "0.17"
+
+[build-dependencies]
+cc = "1.0"

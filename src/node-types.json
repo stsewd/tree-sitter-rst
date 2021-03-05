@@ -241,10 +241,6 @@
           {
             "type": "body",
             "named": true
-          },
-          {
-            "type": "transition",
-            "named": true
           }
         ]
       },
@@ -349,10 +345,6 @@
         "types": [
           {
             "type": "body",
-            "named": true
-          },
-          {
-            "type": "transition",
             "named": true
           }
         ]
@@ -534,10 +526,6 @@
         "types": [
           {
             "type": "body",
-            "named": true
-          },
-          {
-            "type": "transition",
             "named": true
           }
         ]
