@@ -5,7 +5,7 @@
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
-#define LANGUAGE_VERSION 12
+#define LANGUAGE_VERSION 13
 #define STATE_COUNT 360
 #define LARGE_STATE_COUNT 34
 #define SYMBOL_COUNT 109
@@ -14,6 +14,7 @@
 #define EXTERNAL_TOKEN_COUNT 39
 #define FIELD_COUNT 3
 #define MAX_ALIAS_SEQUENCE_LENGTH 4
+#define PRODUCTION_ID_COUNT 25
 
 enum {
   aux_sym__classifiers_token1 = 1,
@@ -868,7 +869,7 @@ static const char *ts_field_names[] = {
   [field_name] = "name",
 };
 
-static const TSFieldMapSlice ts_field_map_slices[25] = {
+static const TSFieldMapSlice ts_field_map_slices[PRODUCTION_ID_COUNT] = {
   [3] = {.index = 0, .length = 2},
   [4] = {.index = 2, .length = 1},
   [5] = {.index = 3, .length = 4},
@@ -902,7 +903,7 @@ static const TSFieldMapEntry ts_field_map_entries[] = {
     {field_name, 0},
 };
 
-static TSSymbol ts_alias_sequences[25][MAX_ALIAS_SEQUENCE_LENGTH] = {
+static TSSymbol ts_alias_sequences[PRODUCTION_ID_COUNT][MAX_ALIAS_SEQUENCE_LENGTH] = {
   [0] = {0},
   [1] = {
     [0] = alias_sym_title,
@@ -9793,13 +9794,24 @@ extern const TSLanguage *tree_sitter_rst(void) {
     .alias_count = ALIAS_COUNT,
     .token_count = TOKEN_COUNT,
     .external_token_count = EXTERNAL_TOKEN_COUNT,
-    .symbol_names = ts_symbol_names,
-    .symbol_metadata = ts_symbol_metadata,
-    .parse_table = (const uint16_t *)ts_parse_table,
-    .parse_actions = ts_parse_actions,
-    .lex_modes = ts_lex_modes,
-    .alias_sequences = (const TSSymbol *)ts_alias_sequences,
+    .state_count = STATE_COUNT,
+    .large_state_count = LARGE_STATE_COUNT,
+    .production_id_count = PRODUCTION_ID_COUNT,
+    .field_count = FIELD_COUNT,
     .max_alias_sequence_length = MAX_ALIAS_SEQUENCE_LENGTH,
+    .parse_table = (const uint16_t *)ts_parse_table,
+    .small_parse_table = (const uint16_t *)ts_small_parse_table,
+    .small_parse_table_map = (const uint32_t *)ts_small_parse_table_map,
+    .parse_actions = ts_parse_actions,
+    .symbol_names = ts_symbol_names,
+    .field_names = ts_field_names,
+    .field_map_slices = (const TSFieldMapSlice *)ts_field_map_slices,
+    .field_map_entries = (const TSFieldMapEntry *)ts_field_map_entries,
+    .symbol_metadata = ts_symbol_metadata,
+    .public_symbol_map = ts_symbol_map,
+    .alias_map = ts_non_terminal_alias_map,
+    .alias_sequences = (const TSSymbol *)ts_alias_sequences,
+    .lex_modes = ts_lex_modes,
     .lex_fn = ts_lex,
     .external_scanner = {
       (const bool *)ts_external_scanner_states,
@@ -9810,16 +9822,6 @@ extern const TSLanguage *tree_sitter_rst(void) {
       tree_sitter_rst_external_scanner_serialize,
       tree_sitter_rst_external_scanner_deserialize,
     },
-    .field_count = FIELD_COUNT,
-    .field_map_slices = (const TSFieldMapSlice *)ts_field_map_slices,
-    .field_map_entries = (const TSFieldMapEntry *)ts_field_map_entries,
-    .field_names = ts_field_names,
-    .large_state_count = LARGE_STATE_COUNT,
-    .small_parse_table = (const uint16_t *)ts_small_parse_table,
-    .small_parse_table_map = (const uint32_t *)ts_small_parse_table_map,
-    .public_symbol_map = ts_symbol_map,
-    .alias_map = ts_non_terminal_alias_map,
-    .state_count = STATE_COUNT,
   };
   return &language;
 }
