@@ -23,6 +23,8 @@ I'm *valid\\*
 I'm *he
 re*
 
+I'm in (*parenthesis*)
+
 ---
 
 (document
@@ -37,6 +39,8 @@ re*
   (paragraph
     (emphasis)
     (emphasis)
+    (emphasis))
+  (paragraph
     (emphasis))
   (paragraph
     (emphasis))
@@ -70,6 +74,8 @@ I'm **valid\\**
 I'm **he
 re**
 
+I'm in (**parenthesis**)
+
 ---
 
 (document
@@ -82,6 +88,8 @@ re**
   (paragraph
     (strong)
     (strong)
+    (strong))
+  (paragraph
     (strong))
   (paragraph
     (strong))
@@ -112,6 +120,8 @@ I'm a `text`
 `I'm a long
 interpreted_text`
 
+I'm in (`parenthesis`)
+
 ---
 
 (document
@@ -124,6 +134,8 @@ interpreted_text`
   (paragraph
     (interpreted_text)
     (interpreted_text)
+    (interpreted_text))
+  (paragraph
     (interpreted_text))
   (paragraph
     (interpreted_text))
@@ -204,6 +216,8 @@ I'm a ``text``
 ``I'm
 here``
 
+I'm in (``parenthesis``)
+
 ---
 
 (document
@@ -215,6 +229,8 @@ here``
   (literal))
  (paragraph
   (literal)
+  (literal))
+ (paragraph
   (literal))
  (paragraph
   (literal))
@@ -254,6 +270,8 @@ refer to the "substitution and hyperlink reference" |target|__.
 |I'm
 here|
 
+I'm in (|parenthesis|)
+
 ---
 
 (document
@@ -271,6 +289,8 @@ here|
   (substitution_reference))
  (paragraph
   (substitution_reference)
+  (substitution_reference))
+ (paragraph
   (substitution_reference))
  (paragraph
   (substitution_reference)))
@@ -291,12 +311,16 @@ _`Lonely`
 
 _`I'm`._`I'm not`
 
+I'm in (_`parenthesis`)
+
 ---
 
 (document
   (paragraph
     (inline_target)
     (inline_target)
+    (inline_target))
+  (paragraph
     (inline_target))
   (paragraph
     (inline_target))
