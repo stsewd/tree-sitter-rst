@@ -1478,7 +1478,6 @@ bool parse_role_name(RSTScanner* scanner)
   return false;
 }
 
-
 /// Parse normal text.
 ///
 /// Text nodes are separated by white spaces or an start char like `(`

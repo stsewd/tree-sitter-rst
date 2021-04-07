@@ -196,7 +196,11 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_standalone_hyperlink(scanner);
   }
 
-  if (!is_space(current) && !is_internal_reference_char(current) && valid_symbols[T_REFERENCE]) {
+  if (!is_space(current)
+      && !is_internal_reference_char(current)
+      && !is_start_char(current)
+      && !is_end_char(current)
+      && valid_symbols[T_REFERENCE]) {
     return parse_reference(scanner);
   }
 
