@@ -177,11 +177,7 @@ bool parse_overline(RSTScanner* scanner)
       if (is_space(scanner->lookahead)) {
         break;
       }
-      if (is_word && valid_symbols[T_TEXT]) {
-        lexer->result_symbol = T_TEXT;
-        return true;
-      }
-      return parse_text(scanner);
+      return parse_text(scanner, !is_word);
     }
     scanner->advance(scanner);
     if (is_word && overline_length == 0) {
@@ -199,11 +195,7 @@ bool parse_overline(RSTScanner* scanner)
   }
 
   if (!is_newline(scanner->lookahead)) {
-    if (valid_symbols[T_TEXT]) {
-      lexer->result_symbol = T_TEXT;
-      return true;
-    }
-    return false;
+    return parse_text(scanner, false);
   }
 
   scanner->advance(scanner);
@@ -222,11 +214,7 @@ bool parse_overline(RSTScanner* scanner)
       lexer->result_symbol = T_TRANSITION;
       return true;
     }
-    if (valid_symbols[T_TEXT]) {
-      lexer->result_symbol = T_TEXT;
-      return true;
-    }
-    return false;
+    return parse_text(scanner, false);
   }
 
   scanner->advance(scanner);
@@ -238,11 +226,7 @@ bool parse_overline(RSTScanner* scanner)
       if (is_space(scanner->lookahead)) {
         break;
       }
-      if (valid_symbols[T_TEXT]) {
-        lexer->result_symbol = T_TEXT;
-        return true;
-      }
-      return false;
+      return parse_text(scanner, false);
     }
     scanner->advance(scanner);
     underline_length++;
@@ -254,11 +238,7 @@ bool parse_overline(RSTScanner* scanner)
   }
 
   if (!is_newline(scanner->lookahead)) {
-    if (valid_symbols[T_TEXT]) {
-      lexer->result_symbol = T_TEXT;
-      return true;
-    }
-    return false;
+    return parse_text(scanner, false);
   }
 
   // The overline_length and the underline_length length must match
@@ -267,11 +247,7 @@ bool parse_overline(RSTScanner* scanner)
     return true;
   }
 
-  if (valid_symbols[T_TEXT]) {
-    lexer->result_symbol = T_TEXT;
-    return true;
-  }
-  return false;
+  return parse_text(scanner, false);
 }
 
 bool parse_underline(RSTScanner* scanner)
@@ -305,11 +281,7 @@ bool parse_underline(RSTScanner* scanner)
   }
 
   if (!is_newline(scanner->lookahead)) {
-    if (valid_symbols[T_TEXT]) {
-      lexer->result_symbol = T_TEXT;
-      return true;
-    }
-    return false;
+    return parse_text(scanner, false);
   }
 
   // Transitions need to be at least 4 chars long
@@ -323,11 +295,7 @@ bool parse_underline(RSTScanner* scanner)
     return true;
   }
 
-  if (valid_symbols[T_TEXT]) {
-    lexer->result_symbol = T_TEXT;
-    return true;
-  }
-  return false;
+  return parse_text(scanner, false);
 }
 
 bool parse_char_bullet(RSTScanner* scanner)
@@ -345,7 +313,7 @@ bool parse_char_bullet(RSTScanner* scanner)
     return true;
   }
 
-  return parse_text(scanner);
+  return parse_text(scanner, true);
 }
 
 bool parse_numeric_bullet(RSTScanner* scanner)
@@ -427,7 +395,7 @@ bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized)
     }
     return false;
   }
-  return parse_text(scanner);
+  return parse_text(scanner, true);
 }
 
 bool parse_explict_markup_start(RSTScanner* scanner)
@@ -528,18 +496,14 @@ bool parse_field_mark(RSTScanner* scanner)
   lexer->mark_end(lexer);
 
   if (is_space(scanner->lookahead)) {
-    return parse_text(scanner);
+    return parse_text(scanner, true);
   }
 
   bool ok = parse_inner_field_mark(scanner);
   if (ok) {
     return true;
   }
-  if (valid_symbols[T_TEXT]) {
-    lexer->result_symbol = T_TEXT;
-    return true;
-  }
-  return false;
+  return parse_text(scanner, false);
 }
 
 bool parse_inner_field_mark(RSTScanner* scanner)
@@ -617,7 +581,7 @@ bool parse_field_mark_end(RSTScanner* scanner)
     return true;
   }
 
-  return parse_text(scanner);
+  return parse_text(scanner, true);
 }
 
 bool parse_label(RSTScanner* scanner)
@@ -837,7 +801,7 @@ bool parse_directive_name(RSTScanner* scanner)
   }
 
   if (scanner->lookahead != ':' || scanner->previous != ':') {
-    return parse_text(scanner);
+    return parse_text(scanner, true);
   }
   scanner->advance(scanner);
 
@@ -910,11 +874,7 @@ bool parse_innner_literal_block_mark(RSTScanner* scanner)
   }
 
   if (!is_newline(scanner->lookahead)) {
-    if (valid_symbols[T_TEXT]) {
-      lexer->result_symbol = T_TEXT;
-      return true;
-    }
-    return false;
+    return parse_text(scanner, false);
   }
 
   scanner->advance(scanner);
@@ -963,11 +923,7 @@ bool parse_quoted_literal_block(RSTScanner* scanner)
     }
 
     if (scanner->lookahead != adornment) {
-      if (valid_symbols[T_TEXT]) {
-        lexer->result_symbol = T_TEXT;
-        return true;
-      }
-      return false;
+      return parse_text(scanner, false);
     }
   }
   lexer->result_symbol = T_QUOTED_LITERAL_BLOCK;
@@ -1117,7 +1073,7 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
         }
       }
     }
-    return parse_text(scanner);
+    return parse_text(scanner, true);
   }
 
   while (scanner->lookahead != CHAR_EOF) {
@@ -1239,15 +1195,10 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
     consumed_chars++;
   }
 
-  if (valid_symbols[T_TEXT]) {
-    lexer->result_symbol = T_TEXT;
-    if (!word_found && is_newline(scanner->lookahead)) {
-      return parse_text(scanner);
-    }
-    return true;
+  if (!word_found && is_newline(scanner->lookahead)) {
+    return parse_text(scanner, true);
   }
-
-  return false;
+  return parse_text(scanner, false);
 }
 
 bool parse_reference(RSTScanner* scanner)
@@ -1298,15 +1249,7 @@ bool parse_inner_reference(RSTScanner* scanner)
     return true;
   }
 
-  if (valid_symbols[T_TEXT]) {
-    if (!is_word) {
-      return parse_text(scanner);
-    }
-    lexer->result_symbol = T_TEXT;
-    return true;
-  }
-
-  return false;
+  return parse_text(scanner, !is_word);
 }
 
 bool parse_standalone_hyperlink(RSTScanner* scanner)
@@ -1361,14 +1304,8 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
     if ((!is_space(scanner->lookahead) && !is_end_char(scanner->lookahead)) || is_internal_reference_char(scanner->lookahead)) {
       return parse_inner_reference(scanner);
     }
-    if (valid_symbols[T_TEXT]) {
-      if (!is_word) {
-        return parse_text(scanner);
-      }
-      lexer->result_symbol = T_TEXT;
-      return true;
-    }
-    return false;
+
+    return parse_text(scanner, !is_word);
   }
 
   scanner->advance(scanner);
@@ -1376,13 +1313,7 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
   if (scanner->lookahead == '/') {
     scanner->advance(scanner);
   } else if (!is_alphanumeric(scanner->lookahead)) {
-    if (valid_symbols[T_TEXT]) {
-      if (!is_word) {
-        return parse_text(scanner);
-      }
-      lexer->result_symbol = T_TEXT;
-      return true;
-    }
+    return parse_text(scanner, !is_word);
   }
 
   consumed_chars = 0;
@@ -1419,14 +1350,8 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
     lexer->result_symbol = T_STANDALONE_HYPERLINK;
     return true;
   }
-  if (valid_symbols[T_TEXT]) {
-    if (!is_word) {
-      return parse_text(scanner);
-    }
-    lexer->result_symbol = T_TEXT;
-    return true;
-  }
-  return false;
+
+  return parse_text(scanner, !is_word);
 }
 
 bool parse_role(RSTScanner* scanner)
@@ -1481,11 +1406,7 @@ bool parse_role(RSTScanner* scanner)
     }
   }
 
-  if (valid_symbols[T_TEXT]) {
-    lexer->result_symbol = T_TEXT;
-    return true;
-  }
-  return false;
+  return parse_text(scanner, false);
 }
 
 bool parse_inner_role(RSTScanner* scanner)
@@ -1557,7 +1478,11 @@ bool parse_role_name(RSTScanner* scanner)
   return false;
 }
 
-bool parse_text(RSTScanner* scanner)
+
+/// Parse normal text.
+///
+/// Text nodes are separated by white spaces or an start char like `(`
+bool parse_text(RSTScanner* scanner, bool mark_end)
 {
   TSLexer* lexer = scanner->lexer;
   const bool* valid_symbols = scanner->valid_symbols;
@@ -1567,17 +1492,18 @@ bool parse_text(RSTScanner* scanner)
 
   if (is_start_char(scanner->lookahead)) {
     scanner->advance(scanner);
+  } else {
+    while (!is_space(scanner->lookahead)) {
+      if (is_start_char(scanner->lookahead)) {
+        break;
+      }
+      scanner->advance(scanner);
+    }
+  }
+
+  if (mark_end) {
     lexer->mark_end(lexer);
-    lexer->result_symbol = T_TEXT;
-    return true;
   }
-
-  // Text tokens stop at a whitespace or start char
-  while (!is_space(scanner->lookahead) && !is_start_char(scanner->lookahead)) {
-    scanner->advance(scanner);
-  }
-
-  lexer->mark_end(lexer);
   lexer->result_symbol = T_TEXT;
   return true;
 }

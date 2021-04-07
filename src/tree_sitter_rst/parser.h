@@ -55,6 +55,6 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner);
 bool parse_role(RSTScanner* scanner);
 bool parse_role_name(RSTScanner* scanner);
 bool parse_inner_role(RSTScanner* scanner);
-bool parse_text(RSTScanner* scanner);
+bool parse_text(RSTScanner* scanner, bool mark_end);
 
 #endif /* TREE_SITTER_RST_PARSER_H_ */

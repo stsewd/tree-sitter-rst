@@ -201,7 +201,7 @@ bool rst_scanner_scan(RSTScanner* scanner)
   }
 
   if (!is_space(current) && valid_symbols[T_TEXT]) {
-    return parse_text(scanner);
+    return parse_text(scanner, true);
   }
 
   if (is_space(current)) {
