@@ -1,13 +1,13 @@
 build:
-	tree-sitter generate
+	npm run build
 
 release: build format
-	tree-sitter build-wasm
+	npm run wasm
 	# GitHub pages doesn't like symbolic links
 	cp tree-sitter-rst.wasm docs/js/tree-sitter-rst.wasm
 
 test: build
-	tree-sitter test
+	npm run test
 
 update-examples:
 	# https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/input/
@@ -22,13 +22,13 @@ update-examples:
 
 parse-examples:
 	# Tables aren't supported yet
-	tree-sitter parse -q \
+	npm run parse -- -q \
 	  test/examples/*.rst \
 	  !test/examples/table_colspan.rst
 
 serve: build
-	tree-sitter build-wasm
-	tree-sitter web-ui
+	npm run wasm
+	npm run web
 
 format:
 	clang-format -i \
