@@ -47,7 +47,7 @@ bool parse_indent(RSTScanner* scanner)
       return true;
     }
 
-    if (newlines > 1 && valid_symbols[T_BLANKLINE]) {
+    if ((newlines > 1 || scanner->lookahead == CHAR_EOF) && valid_symbols[T_BLANKLINE]) {
       lexer->result_symbol = T_BLANKLINE;
       return true;
     }
