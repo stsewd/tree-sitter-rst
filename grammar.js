@@ -1,4 +1,4 @@
-const WHITE_SPACE = choice(' ', '\t', '\v', '\f');
+const WHITE_SPACE = choice(' ', '\t', '\v', '\f', '\u00A0');
 const NEWLINE = /\r?\n/;
 const LINK = /\S(.*\S)?/;
 

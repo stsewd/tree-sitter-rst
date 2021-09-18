@@ -397,6 +397,10 @@
                         {
                           "type": "STRING",
                           "value": "\f"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": " "
                         }
                       ]
                     }
@@ -425,6 +429,10 @@
                         {
                           "type": "STRING",
                           "value": "\f"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": " "
                         }
                       ]
                     }
@@ -1277,6 +1285,10 @@
                     {
                       "type": "STRING",
                       "value": "\f"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": " "
                     }
                   ]
                 },
@@ -1535,6 +1547,10 @@
             {
               "type": "STRING",
               "value": "\f"
+            },
+            {
+              "type": "STRING",
+              "value": " "
             }
           ]
         }

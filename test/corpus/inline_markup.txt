@@ -25,6 +25,8 @@ re*
 
 I'm in (*parenthesis*)
 
+I'm separated by *nsbp* chars
+
 ---
 
 (document
@@ -39,6 +41,8 @@ I'm in (*parenthesis*)
   (paragraph
     (emphasis)
     (emphasis)
+    (emphasis))
+  (paragraph
     (emphasis))
   (paragraph
     (emphasis))

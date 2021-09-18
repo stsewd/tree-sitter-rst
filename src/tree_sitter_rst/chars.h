@@ -9,6 +9,7 @@
 #define CHAR_EOF 0
 #define CHAR_NEWLINE 10
 #define CHAR_CARRIAGE_RETURN 13
+#define CHAR_NBSP 160
 
 #define CHAR_SPACE ' '
 #define CHAR_FORM_FEED '\f'

@@ -24,6 +24,7 @@ bool is_space(int32_t c)
     CHAR_FORM_FEED,
     CHAR_TAB,
     CHAR_VERTICAL_TAB,
+    CHAR_NBSP,
   };
   const int length = sizeof(space_chars) / sizeof(int32_t);
   bool is_space_char = false;
