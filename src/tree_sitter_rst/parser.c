@@ -15,7 +15,8 @@ bool parse_indent(RSTScanner* scanner)
   while (true) {
     if (scanner->lookahead == CHAR_SPACE
         || scanner->lookahead == CHAR_VERTICAL_TAB
-        || scanner->lookahead == CHAR_FORM_FEED) {
+        || scanner->lookahead == CHAR_FORM_FEED
+        || scanner->lookahead == CHAR_NBSP) {
       indent += 1;
     } else if (scanner->lookahead == CHAR_TAB) {
       indent += TAB_STOP;
