@@ -41,6 +41,10 @@ void rst_scanner_advance(RSTScanner* scanner)
   TSLexer* lexer = scanner->lexer;
   scanner->previous = scanner->lookahead;
   lexer->advance(lexer, false);
+  // Skip over the \r char in \r\n.
+  if (lexer->lookahead == CHAR_CARRIAGE_RETURN) {
+    lexer->advance(lexer, false);
+  }
   scanner->lookahead = lexer->lookahead;
 }
 
