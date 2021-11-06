@@ -770,6 +770,10 @@ Directives
 .. WARNING:: Strong prose may provoke extreme mental exertion.
    Reader discretion is strongly advised.
 
+.. note :: Directives can have one (and only one) space before the `::`
+
+.. note  :: If they have more than one space, they are a comment.
+
 ---
 
 (document
@@ -860,7 +864,11 @@ Directives
        (content)))
   (directive
     (type)
-    (body (arguments) (content))))
+    (body (arguments) (content)))
+  (directive
+    (type)
+    (body (arguments)))
+  (comment))
 
 ========================
 Substitution definitions

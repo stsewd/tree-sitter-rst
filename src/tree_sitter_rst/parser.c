@@ -788,7 +788,18 @@ bool parse_directive_name(RSTScanner* scanner)
   scanner->advance(scanner);
 
   bool internal_symbol = false;
-  while (is_alphanumeric(scanner->lookahead) || is_internal_reference_char(scanner->lookahead)) {
+  bool keep_parsing = true;
+  while (is_alphanumeric(scanner->lookahead)
+      || is_internal_reference_char(scanner->lookahead)
+      || (is_space(scanner->lookahead) && !is_newline(scanner->lookahead))) {
+    // Directive names can have one (and only one) space before `::`.
+    if (is_space(scanner->lookahead)) {
+      lexer->mark_end(lexer);
+      scanner->advance(scanner);
+      scanner->advance(scanner);
+      keep_parsing = false;
+      break;
+    }
     if (is_internal_reference_char(scanner->lookahead)) {
       if (internal_symbol) {
         break;
@@ -802,7 +813,7 @@ bool parse_directive_name(RSTScanner* scanner)
   }
 
   if (scanner->lookahead != ':' || scanner->previous != ':') {
-    return parse_text(scanner, true);
+    return parse_text(scanner, keep_parsing);
   }
   scanner->advance(scanner);
 
