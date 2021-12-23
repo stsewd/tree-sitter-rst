@@ -23,7 +23,8 @@ enum TokenType {
   T_FIELD_MARK_END,
 
   // Literal blocks
-  T_LITERAL_BLOCK_MARK,
+  T_LITERAL_INDENTED_BLOCK_MARK,
+  T_LITERAL_QUOTED_BLOCK_MARK,
   T_QUOTED_LITERAL_BLOCK,
 
   // Line blocks
