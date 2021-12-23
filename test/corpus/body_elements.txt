@@ -1,6 +1,6 @@
-==========
+================================================================================
 Paragraphs
-==========
+================================================================================
 
 Hello, I'm a reStructuredText file.
 
@@ -16,7 +16,7 @@ I'm not a ("::") literal block.
 
 Me neither:
 
----
+--------------------------------------------------------------------------------
 
 (document
   (paragraph)
@@ -27,9 +27,9 @@ Me neither:
   (paragraph)
   (paragraph))
 
-===========
+================================================================================
 Blank lines
-===========
+================================================================================
 
 One with spaces at the end      
 three
@@ -38,16 +38,16 @@ This has spaces below on purpose
           
 This has spaces above on purpose
 
----
+--------------------------------------------------------------------------------
 
 (document
   (paragraph)
   (paragraph)
   (paragraph))
 
-============
+================================================================================
 Bullet lists
-============
+================================================================================
 
 - One
 - Two
@@ -62,32 +62,38 @@ Bullet lists
 
 + Just me
 
----
+--------------------------------------------------------------------------------
 
 (document
   (bullet_list
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph))))
+      (body
+        (paragraph))))
   (line_block
     (line))
   (bullet_list
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph))))
+      (body
+        (paragraph))))
   (line_block
     (line))
   (bullet_list
     (list_item
-      (body (paragraph)))))
+      (body
+        (paragraph)))))
 
-================
+================================================================================
 Enumerated lists
-================
+================================================================================
 
 1. One
 2. Two
@@ -114,53 +120,68 @@ Z. Six
 (III) three
 (f) four
 
----
+--------------------------------------------------------------------------------
 
 (document
   (enumerated_list
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph))))
+      (body
+        (paragraph))))
   (line_block
     (line))
   (enumerated_list
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph))))
+      (body
+        (paragraph))))
   (line_block
     (line))
   (enumerated_list
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph))))
+      (body
+        (paragraph))))
   (line_block
     (line))
   (enumerated_list
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph)))
+      (body
+        (paragraph)))
     (list_item
-      (body (paragraph)))))
+      (body
+        (paragraph)))))
 
-================
+================================================================================
 Definition lists
-================
+================================================================================
 
 term 1 : bar
     Definition 1.
@@ -177,7 +198,7 @@ Term only
 One
                 two
 
----
+--------------------------------------------------------------------------------
 
 (document
   (definition_list
@@ -212,9 +233,9 @@ One
       (definition
         (paragraph)))))
 
-===========
+================================================================================
 Field lists
-===========
+================================================================================
 
 :Date: 2001-08-16
 :Version: 1
@@ -251,16 +272,18 @@ I'm a quoted block:
   :two: two
   :|three|: three
 
----
+--------------------------------------------------------------------------------
 
 (document
   (field_list
     (field
       (field_name)
-      (field_body (paragraph)))
+      (field_body
+        (paragraph)))
     (field
       (field_name)
-      (field_body (paragraph)))
+      (field_body
+        (paragraph)))
     (field
       (field_name)
       (field_body
@@ -278,41 +301,54 @@ I'm a quoted block:
       (field_name))
     (field
       (field_name)
-      (field_body (paragraph)))
+      (field_body
+        (paragraph)))
     (field
       (field_name)
-      (field_body (paragraph)))
+      (field_body
+        (paragraph)))
     (field
       (field_name)
-      (field_body (paragraph)))
+      (field_body
+        (paragraph)))
     (field
       (field_name)
-      (field_body (paragraph)))
+      (field_body
+        (paragraph)))
     (field
       (field_name)
-      (field_body (paragraph) (paragraph)))
+      (field_body
+        (paragraph)
+        (paragraph)))
     (field
       (field_name)
-      (field_body (paragraph)))
+      (field_body
+        (paragraph)))
     (field
       (field_name)
-      (field_body (directive (type)))))
-    (paragraph)
-    (block_quote
-      (field_list
-        (field
-          (field_name)
-          (field_body (paragraph)))
-        (field
-          (field_name)
-          (field_body (paragraph)))
-        (field
-          (field_name (substitution_reference))
-          (field_body (paragraph))))))
+      (field_body
+        (directive
+          (type)))))
+  (paragraph)
+  (block_quote
+    (field_list
+      (field
+        (field_name)
+        (field_body
+          (paragraph)))
+      (field
+        (field_name)
+        (field_body
+          (paragraph)))
+      (field
+        (field_name
+          (substitution_reference))
+        (field_body
+          (paragraph))))))
 
-=======================
+================================================================================
 Indented literal blocks
-=======================
+================================================================================
 
 This is a typical paragraph. An indented literal block follows.
 
@@ -345,7 +381,23 @@ The following is a literal block::
     reStructuredText.  It *will* be recognized by the doctest
     module, though!
 
----
+::
+
+    < Test for issue #21
+
+::
+
+    <
+
+::
+
+    <
+
+.. note::
+
+   a
+
+--------------------------------------------------------------------------------
 
 (document
   (paragraph)
@@ -358,11 +410,18 @@ The following is a literal block::
   (paragraph
     (literal_block))
   (paragraph
-    (literal_block)))
+    (literal_block))
+  (literal_block)
+  (literal_block)
+  (literal_block)
+  (directive
+    (type)
+    (body
+      (content))))
 
-=====================
+================================================================================
 Quoted literal blocks
-=====================
+================================================================================
 
 ::
 
@@ -397,12 +456,24 @@ a::
 * b
 *a*:
 
----
+- foo
+  Bar::
+
+  >
+  >
+
+- bar
+  Foo::
+   
+   one
+   two
+
+--------------------------------------------------------------------------------
 
 (document
   (literal_block)
   (paragraph
-   (literal_block))
+    (literal_block))
   (paragraph)
   (paragraph
     (literal_block))
@@ -411,11 +482,21 @@ a::
   (paragraph
     (literal_block))
   (paragraph
-    (literal_block)))
+    (literal_block))
+  (bullet_list
+    (list_item
+      (body
+        (paragraph
+          (literal_block)))))
+  (bullet_list
+    (list_item
+      (body
+        (paragraph
+          (literal_block))))))
 
-===========
+================================================================================
 Line blocks
-===========
+================================================================================
 
 | Lend us a couple of bob till Thursday.
 | I'm absolutely skint.
@@ -443,7 +524,7 @@ And finally, an empty one:
 
 |
 
----
+--------------------------------------------------------------------------------
 
 (document
   (line_block
@@ -472,9 +553,9 @@ And finally, an empty one:
   (line_block
     (line)))
 
-============
+================================================================================
 Block quotes
-============
+================================================================================
 
   Can you quote me?
 
@@ -502,7 +583,7 @@ This is a great quote
 
   — the *m*-**dash**
 
----
+--------------------------------------------------------------------------------
 
 (document
   (block_quote
@@ -513,9 +594,11 @@ This is a great quote
       (emphasis))
     (bullet_list
       (list_item
-       (body (paragraph)))
+        (body
+          (paragraph)))
       (list_item
-       (body (paragraph))))
+        (body
+          (paragraph))))
     (comment)
     (attribution))
   (comment)
@@ -531,9 +614,9 @@ This is a great quote
       (emphasis)
       (strong))))
 
-==============
+================================================================================
 Doctest blocks
-==============
+================================================================================
 
 This is an ordinary paragraph.
 
@@ -547,7 +630,7 @@ this is a Doctest block
 
 >>> print("world")
 
----
+--------------------------------------------------------------------------------
 
 (document
   (paragraph)
@@ -556,9 +639,9 @@ this is a Doctest block
   (doctest_block)
   (doctest_block))
 
-=========
+================================================================================
 Footnotes
-=========
+================================================================================
 
 .. [1] Body elements go here.
 .. [#] Body elements go here.
@@ -572,34 +655,42 @@ Footnotes
 .. [*]
    I'm a footnote *too*.
 
----
+--------------------------------------------------------------------------------
 
 (document
   (footnote
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (footnote
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (footnote
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (footnote
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (footnote
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (footnote
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (footnote
     (label)
-    (body (paragraph (emphasis)))))
+    (body
+      (paragraph
+        (emphasis)))))
 
-=========
+================================================================================
 Citations
-=========
+================================================================================
 
 .. [2c] Citation `with` body elements.
 .. [CIT2002] This is the citation.  It's just like a footnote.
@@ -613,34 +704,43 @@ Citations
 .. [foo.bar] This is the citation.
    **I's just like a footnote**
 
----
+--------------------------------------------------------------------------------
 
 (document
   (citation
     (label)
-    (body (paragraph (interpreted_text))))
+    (body
+      (paragraph
+        (interpreted_text))))
   (citation
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (citation
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (citation
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (citation
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (citation
     (label)
-    (body (paragraph)))
+    (body
+      (paragraph)))
   (citation
     (label)
-    (body (paragraph (strong)))))
+    (body
+      (paragraph
+        (strong)))))
 
-=================
+================================================================================
 Hyperlink targets
-=================
+================================================================================
 
 .. _hyperlink-name: link-block
 .. _hyperlink_name: link-block
@@ -654,7 +754,7 @@ Hyperlink targets
 .. __: anonymous
 .. __:
 
----
+--------------------------------------------------------------------------------
 
 (document
   (target
@@ -679,9 +779,9 @@ Hyperlink targets
   (target
     (name)))
 
-===========================
+================================================================================
 Anonymous hyperlink targets
-===========================
+================================================================================
 
 __ foo
 __ I'm anonymous
@@ -692,7 +792,7 @@ __
 __
 
 
----
+--------------------------------------------------------------------------------
 
 (document
   (target
@@ -704,9 +804,9 @@ __
   (target)
   (target))
 
-==========
+================================================================================
 Directives
-==========
+================================================================================
 
 .. note::
 
@@ -774,32 +874,40 @@ Directives
 
 .. note  :: If they have more than one space, they are a comment.
 
----
+--------------------------------------------------------------------------------
 
 (document
   (directive
     (type))
   (directive
     (type)
-    (body (arguments)))
+    (body
+      (arguments)))
   (directive
     (type)
-    (body (arguments)))
+    (body
+      (arguments)))
   (directive
     (type)
-    (body (arguments)))
+    (body
+      (arguments)))
   (directive
     (type)
-    (body (content)))
+    (body
+      (content)))
   (directive
     (type)
-    (body (content)))
+    (body
+      (content)))
   (directive
     (type)
-    (body (arguments) (content)))
+    (body
+      (arguments)
+      (content)))
   (directive
     (type)
-    (body (content)))
+    (body
+      (content)))
   (directive
     (type))
   (directive
@@ -811,7 +919,8 @@ Directives
       (options
         (field
           (field_name)
-          (field_body (paragraph))))
+          (field_body
+            (paragraph))))
       (content)))
   (directive
     (type)
@@ -820,7 +929,8 @@ Directives
       (options
         (field
           (field_name)
-          (field_body (paragraph))))))
+          (field_body
+            (paragraph))))))
   (directive
     (type)
     (body
@@ -828,10 +938,12 @@ Directives
       (options
         (field
           (field_name)
-          (field_body (paragraph)))
+          (field_body
+            (paragraph)))
         (field
           (field_name)
-          (field_body (paragraph))))))
+          (field_body
+            (paragraph))))))
   (directive
     (type)
     (body
@@ -839,40 +951,48 @@ Directives
       (options
         (field
           (field_name)
-          (field_body (paragraph)))
+          (field_body
+            (paragraph)))
         (field
           (field_name)
-          (field_body (paragraph))))
+          (field_body
+            (paragraph))))
       (content)))
   (directive
     (type)
-    (body (content)))
+    (body
+      (content)))
   (directive
     (type)
     (body
       (options
         (field
           (field_name)
-          (field_body (paragraph))))))
+          (field_body
+            (paragraph))))))
   (directive
     (type)
     (body
       (options
         (field
           (field_name)
-          (field_body (paragraph))))
-       (content)))
+          (field_body
+            (paragraph))))
+      (content)))
   (directive
     (type)
-    (body (arguments) (content)))
+    (body
+      (arguments)
+      (content)))
   (directive
     (type)
-    (body (arguments)))
+    (body
+      (arguments)))
   (comment))
 
-========================
+================================================================================
 Substitution definitions
-========================
+================================================================================
 
 .. |reST| replace:: reStructuredText
 
@@ -895,34 +1015,39 @@ Substitution definitions
 
    I'm here
 
----
+--------------------------------------------------------------------------------
 
 (document
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (arguments))))
+      (body
+        (arguments))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (arguments))))
+      (body
+        (arguments))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (arguments))))
+      (body
+        (arguments))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (arguments))))
+      (body
+        (arguments))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (arguments))))
+      (body
+        (arguments))))
   (substitution_definition
     (substitution)
     (directive
@@ -932,10 +1057,12 @@ Substitution definitions
         (options
           (field
             (field_name)
-            (field_body (paragraph)))
+            (field_body
+              (paragraph)))
           (field
             (field_name)
-            (field_body (paragraph)))))))
+            (field_body
+              (paragraph)))))))
   (substitution_definition
     (substitution)
     (directive
@@ -948,16 +1075,18 @@ Substitution definitions
         (options
           (field
             (field_name)
-            (field_body (paragraph)))))))
+            (field_body
+              (paragraph)))))))
   (substitution_definition
     (substitution)
     (directive
       (type)
-      (body (content)))))
+      (body
+        (content)))))
 
-========
+================================================================================
 Comments
-========
+================================================================================
 
 .. This is a comment
 .. []
@@ -989,7 +1118,7 @@ Comments
 ..
 ..
 
----
+--------------------------------------------------------------------------------
 
 (document
   (comment)

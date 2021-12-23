@@ -157,7 +157,7 @@ bool parse_overline(RSTScanner* scanner)
           }
           if (overline_length == 2
               && adornment == ':'
-              && valid_symbols[T_LITERAL_BLOCK_MARK]) {
+              && (valid_symbols[T_LITERAL_INDENTED_BLOCK_MARK] || valid_symbols[T_LITERAL_QUOTED_BLOCK_MARK])) {
             return parse_innner_literal_block_mark(scanner);
           }
         } else {
@@ -854,7 +854,8 @@ bool parse_literal_block_mark(RSTScanner* scanner)
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
-  if (scanner->lookahead != ':' || !valid_symbols[T_LITERAL_BLOCK_MARK]) {
+  if (scanner->lookahead != ':'
+      || !(valid_symbols[T_LITERAL_INDENTED_BLOCK_MARK] || valid_symbols[T_LITERAL_QUOTED_BLOCK_MARK])) {
     return false;
   }
 
@@ -874,7 +875,8 @@ bool parse_innner_literal_block_mark(RSTScanner* scanner)
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
-  if (!is_space(scanner->lookahead) || !valid_symbols[T_LITERAL_BLOCK_MARK]) {
+  if (!is_space(scanner->lookahead)
+      || !(valid_symbols[T_LITERAL_INDENTED_BLOCK_MARK] || valid_symbols[T_LITERAL_QUOTED_BLOCK_MARK])) {
     return false;
   }
 
@@ -898,14 +900,33 @@ bool parse_innner_literal_block_mark(RSTScanner* scanner)
     }
     scanner->advance(scanner);
   }
-
-  // Check if it's a quoted literal block
   scanner->advance(scanner);
-  int indent = get_indent_level(scanner);
-  if (indent != scanner->back(scanner) || !is_adornment_char(scanner->lookahead)) {
-    scanner->push(scanner, scanner->back(scanner) + 1);
+
+  // Skip all whitespaces and newlines and
+  // get the indentation level of the first non-empty line.
+  int indent = -1;
+  while (scanner->lookahead != CHAR_EOF) {
+    int local_indent = get_indent_level(scanner);
+    if (!is_newline(scanner->lookahead)) {
+      indent = local_indent;
+      break;
+    }
+    scanner->advance(scanner);
   }
-  lexer->result_symbol = T_LITERAL_BLOCK_MARK;
+
+  // Literal blocks need to be indented, and quoted literal blocks
+  // need to start with an adornment at the same indentation level.
+  if (indent > scanner->back(scanner)) {
+    scanner->push(scanner, scanner->back(scanner) + 1);
+    lexer->result_symbol = T_LITERAL_INDENTED_BLOCK_MARK;
+  } else if (indent == scanner->back(scanner) && is_adornment_char(scanner->lookahead)) {
+    lexer->result_symbol = T_LITERAL_QUOTED_BLOCK_MARK;
+  } else {
+    return false;
+  }
+  if (!valid_symbols[lexer->result_symbol]) {
+    return false;
+  }
   return true;
 }
 
@@ -919,6 +940,7 @@ bool parse_quoted_literal_block(RSTScanner* scanner)
   }
 
   int32_t adornment = scanner->lookahead;
+  int current_indent = scanner->back(scanner);
 
   while (true) {
     while (!is_newline(scanner->lookahead)) {
@@ -928,9 +950,9 @@ bool parse_quoted_literal_block(RSTScanner* scanner)
 
     scanner->advance(scanner);
 
-    // Check if it's an empty line.
+    // Check if it's an empty line or if the indentation was broken.
     int indent = get_indent_level(scanner);
-    if (indent == 0 && scanner->lookahead != adornment) {
+    if (indent != current_indent || scanner->lookahead != adornment) {
       break;
     }
 

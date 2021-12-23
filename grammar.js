@@ -27,7 +27,8 @@ module.exports = grammar({
     $._field_mark_end,
 
     // Literal blocks
-    $._literal_block_mark,
+    $._literal_indented_block_mark,
+    $._literal_quoted_block_mark,
     $._quoted_literal_block,
 
     // Line blocks
@@ -322,14 +323,20 @@ module.exports = grammar({
     > literal block
 
     */
-    _literal_block: $ => seq(
-      alias($._literal_block_mark, '::'),
-      choice($.literal_block, $._dedent),
-    ),
-
-    literal_block: $ => choice(
-      $._indented_text_block,
-      $._quoted_literal_block,
+    _literal_block: $ => choice(
+      // Indented literal block.
+      seq(
+        alias($._literal_indented_block_mark, '::'),
+        choice(
+          alias($._indented_text_block, $.literal_block),
+          $._dedent,
+        ),
+      ),
+      // Quoted literal block.
+      seq(
+        alias($._literal_quoted_block_mark, '::'),
+        alias($._quoted_literal_block, $.literal_block),
+      ),
     ),
 
     _indented_text_block: $ => seq(

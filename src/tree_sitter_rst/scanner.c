@@ -180,7 +180,7 @@ bool rst_scanner_scan(RSTScanner* scanner)
     return parse_char_bullet(scanner);
   }
 
-  if (current == ':' && valid_symbols[T_LITERAL_BLOCK_MARK]) {
+  if (current == ':' && (valid_symbols[T_LITERAL_INDENTED_BLOCK_MARK] || valid_symbols[T_LITERAL_QUOTED_BLOCK_MARK])) {
     return parse_literal_block_mark(scanner);
   }
 
