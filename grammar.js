@@ -6,6 +6,7 @@ module.exports = grammar({
   name: 'rst',
 
   externals: $ => [
+    $._invalid,
     // Whitespace
     $._newline,
     $._blankline,
@@ -23,6 +24,8 @@ module.exports = grammar({
     // Lists
     $._char_bullet,
     $._numeric_bullet,
+    $._definition_list_start,
+    $._classifier_separator,
     $._field_mark,
     $._field_mark_end,
 
@@ -70,6 +73,7 @@ module.exports = grammar({
   extras: $ => [
     $.__newline,
     $.__whitespace,
+    $._invalid,
   ],
 
   conflicts: $ => [],
@@ -263,20 +267,25 @@ module.exports = grammar({
        is that the definition list can't have a blank line before the definition.
 
     */
-    definition_list: $ => repeat1(
-      alias($._definition_list_item, $.list_item),
+    definition_list: $ => seq(
+      $._definition_list_start,
+      repeat1(
+        alias($._definition_list_item, $.list_item),
+      ),
     ),
 
     _definition_list_item: $ => seq(
       alias(repeat1($._inline_markup), $.term),
-      optional($._classifiers),
+      optional($.classifiers),
       $._newline_indent,
       alias($.body, $.definition),
     ),
 
-    _classifiers: $ => repeat1(
+    classifiers: $ => repeat1(
       seq(
-        alias(token(seq(repeat1(WHITE_SPACE), ':', repeat1(WHITE_SPACE))), ':'),
+        // repeat1(WHITE_SPACE),
+        alias($._classifier_separator, ':'),
+        // repeat1(WHITE_SPACE),
         alias(repeat1($._inline_markup), $.classifier),
       ),
     ),
@@ -672,5 +681,6 @@ module.exports = grammar({
 
     __newline: $ => NEWLINE,
     __whitespace: $ => token(repeat1(WHITE_SPACE)),
+    __invalid: $ => $._invalid,
   },
 });

@@ -18,6 +18,7 @@ RSTScanner* new_rst_scanner()
 
   scanner->indent_stack = malloc(sizeof(int) * RST_SCANNER_STACK_MAX_CAPACITY);
   scanner->length = 0;
+  scanner->tried = 0;
 
   scanner->push = rst_scanner_push;
   scanner->pop = rst_scanner_pop;
@@ -82,6 +83,7 @@ int rst_scanner_back(const RSTScanner* scanner)
 
 unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer)
 {
+  scanner->push(scanner, scanner->tried);
   unsigned i = scanner->length;
   if (i > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
     i = TREE_SITTER_SERIALIZATION_BUFFER_SIZE;
@@ -98,6 +100,11 @@ void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned l
   } else {
     scanner->length = 0;
   }
+  if (scanner->length <= 0) {
+    scanner->tried = 0;
+  } else {
+    scanner->tried = scanner->pop(scanner);
+  }
 }
 
 bool rst_scanner_scan(RSTScanner* scanner)
@@ -105,6 +112,17 @@ bool rst_scanner_scan(RSTScanner* scanner)
   TSLexer* lexer = scanner->lexer;
   const bool* valid_symbols = scanner->valid_symbols;
   int32_t current = lexer->lookahead;
+
+  printf("current %d\n", scanner->tried);
+  if (!is_space(current)
+      && valid_symbols[T_DEFINITION_LIST_START]
+      && scanner->tried == 0) {
+    return parse_definition_list_start(scanner);
+  }
+
+  if (current == ':' && valid_symbols[T_CLASSIFIER_SEPARATOR]) {
+    return parse_classifier_separator(scanner);
+  }
 
   if (is_adornment_char(current)
       && (valid_symbols[T_OVERLINE] || valid_symbols[T_TRANSITION])) {

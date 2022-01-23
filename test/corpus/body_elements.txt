@@ -16,9 +16,12 @@ I'm not a ("::") literal block.
 
 Me neither:
 
+This : isn't a definition list
+
 --------------------------------------------------------------------------------
 
 (document
+  (paragraph)
   (paragraph)
   (paragraph)
   (paragraph)

@@ -2,6 +2,7 @@
 #define TREE_SITTER_RST_TOKENS_H_
 
 enum TokenType {
+  T_INVALID,
   // Whitespace
   T_NEWLINE,
   T_BLANKLINE,
@@ -19,6 +20,8 @@ enum TokenType {
   // Lists
   T_CHAR_BULLET,
   T_NUMERIC_BULLET,
+  T_DEFINITION_LIST_START,
+  T_CLASSIFIER_SEPARATOR,
   T_FIELD_MARK,
   T_FIELD_MARK_END,
 
