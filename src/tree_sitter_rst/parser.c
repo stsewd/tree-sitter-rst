@@ -1,4 +1,5 @@
 #include "tree_sitter_rst/parser.h"
+#include <stdio.h>
 
 #include "tree_sitter_rst/chars.h"
 #include "tree_sitter_rst/tokens.h"
@@ -42,6 +43,9 @@ bool parse_indent(RSTScanner* scanner)
     return true;
   }
   if (newlines) {
+    // reset
+    printf("RESET\n");
+    /* scanner->tried = 0; */
     if (indent < current_indent && valid_symbols[T_DEDENT]) {
       scanner->pop(scanner);
       lexer->result_symbol = T_DEDENT;
@@ -482,6 +486,70 @@ bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum Toke
   }
 
   return false;
+}
+
+bool parse_classifier_separator(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (scanner->lookahead != ':' || !valid_symbols[T_CLASSIFIER_SEPARATOR]) {
+    return false;
+  }
+
+  scanner->advance(scanner);
+  lexer->mark_end(lexer);
+
+  if (!is_space(scanner->lookahead)) {
+    return false;
+  }
+
+  lexer->result_symbol = T_CLASSIFIER_SEPARATOR;
+  return true;
+}
+
+bool parse_definition_list_start(RSTScanner* scanner)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (is_space(scanner->lookahead) || !valid_symbols[T_DEFINITION_LIST_START]) {
+    return false;
+  }
+  scanner->tried = 1;
+  lexer->result_symbol = T_INVALID;
+  printf("parsing...\n");
+
+  // No other tokens have been consumed yet,
+  // this is making an "invisible" token.
+  lexer->mark_end(lexer);
+
+  // Consume the rest of the characters of the first line.
+  while (!is_newline(scanner->lookahead)) {
+    scanner->advance(scanner);
+  }
+
+  // if (scanner->lookahead == CHAR_EOF) {
+  //   if (valid_symbols[T_INVALID]) {
+  //     printf("FALSE (1)\n");
+  //     return true;
+  //   }
+  //   printf("FALSE (1.2)\n");
+  //   return false;
+  // }
+  scanner->advance(scanner);
+  // Check the indentation level of the next line.
+  int indent = get_indent_level(scanner);
+  if (indent <= scanner->back(scanner)) {
+    if (valid_symbols[T_INVALID]) {
+      printf("FALSE (1)\n");
+      return true;
+    }
+    printf("FALSE (2)\n");
+    return false;
+  }
+  lexer->result_symbol = T_DEFINITION_LIST_START;
+  return true;
 }
 
 bool parse_field_mark(RSTScanner* scanner)

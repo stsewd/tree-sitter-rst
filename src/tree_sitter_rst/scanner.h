@@ -24,6 +24,7 @@ struct RSTScanner {
   // Functions for the indentation levels.
   int* indent_stack;
   unsigned length;
+  int tried;
 
   void (*push)(RSTScanner* scanner, int value);
   int (*pop)(RSTScanner* scanner);

@@ -272,6 +272,21 @@
     }
   },
   {
+    "type": "classifiers",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "classifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "comment",
     "named": true,
     "fields": {}
@@ -600,7 +615,7 @@
           "named": true
         },
         {
-          "type": "classifier",
+          "type": "classifiers",
           "named": true
         },
         {
