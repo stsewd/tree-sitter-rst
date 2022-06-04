@@ -107,3 +107,22 @@ with whitespaces
    (strong)))
  (section
    (title)))
+
+
+==================
+Section edge cases
+==================
+
+1. A section with a number
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+V. A section with a roman number
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+---
+
+
+(document
+  (section (title))
+  (section (title)))
