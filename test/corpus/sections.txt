@@ -107,3 +107,18 @@ with whitespaces
    (strong)))
  (section
    (title)))
+
+==================
+Section edge cases
+==================
+
+This is not a section title
+::
+
+  This a block
+
+---
+
+(document 
+  (paragraph)
+  (block_quote (paragraph)))

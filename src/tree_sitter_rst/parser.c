@@ -292,6 +292,9 @@ bool parse_underline(RSTScanner* scanner)
   }
 
   if (underline_length >= 1 && valid_symbols[T_UNDERLINE]) {
+    if ((underline_length == 2) && (adornment == ':')){
+      return parse_text(scanner, false);
+    }
     lexer->result_symbol = T_UNDERLINE;
     return true;
   }
