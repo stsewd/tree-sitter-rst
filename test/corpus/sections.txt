@@ -1,6 +1,6 @@
-======================
+================================================================================
 Sections with overline
-======================
+================================================================================
 
 ~~~~
 Four
@@ -26,27 +26,27 @@ Foo **bar**
 with whitespaces
 ====  
 
----
+--------------------------------------------------------------------------------
 
 (document
- (section
-  (title))
- (section
-  (title))
- (section
-  (title))
- (section
-  (title
-   (emphasis)))
- (section
-  (title
-   (strong)))
- (section
-  (title)))
+  (section
+    (title))
+  (section
+    (title))
+  (section
+    (title))
+  (section
+    (title
+      (emphasis)))
+  (section
+    (title
+      (strong)))
+  (section
+    (title)))
 
-=========================
+================================================================================
 Invalid overline sections
-=========================
+================================================================================
 
 ++
 Short
@@ -61,16 +61,16 @@ Short
 Different
 ^^^
 
----
+--------------------------------------------------------------------------------
 
 (document
   (paragraph)
   (paragraph)
   (paragraph))
 
-==================
+================================================================================
 Underline sections
-==================
+================================================================================
 
 Four
 ~~~~
@@ -90,20 +90,59 @@ Foo **bar**
 with whitespaces
 ====  
 
----
+--------------------------------------------------------------------------------
 
 (document
- (section
-  (title))
- (section
-  (title))
- (section
-  (title))
- (section
-  (title
-   (emphasis)))
- (section
-  (title
-   (strong)))
- (section
-   (title)))
+  (section
+    (title))
+  (section
+    (title))
+  (section
+    (title))
+  (section
+    (title
+      (emphasis)))
+  (section
+    (title
+      (strong)))
+  (section
+    (title)))
+
+================================================================================
+Underline sections that start with a bullet like text
+================================================================================
+
+1. One *item*
+"""""""""""""
+
+2) Two
+~~~~~~~
+
+(3) Three
+/////////
+
+#. Four
+^^^^^^^^
+
+V. Five
+||||||||
+
+(vi) Six
+))))))))
+
+--------------------------------------------------------------------------------
+
+(document
+  (section
+    (title
+      (emphasis)))
+  (section
+    (title))
+  (section
+    (title))
+  (section
+    (title))
+  (section
+    (title))
+  (section
+    (title)))
