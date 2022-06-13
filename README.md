@@ -53,6 +53,10 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
 - Yours?
 
+## Contributing
+
+Check the [CONTRIBUTING.md](CONTRIBUTING.md) file
+
 ## Other grammars
 
 - [tree-sitter-comment](https://github.com/stsewd/tree-sitter-comment): grammar for comment tags like `TODO`, `FIXME(user)`.
