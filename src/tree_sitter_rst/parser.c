@@ -475,6 +475,39 @@ bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum Toke
       if (indent <= scanner->back(scanner)) {
         indent = scanner->back(scanner) + 1;
       }
+    } else if (token_type == T_NUMERIC_BULLET) {
+      // Check if the next line is an underline.
+      // In that case, the list item is just a normal text from a title,
+      // the underline must be at least as long as the title
+      // https://github.com/stsewd/tree-sitter-rst/issues/30.
+
+      // Go to the next line.
+      consumed_chars = indent;
+      while (!is_newline(scanner->lookahead)) {
+        consumed_chars++;
+        scanner->advance(scanner);
+      }
+      scanner->advance(scanner);
+
+      // Check if that line is a valid underline.
+      int32_t adornment = scanner->lookahead;
+      int adornment_length = 0;
+      if (is_adornment_char(adornment)) {
+        while (true) {
+          if (is_newline(scanner->lookahead)) {
+            break;
+          }
+          if (scanner->lookahead != adornment) {
+            adornment_length = -1;
+            break;
+          }
+          adornment_length++;
+          scanner->advance(scanner);
+        }
+      }
+      if (adornment_length > 0 && adornment_length >= consumed_chars) {
+        return parse_text(scanner, false);
+      }
     }
 
     scanner->push(scanner, indent);
@@ -556,7 +589,7 @@ bool parse_field_mark_end(RSTScanner* scanner)
     // Consume all whitespaces.
     get_indent_level(scanner);
     lexer->mark_end(lexer);
-    // Go the next line.
+    // Go to the next line.
     while (!is_newline(scanner->lookahead)) {
       scanner->advance(scanner);
     }
@@ -1407,7 +1440,7 @@ bool parse_role(RSTScanner* scanner)
     // Consume all whitespaces.
     get_indent_level(scanner);
     lexer->mark_end(lexer);
-    // Go the next line
+    // Go to the next line
     while (!is_newline(scanner->lookahead)) {
       scanner->advance(scanner);
     }
@@ -1514,7 +1547,7 @@ bool parse_role_name(RSTScanner* scanner)
 
 /// Parse normal text.
 ///
-/// Text nodes are separated by white spaces or an start char like `(`
+/// Text nodes are separated by white spaces or a start char like `(`
 bool parse_text(RSTScanner* scanner, bool mark_end)
 {
   TSLexer* lexer = scanner->lexer;
