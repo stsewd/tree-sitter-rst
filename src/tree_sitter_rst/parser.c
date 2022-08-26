@@ -302,7 +302,6 @@ bool parse_underline(RSTScanner* scanner)
 bool parse_char_bullet(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
-  TSLexer* lexer = scanner->lexer;
 
   if (!is_char_bullet(scanner->lookahead) || !valid_symbols[T_CHAR_BULLET]) {
     return false;
@@ -401,7 +400,6 @@ bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized)
 
 bool parse_explict_markup_start(RSTScanner* scanner)
 {
-  TSLexer* lexer = scanner->lexer;
   const bool* valid_symbols = scanner->valid_symbols;
 
   if (scanner->lookahead != '.' || !valid_symbols[T_EXPLICIT_MARKUP_START]) {
@@ -689,9 +687,6 @@ int parse_inner_label_name(RSTScanner* scanner)
 
 bool parse_inner_alphanumeric_label(RSTScanner* scanner)
 {
-  const bool* valid_symbols = scanner->valid_symbols;
-  TSLexer* lexer = scanner->lexer;
-
   if (!(is_alphanumeric(scanner->lookahead)
           || is_internal_reference_char(scanner->lookahead))) {
     return false;
@@ -885,7 +880,6 @@ bool parse_substitution_mark(RSTScanner* scanner)
 bool parse_literal_block_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
-  TSLexer* lexer = scanner->lexer;
 
   if (scanner->lookahead != ':'
       || !(valid_symbols[T_LITERAL_INDENTED_BLOCK_MARK] || valid_symbols[T_LITERAL_QUOTED_BLOCK_MARK])) {
@@ -1000,7 +994,6 @@ bool parse_quoted_literal_block(RSTScanner* scanner)
 bool parse_line_block_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
-  TSLexer* lexer = scanner->lexer;
 
   if (scanner->lookahead != '|' || !valid_symbols[T_LINE_BLOCK_MARK]) {
     return false;
@@ -1018,7 +1011,6 @@ bool parse_line_block_mark(RSTScanner* scanner)
 bool parse_attribution_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
-  TSLexer* lexer = scanner->lexer;
 
   if (!is_attribution_mark(scanner->lookahead) || !valid_symbols[T_ATTRIBUTION_MARK]) {
     return false;
@@ -1271,7 +1263,6 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
 bool parse_reference(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
-  TSLexer* lexer = scanner->lexer;
 
   if (is_space(scanner->lookahead) || is_internal_reference_char(scanner->lookahead) || !valid_symbols[T_REFERENCE]) {
     return false;
@@ -1282,7 +1273,6 @@ bool parse_reference(RSTScanner* scanner)
 
 bool parse_inner_reference(RSTScanner* scanner)
 {
-  const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
 
   bool internal_symbol = is_internal_reference_char(scanner->previous);
@@ -1304,8 +1294,8 @@ bool parse_inner_reference(RSTScanner* scanner)
     scanner->advance(scanner);
   }
 
-  // Only an annonymous reference can contain
-  // and end with two consecutives '_'.
+  // Only an anonymous reference can contain
+  // and end with two consecutive '_'.
   if (scanner->lookahead == '_' && scanner->previous == '_') {
     scanner->advance(scanner);
   }
@@ -1321,7 +1311,6 @@ bool parse_inner_reference(RSTScanner* scanner)
 
 bool parse_standalone_hyperlink(RSTScanner* scanner)
 {
-  TSLexer* lexer = scanner->lexer;
   const bool* valid_symbols = scanner->valid_symbols;
 
   if (!is_abc(scanner->lookahead) || !valid_symbols[T_STANDALONE_HYPERLINK]) {
@@ -1334,7 +1323,6 @@ bool parse_standalone_hyperlink(RSTScanner* scanner)
 bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
 {
   TSLexer* lexer = scanner->lexer;
-  const bool* valid_symbols = scanner->valid_symbols;
 
   const unsigned MAX_SCHEMA_LEN = 20;
   char* schema = malloc(sizeof(char) * MAX_SCHEMA_LEN);
@@ -1518,9 +1506,6 @@ bool parse_inner_role(RSTScanner* scanner)
 /// This function assumes the previous token was `:` and it's already consumed.
 bool parse_role_name(RSTScanner* scanner)
 {
-  const bool* valid_symbols = scanner->valid_symbols;
-  TSLexer* lexer = scanner->lexer;
-
   if (!is_alphanumeric(scanner->lookahead)) {
     return false;
   }

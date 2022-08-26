@@ -1,11 +1,14 @@
 [package]
 name = "tree-sitter-rst"
-description = "rst grammar for the tree-sitter parsing library"
-version = "0.0.1"
+description = "reStructuredText grammar for the tree-sitter parsing library"
+version = "0.1.0"
 keywords = ["incremental", "parsing", "rst"]
 categories = ["parsing", "text-editors"]
 repository = "https://github.com/stsewd/tree-sitter-rst"
+homepage = "https://stsewd.dev/tree-sitter-rst/"
 edition = "2018"
+license = "MIT"
+readme = "README.md"
 
 build = "bindings/rust/build.rs"
 include = [

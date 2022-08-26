@@ -6,7 +6,7 @@
 //! ```
 //! let code = "";
 //! let mut parser = tree_sitter::Parser::new();
-//! parser.set_language(tree_sitter_javascript::language()).expect("Error loading rst grammar");
+//! parser.set_language(tree_sitter_rst::language()).expect("Error loading rst grammar");
 //! let tree = parser.parse(code, None).unwrap();
 //! ```
 //!
