@@ -2,7 +2,7 @@
 name = "tree-sitter-rst"
 description = "reStructuredText grammar for the tree-sitter parsing library"
 version = "0.1.0"
-keywords = ["incremental", "parsing", "rst"]
+keywords = ["incremental", "parsing", "rst", "reStructuredText"]
 categories = ["parsing", "text-editors"]
 repository = "https://github.com/stsewd/tree-sitter-rst"
 homepage = "https://stsewd.dev/tree-sitter-rst/"
