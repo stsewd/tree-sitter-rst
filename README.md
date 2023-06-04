@@ -51,6 +51,7 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 ## Projects using this grammar
 
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+- [helix](https://github.com/helix-editor/helix)
 - Yours?
 
 ## Contributing
