@@ -1,7 +1,7 @@
-#include "tree_sitter_rst/parser.h"
+#include "parser.h"
 
-#include "tree_sitter_rst/chars.h"
-#include "tree_sitter_rst/tokens.h"
+#include "chars.h"
+#include "tokens.h"
 
 bool parse_indent(RSTScanner* scanner)
 {

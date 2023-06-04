@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <tree_sitter/parser.h>
 
-#include "tree_sitter_rst/scanner.h"
+#include "scanner.h"
 
 #define CHAR_EOF 0
 #define CHAR_NEWLINE 10

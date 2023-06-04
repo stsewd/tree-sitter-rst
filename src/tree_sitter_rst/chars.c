@@ -1,4 +1,4 @@
-#include "tree_sitter_rst/chars.h"
+#include "chars.h"
 #include <string.h>
 
 bool is_newline(int32_t c)

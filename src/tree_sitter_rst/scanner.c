@@ -1,10 +1,10 @@
-#include "tree_sitter_rst/scanner.h"
+#include "scanner.h"
 
 #include <string.h>
 
-#include "tree_sitter_rst/chars.c"
-#include "tree_sitter_rst/parser.c"
-#include "tree_sitter_rst/tokens.h"
+#include "chars.c"
+#include "parser.c"
+#include "tokens.h"
 
 /// Build a new `RSTScanner` object.
 ///
