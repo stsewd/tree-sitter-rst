@@ -1,8 +1,8 @@
 #ifndef TREE_SITTER_RST_PARSER_H_
 #define TREE_SITTER_RST_PARSER_H_
 
-#include "tree_sitter_rst/scanner.h"
-#include "tree_sitter_rst/tokens.h"
+#include "scanner.h"
+#include "tokens.h"
 
 #define IM_EMPHASIS 1u << 0u
 #define IM_STRONG 1u << 1u
