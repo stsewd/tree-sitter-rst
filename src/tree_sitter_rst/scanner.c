@@ -108,8 +108,13 @@ bool rst_scanner_scan(RSTScanner* scanner)
   int32_t current = lexer->lookahead;
 
   // If all valid symbols are true, tree-sitter is in correction mode,
-  // We don't want to parse anything in that case.
-  if (valid_symbols[T_INVALID_TOKEN] && 0) {
+  // we fallback to parse the content as a text node.
+  // TODO: We don't want to parse anything in this case,
+  // we should move the text node parsing to JS.
+  if (valid_symbols[T_INVALID_TOKEN]) {
+    if (!is_space(current) && valid_symbols[T_TEXT]) {
+      return parse_text(scanner, true);
+    }
     return false;
   }
 
