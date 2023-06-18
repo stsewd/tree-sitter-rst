@@ -2,6 +2,7 @@
 
 #include "chars.h"
 #include "tokens.h"
+#include <stdio.h>
 
 bool parse_indent(RSTScanner* scanner)
 {
@@ -83,97 +84,9 @@ bool parse_overline(RSTScanner* scanner)
 
   while (true) {
     if (scanner->lookahead != adornment) {
-      if (overline_length == 1) {
-        if (is_space(scanner->lookahead)) {
-          if (is_char_bullet(adornment) && valid_symbols[T_CHAR_BULLET]) {
-            bool ok = parse_inner_list_element(scanner, 1, T_CHAR_BULLET);
-            if (ok) {
-              return true;
-            }
-          } else if (adornment == '|' && valid_symbols[T_LINE_BLOCK_MARK]) {
-            bool ok = parse_inner_list_element(scanner, 1, T_LINE_BLOCK_MARK);
-            if (ok) {
-              return true;
-            }
-          }
-        } else {
-          if (adornment == '*' && valid_symbols[T_EMPHASIS]) {
-            return parse_inner_inline_markup(scanner, IM_EMPHASIS);
-          }
-          if (adornment == ':' && (valid_symbols[T_ROLE_NAME_PREFIX] || valid_symbols[T_ROLE_NAME_SUFFIX])) {
-            bool ok = parse_inner_role(scanner);
-            if (ok) {
-              return true;
-            }
-          }
-          if (adornment == ':' && valid_symbols[T_FIELD_MARK]) {
-            bool ok = parse_inner_field_mark(scanner);
-            if (ok) {
-              return true;
-            }
-          }
-          if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_REFERENCE])) {
-            return parse_inner_inline_markup(scanner, IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_REFERENCE);
-          }
-          if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
-            return parse_inner_inline_markup(scanner, IM_SUBSTITUTION_REFERENCE);
-          }
-          if (adornment == '_' && scanner->lookahead == '`' && valid_symbols[T_INLINE_TARGET]) {
-            return parse_inner_inline_markup(scanner, IM_INLINE_TARGET);
-          }
-          if (adornment == '[' && (valid_symbols[T_FOOTNOTE_REFERENCE] || valid_symbols[T_CITATION_REFERENCE])) {
-            return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE | IM_CITATION_REFERENCE);
-          }
-          if (adornment == '#'
-              && (scanner->lookahead == '.' || scanner->lookahead == ')')) {
-            scanner->advance(scanner);
-            bool ok = parse_inner_list_element(scanner, 2, T_NUMERIC_BULLET);
-            if (ok) {
-              return true;
-            }
-          }
-          if (adornment == '(' && is_numeric_bullet(scanner->lookahead)) {
-            return parse_inner_numeric_bullet(scanner, true);
-          }
-        }
-      } else if (overline_length >= 2) {
-        if (is_space(scanner->lookahead)) {
-          if (overline_length == 3
-              && adornment == '>'
-              && valid_symbols[T_DOCTEST_BLOCK_MARK]) {
-            lexer->mark_end(lexer);
-            lexer->result_symbol = T_DOCTEST_BLOCK_MARK;
-            return true;
-          }
-          if (overline_length == 2 && adornment == '.') {
-            return parse_inner_list_element(scanner, 2, T_EXPLICIT_MARKUP_START);
-          }
-          if (overline_length == 2
-              && adornment == '_'
-              && valid_symbols[T_ANONYMOUS_TARGET_MARK]) {
-            lexer->mark_end(lexer);
-            lexer->result_symbol = T_ANONYMOUS_TARGET_MARK;
-            return true;
-          }
-          if (overline_length == 2
-              && adornment == ':'
-              && (valid_symbols[T_LITERAL_INDENTED_BLOCK_MARK] || valid_symbols[T_LITERAL_QUOTED_BLOCK_MARK])) {
-            return parse_innner_literal_block_mark(scanner);
-          }
-        } else {
-          if (adornment == '*' && valid_symbols[T_STRONG]) {
-            return parse_inner_inline_markup(scanner, IM_STRONG);
-          }
-          if (adornment == '`' && valid_symbols[T_LITERAL]) {
-            return parse_inner_inline_markup(scanner, IM_LITERAL);
-          }
-          if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
-            return parse_inner_inline_markup(scanner, IM_SUBSTITUTION_REFERENCE);
-          }
-          if (adornment == '[' && (valid_symbols[T_FOOTNOTE_REFERENCE] || valid_symbols[T_CITATION_REFERENCE])) {
-            return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE | IM_CITATION_REFERENCE);
-          }
-        }
+      bool ok = fallback_adornment(scanner, adornment, overline_length);
+      if (ok) {
+        return true;
       }
       if (is_space(scanner->lookahead)) {
         break;
@@ -262,18 +175,28 @@ bool parse_underline(RSTScanner* scanner)
     return false;
   }
 
+  bool is_word = is_start_char(adornment);
   int underline_length = 0;
+
   while (!is_newline(scanner->lookahead)) {
     if (scanner->lookahead != adornment) {
+      bool ok = fallback_adornment(scanner, adornment, underline_length);
+      if (ok) {
+        return true;
+      }
       if (is_space(scanner->lookahead)) {
         break;
       }
-      return false;
+      return parse_text(scanner, !is_word);
     }
     scanner->advance(scanner);
+    if (is_word && underline_length == 0) {
+      lexer->mark_end(lexer);
+    }
     underline_length++;
   }
 
+  // Mark the transition token
   lexer->mark_end(lexer);
 
   // Consume all whitespaces.
@@ -297,6 +220,109 @@ bool parse_underline(RSTScanner* scanner)
   }
 
   return parse_text(scanner, false);
+}
+
+/// If the adnorment is not valid, try to parse a different token.
+///
+/// Lots of adornments are also valid tokens, so we need to check for each one of them.
+bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adornment_length)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (adornment_length == 1) {
+    if (is_space(scanner->lookahead)) {
+      if (is_char_bullet(adornment) && valid_symbols[T_CHAR_BULLET]) {
+        bool ok = parse_inner_list_element(scanner, 1, T_CHAR_BULLET);
+        if (ok) {
+          return true;
+        }
+      } else if (adornment == '|' && valid_symbols[T_LINE_BLOCK_MARK]) {
+        bool ok = parse_inner_list_element(scanner, 1, T_LINE_BLOCK_MARK);
+        if (ok) {
+          return true;
+        }
+      }
+    } else {
+      if (adornment == '*' && valid_symbols[T_EMPHASIS]) {
+        return parse_inner_inline_markup(scanner, IM_EMPHASIS);
+      }
+      if (adornment == ':' && (valid_symbols[T_ROLE_NAME_PREFIX] || valid_symbols[T_ROLE_NAME_SUFFIX])) {
+        bool ok = parse_inner_role(scanner);
+        if (ok) {
+          return true;
+        }
+      }
+      if (adornment == ':' && valid_symbols[T_FIELD_MARK]) {
+        bool ok = parse_inner_field_mark(scanner);
+        if (ok) {
+          return true;
+        }
+      }
+      if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_REFERENCE])) {
+        return parse_inner_inline_markup(scanner, IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_REFERENCE);
+      }
+      if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
+        return parse_inner_inline_markup(scanner, IM_SUBSTITUTION_REFERENCE);
+      }
+      if (adornment == '_' && scanner->lookahead == '`' && valid_symbols[T_INLINE_TARGET]) {
+        return parse_inner_inline_markup(scanner, IM_INLINE_TARGET);
+      }
+      if (adornment == '[' && (valid_symbols[T_FOOTNOTE_REFERENCE] || valid_symbols[T_CITATION_REFERENCE])) {
+        return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE | IM_CITATION_REFERENCE);
+      }
+      if (adornment == '#'
+          && (scanner->lookahead == '.' || scanner->lookahead == ')')) {
+        scanner->advance(scanner);
+        bool ok = parse_inner_list_element(scanner, 2, T_NUMERIC_BULLET);
+        if (ok) {
+          return true;
+        }
+      }
+      if (adornment == '(' && is_numeric_bullet(scanner->lookahead) && valid_symbols[T_NUMERIC_BULLET]) {
+        return parse_inner_numeric_bullet(scanner, true);
+      }
+    }
+  } else if (adornment_length >= 2) {
+    if (is_space(scanner->lookahead)) {
+      if (adornment_length == 3
+          && adornment == '>'
+          && valid_symbols[T_DOCTEST_BLOCK_MARK]) {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = T_DOCTEST_BLOCK_MARK;
+        return true;
+      }
+      if (adornment_length == 2 && adornment == '.') {
+        return parse_inner_list_element(scanner, 2, T_EXPLICIT_MARKUP_START);
+      }
+      if (adornment_length == 2
+          && adornment == '_'
+          && valid_symbols[T_ANONYMOUS_TARGET_MARK]) {
+        lexer->mark_end(lexer);
+        lexer->result_symbol = T_ANONYMOUS_TARGET_MARK;
+        return true;
+      }
+      if (adornment_length == 2
+          && adornment == ':'
+          && (valid_symbols[T_LITERAL_INDENTED_BLOCK_MARK] || valid_symbols[T_LITERAL_QUOTED_BLOCK_MARK])) {
+        return parse_innner_literal_block_mark(scanner);
+      }
+    } else {
+      if (adornment == '*' && valid_symbols[T_STRONG]) {
+        return parse_inner_inline_markup(scanner, IM_STRONG);
+      }
+      if (adornment == '`' && valid_symbols[T_LITERAL]) {
+        return parse_inner_inline_markup(scanner, IM_LITERAL);
+      }
+      if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
+        return parse_inner_inline_markup(scanner, IM_SUBSTITUTION_REFERENCE);
+      }
+      if (adornment == '[' && (valid_symbols[T_FOOTNOTE_REFERENCE] || valid_symbols[T_CITATION_REFERENCE])) {
+        return parse_inner_inline_markup(scanner, IM_FOOTNOTE_REFERENCE | IM_CITATION_REFERENCE);
+      }
+    }
+  }
+  return false;
 }
 
 bool parse_char_bullet(RSTScanner* scanner)
@@ -889,6 +915,9 @@ bool parse_literal_block_mark(RSTScanner* scanner)
   scanner->advance(scanner);
 
   if (scanner->lookahead != ':') {
+    if (valid_symbols[T_ROLE_NAME_PREFIX] || valid_symbols[T_ROLE_NAME_SUFFIX]) {
+      return parse_inner_role(scanner);
+    }
     return false;
   }
 
@@ -1473,7 +1502,9 @@ bool parse_inner_role(RSTScanner* scanner)
       || (!valid_symbols[T_ROLE_NAME_SUFFIX] && !valid_symbols[T_ROLE_NAME_PREFIX])) {
     return false;
   }
-
+  // Mark the end at the previous character (`:`),
+  // so that the role name is not included in the T_FIELD_MARK token.
+  lexer->mark_end(lexer);
   bool ok = parse_role_name(scanner);
   if (ok) {
     if (scanner->lookahead == '`' && valid_symbols[T_ROLE_NAME_PREFIX]) {

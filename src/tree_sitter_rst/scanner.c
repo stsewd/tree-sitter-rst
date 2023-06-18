@@ -1,5 +1,6 @@
 #include "scanner.h"
 
+#include <stdio.h>
 #include <string.h>
 
 #include "chars.c"
@@ -105,6 +106,17 @@ bool rst_scanner_scan(RSTScanner* scanner)
   TSLexer* lexer = scanner->lexer;
   const bool* valid_symbols = scanner->valid_symbols;
   int32_t current = lexer->lookahead;
+
+  // If all valid symbols are true, tree-sitter is in correction mode,
+  // we fallback to parse the content as a text node.
+  // TODO: We don't want to parse anything in this case,
+  // we should move the text node parsing to JS.
+  if (valid_symbols[T_INVALID_TOKEN]) {
+    if (!is_space(current) && valid_symbols[T_TEXT]) {
+      return parse_text(scanner, true);
+    }
+    return false;
+  }
 
   if (is_adornment_char(current)
       && (valid_symbols[T_OVERLINE] || valid_symbols[T_TRANSITION])) {

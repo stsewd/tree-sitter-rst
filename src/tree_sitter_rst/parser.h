@@ -18,6 +18,7 @@
 bool parse_indent(RSTScanner* scanner);
 bool parse_overline(RSTScanner* scanner);
 bool parse_underline(RSTScanner* scanner);
+bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adornment_length);
 
 bool parse_char_bullet(RSTScanner* scanner);
 bool parse_numeric_bullet(RSTScanner* scanner);
