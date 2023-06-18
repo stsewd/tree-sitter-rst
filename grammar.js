@@ -65,6 +65,8 @@ module.exports = grammar({
     $._directive_name,
     $._substitution_mark,
     $._empty_comment,
+
+    $._invalid_token,
   ],
 
   extras: $ => [

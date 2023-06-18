@@ -1749,6 +1749,10 @@
     {
       "type": "SYMBOL",
       "name": "_empty_comment"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_invalid_token"
     }
   ],
   "inline": [],
