@@ -4,7 +4,7 @@
 #include "tokens.h"
 #include <stdio.h>
 
-bool parse_indent(RSTScanner* scanner)
+static bool parse_indent(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -68,7 +68,7 @@ bool parse_indent(RSTScanner* scanner)
   return false;
 }
 
-bool parse_overline(RSTScanner* scanner)
+static bool parse_overline(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -164,7 +164,7 @@ bool parse_overline(RSTScanner* scanner)
   return parse_text(scanner, false);
 }
 
-bool parse_underline(RSTScanner* scanner)
+static bool parse_underline(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -225,7 +225,7 @@ bool parse_underline(RSTScanner* scanner)
 /// If the adnorment is not valid, try to parse a different token.
 ///
 /// Lots of adornments are also valid tokens, so we need to check for each one of them.
-bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adornment_length)
+static bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adornment_length)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -342,7 +342,7 @@ bool parse_char_bullet(RSTScanner* scanner)
   return parse_text(scanner, true);
 }
 
-bool parse_numeric_bullet(RSTScanner* scanner)
+static bool parse_numeric_bullet(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
 
@@ -363,7 +363,7 @@ bool parse_numeric_bullet(RSTScanner* scanner)
   return false;
 }
 
-bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized)
+static bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -424,7 +424,7 @@ bool parse_inner_numeric_bullet(RSTScanner* scanner, bool parenthesized)
   return parse_text(scanner, true);
 }
 
-bool parse_explict_markup_start(RSTScanner* scanner)
+static bool parse_explict_markup_start(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
 
@@ -448,7 +448,7 @@ bool parse_explict_markup_start(RSTScanner* scanner)
   return false;
 }
 
-bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum TokenType token_type)
+static bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum TokenType token_type)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -541,7 +541,7 @@ bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, enum Toke
   return false;
 }
 
-bool parse_field_mark(RSTScanner* scanner)
+static bool parse_field_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -564,7 +564,7 @@ bool parse_field_mark(RSTScanner* scanner)
   return parse_text(scanner, false);
 }
 
-bool parse_inner_field_mark(RSTScanner* scanner)
+static bool parse_inner_field_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -599,7 +599,7 @@ bool parse_inner_field_mark(RSTScanner* scanner)
   return false;
 }
 
-bool parse_field_mark_end(RSTScanner* scanner)
+static bool parse_field_mark_end(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -642,7 +642,7 @@ bool parse_field_mark_end(RSTScanner* scanner)
   return parse_text(scanner, true);
 }
 
-bool parse_label(RSTScanner* scanner)
+static bool parse_label(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -670,7 +670,7 @@ bool parse_label(RSTScanner* scanner)
   return false;
 }
 
-int parse_inner_label_name(RSTScanner* scanner)
+static int parse_inner_label_name(RSTScanner* scanner)
 {
   int type = -1;
   if (is_number(scanner->lookahead)) {
@@ -711,7 +711,7 @@ int parse_inner_label_name(RSTScanner* scanner)
   return -1;
 }
 
-bool parse_inner_alphanumeric_label(RSTScanner* scanner)
+static bool parse_inner_alphanumeric_label(RSTScanner* scanner)
 {
   if (!(is_alphanumeric(scanner->lookahead)
           || is_internal_reference_char(scanner->lookahead))) {
@@ -738,7 +738,7 @@ bool parse_inner_alphanumeric_label(RSTScanner* scanner)
   return false;
 }
 
-bool parse_target_name(RSTScanner* scanner)
+static bool parse_target_name(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -804,7 +804,7 @@ bool parse_target_name(RSTScanner* scanner)
   return false;
 }
 
-bool parse_anonymous_target_mark(RSTScanner* scanner)
+static bool parse_anonymous_target_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -830,7 +830,7 @@ bool parse_anonymous_target_mark(RSTScanner* scanner)
   return false;
 }
 
-bool parse_directive_name(RSTScanner* scanner)
+static bool parse_directive_name(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -879,7 +879,7 @@ bool parse_directive_name(RSTScanner* scanner)
   return false;
 }
 
-bool parse_substitution_mark(RSTScanner* scanner)
+static bool parse_substitution_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -903,7 +903,7 @@ bool parse_substitution_mark(RSTScanner* scanner)
   return false;
 }
 
-bool parse_literal_block_mark(RSTScanner* scanner)
+static bool parse_literal_block_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
 
@@ -926,7 +926,7 @@ bool parse_literal_block_mark(RSTScanner* scanner)
   return parse_innner_literal_block_mark(scanner);
 }
 
-bool parse_innner_literal_block_mark(RSTScanner* scanner)
+static bool parse_innner_literal_block_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -986,7 +986,7 @@ bool parse_innner_literal_block_mark(RSTScanner* scanner)
   return true;
 }
 
-bool parse_quoted_literal_block(RSTScanner* scanner)
+static bool parse_quoted_literal_block(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -1020,7 +1020,7 @@ bool parse_quoted_literal_block(RSTScanner* scanner)
   return true;
 }
 
-bool parse_line_block_mark(RSTScanner* scanner)
+static bool parse_line_block_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
 
@@ -1037,7 +1037,7 @@ bool parse_line_block_mark(RSTScanner* scanner)
   return false;
 }
 
-bool parse_attribution_mark(RSTScanner* scanner)
+static bool parse_attribution_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
 
@@ -1063,7 +1063,7 @@ bool parse_attribution_mark(RSTScanner* scanner)
   return parse_inner_list_element(scanner, consumed_chars, T_ATTRIBUTION_MARK);
 }
 
-bool parse_doctest_block_mark(RSTScanner* scanner)
+static bool parse_doctest_block_mark(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -1086,7 +1086,7 @@ bool parse_doctest_block_mark(RSTScanner* scanner)
   return false;
 }
 
-bool parse_inline_markup(RSTScanner* scanner)
+static bool parse_inline_markup(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -1134,7 +1134,7 @@ bool parse_inline_markup(RSTScanner* scanner)
   return parse_inner_inline_markup(scanner, type);
 }
 
-bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
+static bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -1289,7 +1289,7 @@ bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
   return parse_text(scanner, false);
 }
 
-bool parse_reference(RSTScanner* scanner)
+static bool parse_reference(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
 
@@ -1300,7 +1300,7 @@ bool parse_reference(RSTScanner* scanner)
   return parse_inner_reference(scanner);
 }
 
-bool parse_inner_reference(RSTScanner* scanner)
+static bool parse_inner_reference(RSTScanner* scanner)
 {
   TSLexer* lexer = scanner->lexer;
 
@@ -1338,7 +1338,7 @@ bool parse_inner_reference(RSTScanner* scanner)
   return parse_text(scanner, !is_word);
 }
 
-bool parse_standalone_hyperlink(RSTScanner* scanner)
+static bool parse_standalone_hyperlink(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
 
@@ -1349,7 +1349,7 @@ bool parse_standalone_hyperlink(RSTScanner* scanner)
   return parse_inner_standalone_hyperlink(scanner);
 }
 
-bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
+static bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
 {
   TSLexer* lexer = scanner->lexer;
 
@@ -1438,7 +1438,7 @@ bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
   return parse_text(scanner, !is_word);
 }
 
-bool parse_role(RSTScanner* scanner)
+static bool parse_role(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -1493,7 +1493,7 @@ bool parse_role(RSTScanner* scanner)
   return parse_text(scanner, false);
 }
 
-bool parse_inner_role(RSTScanner* scanner)
+static bool parse_inner_role(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
@@ -1535,7 +1535,7 @@ bool parse_inner_role(RSTScanner* scanner)
 }
 
 /// This function assumes the previous token was `:` and it's already consumed.
-bool parse_role_name(RSTScanner* scanner)
+static bool parse_role_name(RSTScanner* scanner)
 {
   if (!is_alphanumeric(scanner->lookahead)) {
     return false;
@@ -1564,7 +1564,7 @@ bool parse_role_name(RSTScanner* scanner)
 /// Parse normal text.
 ///
 /// Text nodes are separated by white spaces or a start char like `(`
-bool parse_text(RSTScanner* scanner, bool mark_end)
+static bool parse_text(RSTScanner* scanner, bool mark_end)
 {
   TSLexer* lexer = scanner->lexer;
   const bool* valid_symbols = scanner->valid_symbols;

@@ -1,4 +1,4 @@
-#include <tree_sitter/parser.h>
+#include "tree_sitter/parser.h"
 
 #include "tree_sitter_rst/scanner.c"
 #include "tree_sitter_rst/tokens.h"

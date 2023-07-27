@@ -35,18 +35,18 @@ struct RSTScanner {
   bool (*scan)(RSTScanner* scanner);
 };
 
-RSTScanner* new_rst_scanner();
-void destroy_rst_scanner(RSTScanner* scanner);
+static RSTScanner* new_rst_scanner();
+static void destroy_rst_scanner(RSTScanner* scanner);
 
-void rst_scanner_advance(RSTScanner* scanner);
-void rst_scanner_skip(RSTScanner* scanner);
+static void rst_scanner_advance(RSTScanner* scanner);
+static void rst_scanner_skip(RSTScanner* scanner);
 
-void rst_scanner_push(RSTScanner* scanner, int value);
-int rst_scanner_pop(RSTScanner* scanner);
-int rst_scanner_back(const RSTScanner* scanner);
+static void rst_scanner_push(RSTScanner* scanner, int value);
+static int rst_scanner_pop(RSTScanner* scanner);
+static int rst_scanner_back(const RSTScanner* scanner);
 
-unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer);
-void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned length);
-bool rst_scanner_scan(RSTScanner* scanner);
+static unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer);
+static void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned length);
+static bool rst_scanner_scan(RSTScanner* scanner);
 
 #endif /* ifndef TREE_SITTER_RST_SCANNER_H */
