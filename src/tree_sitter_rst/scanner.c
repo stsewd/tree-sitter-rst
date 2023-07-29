@@ -10,7 +10,7 @@
 /// Build a new `RSTScanner` object.
 ///
 /// `destroy_rst_scanner` should be called to safely destroy this object.
-RSTScanner* new_rst_scanner()
+static RSTScanner* new_rst_scanner()
 {
   RSTScanner* scanner = malloc(sizeof(RSTScanner));
 
@@ -31,13 +31,13 @@ RSTScanner* new_rst_scanner()
   return scanner;
 }
 
-void destroy_rst_scanner(RSTScanner* scanner)
+static void destroy_rst_scanner(RSTScanner* scanner)
 {
   free(scanner->indent_stack);
   free(scanner);
 }
 
-void rst_scanner_advance(RSTScanner* scanner)
+static void rst_scanner_advance(RSTScanner* scanner)
 {
   TSLexer* lexer = scanner->lexer;
   scanner->previous = scanner->lookahead;
@@ -49,7 +49,7 @@ void rst_scanner_advance(RSTScanner* scanner)
   scanner->lookahead = lexer->lookahead;
 }
 
-void rst_scanner_skip(RSTScanner* scanner)
+static void rst_scanner_skip(RSTScanner* scanner)
 {
   TSLexer* lexer = scanner->lexer;
   scanner->previous = scanner->lookahead;
@@ -57,7 +57,7 @@ void rst_scanner_skip(RSTScanner* scanner)
   scanner->lookahead = lexer->lookahead;
 }
 
-void rst_scanner_push(RSTScanner* scanner, int value)
+static void rst_scanner_push(RSTScanner* scanner, int value)
 {
   if (scanner->length >= RST_SCANNER_STACK_MAX_CAPACITY) {
     return;
@@ -65,7 +65,7 @@ void rst_scanner_push(RSTScanner* scanner, int value)
   scanner->indent_stack[scanner->length++] = value;
 }
 
-int rst_scanner_pop(RSTScanner* scanner)
+static int rst_scanner_pop(RSTScanner* scanner)
 {
   if (scanner->length <= 0) {
     return 0;
@@ -73,7 +73,7 @@ int rst_scanner_pop(RSTScanner* scanner)
   return scanner->indent_stack[--scanner->length];
 }
 
-int rst_scanner_back(const RSTScanner* scanner)
+static int rst_scanner_back(const RSTScanner* scanner)
 {
   if (scanner->length <= 0) {
     return 0;
@@ -81,7 +81,7 @@ int rst_scanner_back(const RSTScanner* scanner)
   return scanner->indent_stack[scanner->length - 1];
 }
 
-unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer)
+static unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer)
 {
   unsigned i = scanner->length;
   if (i > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
@@ -91,7 +91,7 @@ unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer)
   return i;
 }
 
-void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned length)
+static void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned length)
 {
   if (buffer != NULL && length > 0) {
     memcpy((void*)buffer, scanner->indent_stack, length);
@@ -101,7 +101,7 @@ void rst_scanner_deserialize(RSTScanner* scanner, const char* buffer, unsigned l
   }
 }
 
-bool rst_scanner_scan(RSTScanner* scanner)
+static bool rst_scanner_scan(RSTScanner* scanner)
 {
   TSLexer* lexer = scanner->lexer;
   const bool* valid_symbols = scanner->valid_symbols;
