@@ -126,6 +126,12 @@ interpreted_text`
 
 I'm in (`parenthesis`)
 
+I'm in [`brackets`, `too`].
+
+[`Brackets`, `again`].
+
+:`start with colon` and :`end with colon`
+
 ---
 
 (document
@@ -146,6 +152,15 @@ I'm in (`parenthesis`)
   (paragraph
     (interpreted_text))
   (paragraph
+    (interpreted_text))
+  (paragraph
+    (interpreted_text)
+    (interpreted_text))
+  (paragraph
+    (interpreted_text)
+    (interpreted_text))
+  (paragraph
+    (interpreted_text)
     (interpreted_text)))
 
 ===========================
@@ -222,6 +237,12 @@ here``
 
 I'm in (``parenthesis``)
 
+I'm in [``brackets``, ``too``].
+
+[``Brackets``, ``again``].
+
+:``start with colon`` and :``end with colon``
+
 ---
 
 (document
@@ -249,6 +270,15 @@ I'm in (``parenthesis``)
  (paragraph
   (literal))
  (paragraph
+  (literal))
+ (paragraph
+  (literal)
+  (literal))
+ (paragraph
+  (literal)
+  (literal))
+ (paragraph
+  (literal)
   (literal)))
 
 =======================
