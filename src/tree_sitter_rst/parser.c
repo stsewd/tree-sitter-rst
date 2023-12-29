@@ -79,8 +79,9 @@ static bool parse_overline(RSTScanner* scanner)
     return false;
   }
 
-  bool is_word = is_start_char(adornment);
-  int overline_length = 0;
+  scanner->advance(scanner);
+  lexer->mark_end(lexer);
+  int overline_length = 1;
 
   while (true) {
     if (scanner->lookahead != adornment) {
@@ -91,12 +92,9 @@ static bool parse_overline(RSTScanner* scanner)
       if (is_space(scanner->lookahead)) {
         break;
       }
-      return parse_text(scanner, !is_word);
+      return parse_text(scanner, false);
     }
     scanner->advance(scanner);
-    if (is_word && overline_length == 0) {
-      lexer->mark_end(lexer);
-    }
     overline_length++;
   }
 
@@ -175,8 +173,9 @@ static bool parse_underline(RSTScanner* scanner)
     return false;
   }
 
-  bool is_word = is_start_char(adornment);
-  int underline_length = 0;
+  scanner->advance(scanner);
+  lexer->mark_end(lexer);
+  int underline_length = 1;
 
   while (!is_newline(scanner->lookahead)) {
     if (scanner->lookahead != adornment) {
@@ -187,12 +186,9 @@ static bool parse_underline(RSTScanner* scanner)
       if (is_space(scanner->lookahead)) {
         break;
       }
-      return parse_text(scanner, !is_word);
+      return parse_text(scanner, false);
     }
     scanner->advance(scanner);
-    if (is_word && underline_length == 0) {
-      lexer->mark_end(lexer);
-    }
     underline_length++;
   }
 
@@ -252,12 +248,14 @@ static bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adorn
         if (ok) {
           return true;
         }
+        return parse_text(scanner, false);
       }
       if (adornment == ':' && valid_symbols[T_FIELD_MARK]) {
         bool ok = parse_inner_field_mark(scanner);
         if (ok) {
           return true;
         }
+        return parse_text(scanner, false);
       }
       if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_REFERENCE])) {
         return parse_inner_inline_markup(scanner, IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_REFERENCE);
@@ -609,10 +607,11 @@ static bool parse_field_mark_end(RSTScanner* scanner)
   }
 
   scanner->advance(scanner);
+  lexer->mark_end(lexer);
+
   if (is_space(scanner->lookahead)) {
     // Consume all whitespaces.
     get_indent_level(scanner);
-    lexer->mark_end(lexer);
     // Go to the next line.
     while (!is_newline(scanner->lookahead)) {
       scanner->advance(scanner);
@@ -639,7 +638,7 @@ static bool parse_field_mark_end(RSTScanner* scanner)
     return true;
   }
 
-  return parse_text(scanner, true);
+  return parse_text(scanner, false);
 }
 
 static bool parse_label(RSTScanner* scanner)
@@ -1091,6 +1090,7 @@ static bool parse_inline_markup(RSTScanner* scanner)
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
   scanner->advance(scanner);
+  lexer->mark_end(lexer);
 
   unsigned type = 0;
 
@@ -1161,7 +1161,7 @@ static bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
         }
       }
     }
-    return parse_text(scanner, true);
+    return parse_text(scanner, false);
   }
 
   while (scanner->lookahead != CHAR_EOF) {
