@@ -450,6 +450,8 @@ module.exports = grammar({
 
     .. [1] Footnote
     .. [#python] Another footnote
+    .. [*] Auto-symbol footnote
+    .. [#] Auto-number footnote
 
     */
     footnote: $ => seq(
