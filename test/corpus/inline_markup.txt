@@ -27,6 +27,9 @@ I'm in (*parenthesis*)
 
 I'm separated by *nsbp* chars
 
+Test for https://github.com/stsewd/tree-sitter-rst/issues/20#issuecomment-1027210703.
+Test (27:00 minute video) *review* test
+
 ---
 
 (document
@@ -53,6 +56,9 @@ I'm separated by *nsbp* chars
   (paragraph
     (emphasis))
   (paragraph
+    (emphasis))
+  (paragraph
+    (standalone_hyperlink)
     (emphasis)))
 
 ===============
