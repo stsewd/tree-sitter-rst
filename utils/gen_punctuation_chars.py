@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from docutils.utils.punctuation_chars import openers, closers, delimiters
+from docutils.utils.punctuation_chars import openers, closers, delimiters, closing_delimiters
 
 def is_ascii(ch):
     return ord(ch) <= 127
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     lines.extend(generate_c_chars_define('delim_chars', delimiters))
     lines.append('')
 
-    lines.extend(generate_c_chars_define('end_chars', closers))
+    lines.extend(generate_c_chars_define('end_chars', closing_delimiters + closers))
     lines.append('')
 
     lines.append('#endif /* ifndef TREE_SITTER_RST_PUNCTUATION_CHARS_H_ */')

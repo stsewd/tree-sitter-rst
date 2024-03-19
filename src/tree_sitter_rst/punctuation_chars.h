@@ -311,6 +311,13 @@ const int32_t delim_chars_range[][2] = {
 };
 
 const int32_t end_chars[] = {
+  '\\',
+  '\\',
+  '.',
+  ',',
+  ';',
+  '!',
+  '?',
   '"',
   '\'',
   ')',
