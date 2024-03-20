@@ -498,3 +498,28 @@ This isn't a standalone_hyperlink "http:"
    (standalone_hyperlink)
    (standalone_hyperlink)
    (standalone_hyperlink)))
+
+=========================
+Unicode Punctuation Chars
+=========================
+
+Chinese full stop: I am *valid*。
+
+Chinese comma: I am *valid*，**me too**。
+
+Chinese parenthesis: I'm in （*parenthesis*）
+
+Chinese double quote: I'm in “*double quotes*” 
+
+---
+
+(document
+  (paragraph
+    (emphasis))
+  (paragraph
+    (emphasis)
+    (strong))
+  (paragraph
+    (emphasis))
+  (paragraph
+    (emphasis)))
