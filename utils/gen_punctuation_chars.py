@@ -2,6 +2,13 @@
 
 """
 Script to generate a C header file with all the punctuation characters used in reStructuredText.
+
+Usage:
+    python gen_punctuation_chars.py > punctuation_chars.h
+
+Or call it from the makefile (recommended):
+
+    make gen-punctuation-chars
 """
 
 from docutils.utils.punctuation_chars import (
