@@ -1,4 +1,5 @@
 #include "chars.h"
+#include "punctuation_chars.h"
 #include <string.h>
 
 static bool is_newline(int32_t c)
@@ -116,29 +117,35 @@ static bool is_adornment_char(int32_t c)
   return false;
 }
 
+static bool is_delim_char(int32_t c)
+{
+  int length = sizeof(delim_chars) / sizeof(int32_t);
+  for (int i = 0; i < length; i++) {
+    if (c == delim_chars[i]) {
+      return true;
+    }
+  }
+  length = sizeof(delim_chars_range) / sizeof(delim_chars_range[0]);
+  for (int i = 0; i < length; i++) {
+    if (c >= delim_chars_range[i][0] && c <= delim_chars_range[i][1]) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /// Check if it's a start char.
 ///
 /// Some tokens can start after non-whitespace chars.
 static bool is_start_char(int32_t c)
 {
-  const int32_t valid_chars[] = {
-    '-',
-    ':',
-    '/',
-    '\'',
-    '"',
-    '<',
-    '(',
-    '[',
-    '{',
-  };
-  const int length = sizeof(valid_chars) / sizeof(int32_t);
+  int length = sizeof(start_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
-    if (c == valid_chars[i]) {
+    if (c == start_chars[i]) {
       return true;
     }
   }
-  return false;
+  return is_delim_char(c);
 }
 
 /// Check if it's an end char.
@@ -146,30 +153,13 @@ static bool is_start_char(int32_t c)
 /// Some tokens can end after non-whitespace chars.
 static bool is_end_char(int32_t c)
 {
-  const int32_t valid_chars[] = {
-    '-',
-    '.',
-    ',',
-    ':',
-    ';',
-    '!',
-    '?',
-    '\\',
-    '/',
-    '\'',
-    '"',
-    ')',
-    ']',
-    '}',
-    '>',
-  };
-  const int length = sizeof(valid_chars) / sizeof(int32_t);
+  int length = sizeof(end_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
-    if (c == valid_chars[i]) {
+    if (c == end_chars[i]) {
       return true;
     }
   }
-  return false;
+  return is_delim_char(c);
 }
 
 static bool is_inline_markup_start_char(int32_t c)
