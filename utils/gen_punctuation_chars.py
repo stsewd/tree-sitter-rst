@@ -32,7 +32,7 @@ def c_repr(ch) -> str:
     return f"L'{encoded_ch}'"
 
 
-def generate_c_chars_define(name: str, chars: str) -> list[str]:
+def generate_c_chars_define(name: str, chars: str, expects_range=False) -> list[str]:
     INDENT = " " * 2
     c_chars = [f"const int32_t {name}[] = {{"]
     c_char_ranges = [f"const int32_t {name}_range[][2] = {{"]
@@ -55,7 +55,13 @@ def generate_c_chars_define(name: str, chars: str) -> list[str]:
     c_chars.append("};")
     c_char_ranges.append("};")
 
-    return c_chars + c_char_ranges
+    if len(c_char_ranges) > 2:
+        if not expects_range:
+            raise Exception(f"Expected no ranges, but a range was found for {name}")
+        return c_chars + c_char_ranges
+    if expects_range:
+        raise Exception(f"Expected ranges, but none found for {name}")
+    return c_chars
 
 
 if __name__ == "__main__":
@@ -67,13 +73,13 @@ if __name__ == "__main__":
         "",
     ]
 
-    lines.extend(generate_c_chars_define("start_chars", openers))
+    lines.extend(generate_c_chars_define("start_chars", openers, expects_range=False))
     lines.append("")
 
-    lines.extend(generate_c_chars_define("delim_chars", delimiters))
+    lines.extend(generate_c_chars_define("delim_chars", delimiters, expects_range=True))
     lines.append("")
 
-    lines.extend(generate_c_chars_define("end_chars", closing_delimiters + closers))
+    lines.extend(generate_c_chars_define("end_chars", closing_delimiters + closers, expects_range=False))
     lines.append("")
 
     lines.append("#endif /* ifndef TREE_SITTER_RST_PUNCTUATION_CHARS_H_ */")

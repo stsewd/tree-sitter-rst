@@ -104,7 +104,6 @@ const int32_t start_chars[] = {
   L'\u201b',
   L'\u201f',
 };
-const int32_t start_chars_range[][2] = {};
 
 const int32_t delim_chars[] = {
   '\\',
@@ -418,6 +417,5 @@ const int32_t end_chars[] = {
   L'\u201a',
   L'\u201e',
 };
-const int32_t end_chars_range[][2] = {};
 
 #endif /* ifndef TREE_SITTER_RST_PUNCTUATION_CHARS_H_ */

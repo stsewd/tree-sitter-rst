@@ -145,12 +145,6 @@ static bool is_start_char(int32_t c)
       return true;
     }
   }
-  length = sizeof(start_chars_range) / sizeof(start_chars_range[0]);
-  for (int i = 0; i < length; i++) {
-    if (c >= start_chars_range[i][0] && c <= start_chars_range[i][1]) {
-      return true;
-    }
-  }
   return is_delim_char(c);
 }
 
@@ -162,12 +156,6 @@ static bool is_end_char(int32_t c)
   int length = sizeof(end_chars) / sizeof(int32_t);
   for (int i = 0; i < length; i++) {
     if (c == end_chars[i]) {
-      return true;
-    }
-  }
-  length = sizeof(end_chars_range) / sizeof(end_chars_range[0]);
-  for (int i = 0; i < length; i++) {
-    if (c >= end_chars_range[i][0] && c <= end_chars_range[i][1]) {
       return true;
     }
   }
