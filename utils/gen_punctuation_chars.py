@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 
+"""
+Script to generate a C header file with all the punctuation characters used in reStructuredText.
+"""
+
 from docutils.utils.punctuation_chars import openers, closers, delimiters, closing_delimiters
 
-def is_ascii(ch):
+def is_ascii(ch) -> bool:
     return ord(ch) <= 127
 
 def c_repr(ch) -> str:
@@ -10,28 +14,29 @@ def c_repr(ch) -> str:
         if ch == "'":
             return "'\\''" # special case for single quote
         return repr(ch)
-    return "L'" + ch.encode('unicode_escape').decode() + "'"
+    encoded_ch = ch.encode('unicode_escape').decode()
+    return f"L'{encoded_ch}'"
 
 
 def generate_c_chars_define(name: str, chars: str) -> list[str]:
     INDENT = ' ' * 2
-    c_chars = ['const int32_t %s[] = {' % name ]
-    c_char_ranges = ['const int32_t %s_range[][2] = {' % name]
+    c_chars = [f'const int32_t {name}[] = {{']
+    c_char_ranges = [f'const int32_t {name}_range[][2] = {{']
     range_start = None
     for i, ch in enumerate(chars):
         if range_start is not None:
             if ch == '-':
                 continue # skip range sign
             if is_ascii(ch):
-                raise Exception("expect unicode, found ascii: %s" % ch)
-            c_char_ranges.append(INDENT + "{ %s, %s }," % (c_repr(range_start), c_repr(ch)))
+                raise Exception(f"Expected unicode, found ascii: {ch}")
+            c_char_ranges.append(f"{INDENT}{{{c_repr(range_start)}, {c_repr(ch)}}},")
             range_start = None
 
         if not is_ascii(ch) and i != len(chars)-1 and chars[i+1] == '-':
             range_start = ch
             continue
 
-        c_chars.append(INDENT + c_repr(ch) + ',')
+        c_chars.append(f"{INDENT}{c_repr(ch)},")
             
     c_chars.append('};')
     c_char_ranges.append('};')
