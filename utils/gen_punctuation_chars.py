@@ -28,8 +28,8 @@ def c_repr(ch) -> str:
         if ch == "'":
             return "'\\''"  # special case for single quote
         return repr(ch)
-    encoded_ch = ch.encode("unicode_escape").decode()
-    return f"L'{encoded_ch}'"
+    else:
+        return hex(ord(ch))
 
 
 def generate_c_chars_define(name: str, chars: str, expects_range=False) -> list[str]:
