@@ -78,7 +78,11 @@ if __name__ == "__main__":
     lines.extend(generate_c_chars_define("delim_chars", delimiters, expects_range=True))
     lines.append("")
 
-    lines.extend(generate_c_chars_define("end_chars", closing_delimiters + closers, expects_range=False))
+    lines.extend(
+        generate_c_chars_define(
+            "end_chars", closing_delimiters + closers, expects_range=False
+        )
+    )
     lines.append("")
 
     lines.append("#endif /* ifndef TREE_SITTER_RST_PUNCTUATION_CHARS_H_ */")
