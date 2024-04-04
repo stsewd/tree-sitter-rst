@@ -28,8 +28,7 @@ def c_repr(ch) -> str:
         if ch == "'":
             return "'\\''"  # special case for single quote
         return repr(ch)
-    else:
-        return hex(ord(ch))
+    return hex(ord(ch))
 
 
 def generate_c_chars_define(name: str, chars: str, expects_range=False) -> list[str]:
