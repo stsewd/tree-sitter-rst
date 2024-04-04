@@ -28,8 +28,7 @@ def c_repr(ch) -> str:
         if ch == "'":
             return "'\\''"  # special case for single quote
         return repr(ch)
-    encoded_ch = ch.encode("unicode_escape").decode()
-    return f"L'{encoded_ch}'"
+    return hex(ord(ch))
 
 
 def generate_c_chars_define(name: str, chars: str, expects_range=False) -> list[str]:
@@ -79,7 +78,11 @@ if __name__ == "__main__":
     lines.extend(generate_c_chars_define("delim_chars", delimiters, expects_range=True))
     lines.append("")
 
-    lines.extend(generate_c_chars_define("end_chars", closing_delimiters + closers, expects_range=False))
+    lines.extend(
+        generate_c_chars_define(
+            "end_chars", closing_delimiters + closers, expects_range=False
+        )
+    )
     lines.append("")
 
     lines.append("#endif /* ifndef TREE_SITTER_RST_PUNCTUATION_CHARS_H_ */")
