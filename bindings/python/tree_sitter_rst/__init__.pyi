@@ -1,0 +1,3 @@
+from typing import Final
+
+def language() -> object: ...
