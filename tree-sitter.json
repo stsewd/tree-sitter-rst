@@ -1,0 +1,35 @@
+{
+  "grammars": [
+    {
+      "name": "rst",
+      "camelcase": "Rst",
+      "scope": "text.rst",
+      "path": ".",
+      "file-types": [
+        "rst"
+      ],
+      "injection-regex": "rst"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "reStructuredText grammar for tree-sitter",
+    "authors": [
+      {
+        "name": "Santos Gallegos"
+      }
+    ],
+    "links": {
+      "repository": "git+https://github.com/stsewd/tree-sitter-rst.git"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true
+  }
+}
