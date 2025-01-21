@@ -1,0 +1,7 @@
+include grammar.js
+include src/tree_sitter_rst/*.c
+include src/tree_sitter_rst/*.h
+include src/tree_sitter/*.h
+include src/parser.c
+include src/scanner.c
+include src/*.json
