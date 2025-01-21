@@ -2,3 +2,9 @@ node_modules/
 /log.html
 build/
 /target/
+/rst.so
+/src/tree_sitter/alloc.h
+/src/tree_sitter/array.h
+
+/dist
+*.egg-info
