@@ -1,4 +1,4 @@
-from os.path import isdir, join, dirname
+from os.path import isdir, join
 from platform import system
 
 from setuptools import Extension, find_packages, setup
@@ -12,8 +12,6 @@ class BdistWheel(bdist_wheel):
             python, abi = "cp310", "abi3"
         return python, abi, platform
 
-
-root = dirname(__file__)
 
 setup(
     packages=find_packages("bindings/python"),
@@ -42,7 +40,7 @@ setup(
                 ("PY_SSIZE_T_CLEAN", None),
                 ("TREE_SITTER_HIDE_SYMBOLS", None),
             ],
-            include_dirs=[f"{root}/src", f"{root}/src/tree_sitter_rst"],
+            include_dirs=["src"],
             py_limited_api=True,
         )
     ],
