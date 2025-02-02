@@ -1,4 +1,4 @@
-module github.com/stsewd/tree-sitter-rst/
+module github.com/stsewd/tree-sitter-rst
 
 go 1.22
 
