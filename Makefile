@@ -111,10 +111,10 @@ update-examples:
 	rename .txt .rst test/examples/*.txt
 
 parse-examples:
+	npm run parse -- -q test/examples/*.rst
+
 	# Tables aren't supported yet
-	npm run parse -- -q \
-	  test/examples/*.rst \
-	  !test/examples/table_colspan.rst
+	! npm run parse -- -q test/examples/fail/*.rst
 
 serve: all
 	npm run prestart
