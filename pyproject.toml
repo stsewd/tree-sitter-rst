@@ -19,7 +19,7 @@ license.text = "MIT"
 readme = "README.md"
 
 [project.urls]
-Homepage = "https://github.com/stsewd/tree-sitter-rst/"
+Homepage = "https://github.com/stsewd/tree-sitter-rst"
 Funding = "https://github.com/sponsors/stsewd"
 
 [project.optional-dependencies]

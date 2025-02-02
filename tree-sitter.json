@@ -25,7 +25,7 @@
       }
     ],
     "links": {
-      "repository": "https://github.com/stsewd/tree-sitter-rst/",
+      "repository": "https://github.com/stsewd/tree-sitter-rst",
       "funding": "https://github.com/sponsors/stsewd"
     }
   },
