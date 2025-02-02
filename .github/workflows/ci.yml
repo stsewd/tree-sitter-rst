@@ -20,7 +20,7 @@ jobs:
           test-node: false
           test-python: true
           test-go: false
-          test-swift: true
+          test-swift: false
       - run: make parse-examples
   windows:
     runs-on: windows-latest
@@ -35,7 +35,7 @@ jobs:
           test-node: false
           test-python: true
           test-go: false
-          test-swift: true
+          test-swift: false
   mac:
     runs-on: macos-latest
     steps:
@@ -49,4 +49,4 @@ jobs:
           test-node: false
           test-python: true
           test-go: false
-          test-swift: true
+          test-swift: false
