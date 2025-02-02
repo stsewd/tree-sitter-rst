@@ -1,3 +1,12 @@
+/**
+ * @file reStructuredText grammar for tree-sitter
+ * @author Santos Gallegos <stsewd@proton.me>
+ * @license MIT
+ */
+
+/// <reference types="tree-sitter-cli/dsl" />
+// @ts-check
+
 const WHITE_SPACE = choice(' ', '\t', '\v', '\f', '\u00A0');
 const NEWLINE = /\r?\n/;
 const LINK = /\S(.*\S)?/;
