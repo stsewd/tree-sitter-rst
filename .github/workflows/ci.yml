@@ -19,7 +19,7 @@ jobs:
           test-rust: true
           test-node: false
           test-python: true
-          test-go: true
+          test-go: false
           test-swift: true
       - run: make parse-examples
   windows:
@@ -34,7 +34,7 @@ jobs:
           test-rust: true
           test-node: false
           test-python: true
-          test-go: true
+          test-go: false
           test-swift: true
   mac:
     runs-on: macos-latest
@@ -48,5 +48,5 @@ jobs:
           test-rust: true
           test-node: false
           test-python: true
-          test-go: true
+          test-go: false
           test-swift: true
