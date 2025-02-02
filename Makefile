@@ -97,7 +97,7 @@ test:
 release: all format
 	npm run prestart
 	# GitHub pages doesn't like symbolic links
-	cp tree-sitter-rst.wasm docs/js/tree-sitter-rst.wasm
+	cp tree-sitter-rst.wasm docs/js/tree-sitter-parser.wasm
 
 update-examples:
 	# https://sourceforge.net/p/docutils/code/HEAD/tree/trunk/docutils/test/functional/input/
