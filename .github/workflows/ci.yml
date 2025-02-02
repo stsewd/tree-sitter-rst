@@ -9,32 +9,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      TS: "node_modules/.bin/tree-sitter"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - run: npm ci
-      - run: make all
-      - run: make test
+      - run: npm run build
+      - run: npm run test
       - run: make parse-examples
   windows:
     runs-on: windows-latest
-    env:
-      TS: "node_modules/.bin/tree-sitter"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - run: npm ci
-      - run: make all
-      - run: make test
+      - run: npm run build
+      - run: npm run test
   mac:
     runs-on: macos-latest
-    env:
-      TS: "node_modules/.bin/tree-sitter"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
       - run: npm ci
-      - run: make all
-      - run: make test
+      - run: npm run build
+      - run: npm run test
