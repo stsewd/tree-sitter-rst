@@ -1,7 +1,7 @@
 [package]
 name = "tree-sitter-rst"
 description = "reStructuredText grammar for tree-sitter"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Santos Gallegos <stsewd@proton.me>"]
 license = "MIT"
 readme = "README.md"

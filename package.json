@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-rst",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "reStructuredText grammar for tree-sitter",
   "repository": "https://github.com/stsewd/tree-sitter-rst",
   "funding": "https://github.com/sponsors/stsewd",
