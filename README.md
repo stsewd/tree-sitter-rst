@@ -1,6 +1,9 @@
 # tree-sitter-rst
 
 [![CI](https://github.com/stsewd/tree-sitter-rst/workflows/CI/badge.svg)](https://github.com/stsewd/tree-sitter-rst/actions?query=workflow%3ACI+branch%3Amaster)
+[![PyPI - Version](https://img.shields.io/pypi/v/tree-sitter-rst)](https://pypi.org/project/tree-sitter-rst/)
+[![NPM Version](https://img.shields.io/npm/v/tree-sitter-rst)](https://www.npmjs.com/package/tree-sitter-rst)
+[![Crates.io Version](https://img.shields.io/crates/v/tree-sitter-rst)](https://crates.io/crates/tree-sitter-rst)
 
 reStructuredText grammar for [tree-sitter](https://tree-sitter.github.io/tree-sitter/).
 Based on the specification from  <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html>.
