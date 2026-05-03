@@ -99,7 +99,7 @@ npm run parse -- test.rst
 Test the grammar on your browser:
 
 ```bash
-npm run web
+npm run start
 ```
 
 Note: if you changed the grammar, you need to rebuild it and run
