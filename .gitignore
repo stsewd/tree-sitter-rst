@@ -17,6 +17,8 @@ _obj/
 dist/
 *.egg-info
 *.whl
+__pycache__/
+*.pyc
 
 # C artifacts
 *.a
@@ -39,6 +41,9 @@ zig-out/
 # Grammar volatiles
 *.obj
 *.o
+
+# tree-sitter generated logs
+log.html
 
 # Archives
 *.tar.gz
