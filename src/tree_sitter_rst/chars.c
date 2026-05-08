@@ -4,59 +4,43 @@
 
 static bool is_newline(int32_t c)
 {
-  const int32_t newline_chars[] = {
-    CHAR_EOF,
-    CHAR_NEWLINE,
-    CHAR_CARRIAGE_RETURN,
-  };
-  const int length = sizeof(newline_chars) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == newline_chars[i]) {
+  switch (c) {
+    case CHAR_EOF:
+    case CHAR_NEWLINE:
+    case CHAR_CARRIAGE_RETURN:
       return true;
-    }
+    default:
+      return false;
   }
-  return false;
 }
 
 static bool is_space(int32_t c)
 {
-  const int32_t space_chars[] = {
-    CHAR_SPACE,
-    CHAR_FORM_FEED,
-    CHAR_TAB,
-    CHAR_VERTICAL_TAB,
-    CHAR_NBSP,
-  };
-  const int length = sizeof(space_chars) / sizeof(int32_t);
-  bool is_space_char = false;
-  for (int i = 0; i < length; i++) {
-    if (c == space_chars[i]) {
-      is_space_char = true;
-      break;
-    }
+  switch (c) {
+    case CHAR_SPACE:
+    case CHAR_FORM_FEED:
+    case CHAR_TAB:
+    case CHAR_VERTICAL_TAB:
+    case CHAR_NBSP:
+      return true;
+    default:
+      return is_newline(c);
   }
-  return is_space_char || is_newline(c);
 }
 
 static bool is_number(int32_t c)
 {
-  const int32_t upper = 48;
-  const int32_t lower = 57;
-  return c >= upper && c <= lower;
+  return c >= '0' && c <= '9';
 }
 
 static bool is_abc_lower(int32_t c)
 {
-  const int32_t upper = 97;
-  const int32_t lower = 122;
-  return c >= upper && c <= lower;
+  return c >= 'a' && c <= 'z';
 }
 
 static bool is_abc_upper(int32_t c)
 {
-  const int32_t upper = 65;
-  const int32_t lower = 90;
-  return c >= upper && c <= lower;
+  return c >= 'A' && c <= 'Z';
 }
 
 static bool is_abc(int32_t c)
@@ -71,50 +55,46 @@ static bool is_alphanumeric(int32_t c)
 
 /// Check if it's an adornment char.
 ///
-/// Adorment characters are used for sections and transitions.
+/// Adornment characters are used for sections and transitions.
 static bool is_adornment_char(int32_t c)
 {
-  const int32_t adornment_chars[] = {
-    '!',
-    '"',
-    '#',
-    '$',
-    '%',
-    '&',
-    '\'',
-    '(',
-    ')',
-    '*',
-    '+',
-    ',',
-    '-',
-    '.',
-    '/',
-    ':',
-    ';',
-    '<',
-    '=',
-    '>',
-    '?',
-    '@',
-    '[',
-    '\\',
-    ']',
-    '^',
-    '_',
-    '`',
-    '{',
-    '|',
-    '}',
-    '~',
-  };
-  const int length = sizeof(adornment_chars) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == adornment_chars[i]) {
+  switch (c) {
+    case '!':
+    case '"':
+    case '#':
+    case '$':
+    case '%':
+    case '&':
+    case '\'':
+    case '(':
+    case ')':
+    case '*':
+    case '+':
+    case ',':
+    case '-':
+    case '.':
+    case '/':
+    case ':':
+    case ';':
+    case '<':
+    case '=':
+    case '>':
+    case '?':
+    case '@':
+    case '[':
+    case '\\':
+    case ']':
+    case '^':
+    case '_':
+    case '`':
+    case '{':
+    case '|':
+    case '}':
+    case '~':
       return true;
-    }
+    default:
+      return false;
   }
-  return false;
 }
 
 static bool is_delim_char(int32_t c)
@@ -164,38 +144,30 @@ static bool is_end_char(int32_t c)
 
 static bool is_inline_markup_start_char(int32_t c)
 {
-  const int32_t inline_markup_chars[] = {
-    '*', // *emphasis*, and **strong**.
-    '`', // `interpreted text`, ``literals``, `hyperlink references`_, and `anonymous references`__.
-    '|', // |substitution references|.
-    '_', // _`inline internal target`.
-    '[', // [foot-note]_.
-  };
-  const int length = sizeof(inline_markup_chars) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == inline_markup_chars[i]) {
+  switch (c) {
+    case '*': // *emphasis*, and **strong**.
+    case '`': // `interpreted text`, ``literals``, `hyperlink references`_, `anonymous references`__.
+    case '|': // |substitution references|.
+    case '_': // _`inline internal target`.
+    case '[': // [foot-note]_.
       return true;
-    }
+    default:
+      return false;
   }
-  return false;
 }
 
 static bool is_inline_markup_end_char(int32_t c)
 {
-  const int32_t inline_markup_chars[] = {
-    '*', // *emphasis*, and **strong**.
-    '`', // `interpreted text`, ``literals``, _`inline internal target`,
-    // `hyperlink references`_, and `anonymous references`__.
-    '|', // |substitution references|.
-    ']', // [foot-note]_.
-  };
-  const int length = sizeof(inline_markup_chars) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == inline_markup_chars[i]) {
+  switch (c) {
+    case '*': // *emphasis*, and **strong**.
+    case '`': // `interpreted text`, ``literals``, _`inline internal target`,
+              // `hyperlink references`_, `anonymous references`__.
+    case '|': // |substitution references|.
+    case ']': // [foot-note]_.
       return true;
-    }
+    default:
+      return false;
   }
-  return false;
 }
 
 /// Check if it's an internal reference char.
@@ -203,14 +175,16 @@ static bool is_inline_markup_end_char(int32_t c)
 /// References and some other names can't have two consecutive internal characters.
 static bool is_internal_reference_char(int32_t c)
 {
-  const int32_t internal_chars[] = { '-', '_', '.', ':', '+' };
-  const int length = sizeof(internal_chars) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == internal_chars[i]) {
+  switch (c) {
+    case '-':
+    case '_':
+    case '.':
+    case ':':
+    case '+':
       return true;
-    }
+    default:
+      return false;
   }
-  return false;
 }
 
 /// Check if it's a bullet char.
@@ -218,21 +192,17 @@ static bool is_internal_reference_char(int32_t c)
 /// Lists use these characters to start an item.
 static bool is_char_bullet(int32_t c)
 {
-  const int32_t bullets[] = {
-    '*',
-    '+',
-    '-',
-    8226, // '•'
-    8227, // '‣'
-    8259, // '⁃'
-  };
-  const int length = sizeof(bullets) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == bullets[i]) {
+  switch (c) {
+    case '*':
+    case '+':
+    case '-':
+    case 0x2022: // '•'
+    case 0x2023: // '‣'
+    case 0x2043: // '⁃'
       return true;
-    }
+    default:
+      return false;
   }
-  return false;
 }
 
 /// Check if it's a numeric bullet char.
@@ -255,42 +225,34 @@ static bool is_numeric_bullet_simple(int32_t c)
 
 static bool is_numeric_bullet_roman_lower(int32_t c)
 {
-  const int32_t valid_chars[] = {
-    'i',
-    'v',
-    'x',
-    'l',
-    'c',
-    'd',
-    'm',
-  };
-  const int length = sizeof(valid_chars) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == valid_chars[i]) {
+  switch (c) {
+    case 'i':
+    case 'v':
+    case 'x':
+    case 'l':
+    case 'c':
+    case 'd':
+    case 'm':
       return true;
-    }
+    default:
+      return false;
   }
-  return false;
 }
 
 static bool is_numeric_bullet_roman_upper(int32_t c)
 {
-  const int32_t valid_chars[] = {
-    'I',
-    'V',
-    'X',
-    'L',
-    'C',
-    'D',
-    'M',
-  };
-  const int length = sizeof(valid_chars) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == valid_chars[i]) {
+  switch (c) {
+    case 'I':
+    case 'V':
+    case 'X':
+    case 'L':
+    case 'C':
+    case 'D':
+    case 'M':
       return true;
-    }
+    default:
+      return false;
   }
-  return false;
 }
 
 static bool is_numeric_bullet_abc_lower(int32_t c)
@@ -305,20 +267,10 @@ static bool is_numeric_bullet_abc_upper(int32_t c)
 
 /// Check if it's a valid attribution char.
 ///
-/// Attribution chars are used to denot the author of a quote.
+/// Attribution chars are used to denote the author of a quote.
 static bool is_attribution_mark(int32_t c)
 {
-  const int32_t valid_chars[] = {
-    '-',
-    CHAR_EMDASH,
-  };
-  const int length = sizeof(valid_chars) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == valid_chars[i]) {
-      return true;
-    }
-  }
-  return false;
+  return c == '-' || c == CHAR_EMDASH;
 }
 
 /// Get the current indentation level.
@@ -344,9 +296,9 @@ static int get_indent_level(RSTScanner* scanner)
   return indent;
 }
 
-static bool is_known_schema(char* string, unsigned string_len)
+static bool is_known_schema(const char* string, unsigned string_len)
 {
-  char* valid_schemas[] = {
+  static const char* const valid_schemas[] = {
     "http",
     "https",
     "ftp",
@@ -354,13 +306,10 @@ static bool is_known_schema(char* string, unsigned string_len)
     "telnet",
     "ssh",
   };
-  const int length = sizeof(valid_schemas) / sizeof(char*);
+  const int length = sizeof(valid_schemas) / sizeof(valid_schemas[0]);
   for (int i = 0; i < length; i++) {
-    if (string_len != strlen(valid_schemas[i])) {
-      continue;
-    }
-    int result = memcmp(string, valid_schemas[i], string_len);
-    if (result == 0) {
+    if (string_len == strlen(valid_schemas[i])
+        && memcmp(string, valid_schemas[i], string_len) == 0) {
       return true;
     }
   }
@@ -369,17 +318,13 @@ static bool is_known_schema(char* string, unsigned string_len)
 
 static bool is_invalid_uri_char(int32_t c)
 {
-  const int32_t invalid_chars[] = {
-    '^',
-    '}',
-    '{',
-    '\\',
-  };
-  const int length = sizeof(invalid_chars) / sizeof(int32_t);
-  for (int i = 0; i < length; i++) {
-    if (c == invalid_chars[i]) {
+  switch (c) {
+    case '^':
+    case '}':
+    case '{':
+    case '\\':
       return true;
-    }
+    default:
+      return false;
   }
-  return false;
 }
