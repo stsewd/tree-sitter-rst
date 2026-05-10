@@ -651,7 +651,7 @@ static bool parse_label(RSTScanner* scanner)
     return false;
   }
   scanner->advance(scanner);
-  int type = parse_inner_label_name(scanner);
+  unsigned type = parse_inner_label_name(scanner);
   if ((type == IM_CITATION_REFERENCE && valid_symbols[T_CITATION_LABEL])
       || (type == IM_FOOTNOTE_REFERENCE && valid_symbols[T_FOOTNOTE_LABEL])) {
     scanner->advance(scanner);
@@ -669,9 +669,9 @@ static bool parse_label(RSTScanner* scanner)
   return false;
 }
 
-static int parse_inner_label_name(RSTScanner* scanner)
+static unsigned parse_inner_label_name(RSTScanner* scanner)
 {
-  int type = -1;
+  unsigned type = IM_NONE;
   if (is_number(scanner->lookahead)) {
     while (is_number(scanner->lookahead)) {
       scanner->advance(scanner);
@@ -700,14 +700,14 @@ static int parse_inner_label_name(RSTScanner* scanner)
       type = IM_CITATION_REFERENCE;
     }
   } else {
-    return -1;
+    return IM_NONE;
   }
 
   if (scanner->lookahead == ']') {
     return type;
   }
 
-  return -1;
+  return IM_NONE;
 }
 
 static bool parse_inner_alphanumeric_label(RSTScanner* scanner)
@@ -1144,7 +1144,7 @@ static bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
   bool is_escaped = false;
 
   if (type & IM_FOOTNOTE_REFERENCE || type & IM_CITATION_REFERENCE) {
-    int final_type = parse_inner_label_name(scanner);
+    unsigned final_type = parse_inner_label_name(scanner);
     if ((final_type == IM_FOOTNOTE_REFERENCE && type & IM_FOOTNOTE_REFERENCE)
         || (final_type == IM_CITATION_REFERENCE && type & IM_CITATION_REFERENCE)) {
       scanner->advance(scanner);
