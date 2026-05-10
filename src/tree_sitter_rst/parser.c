@@ -101,10 +101,7 @@ static bool parse_overline(RSTScanner* scanner)
   // Mark the transition token
   lexer->mark_end(lexer);
 
-  // Consume all whitespaces.
-  while (is_space(scanner->lookahead) && !is_newline(scanner->lookahead)) {
-    scanner->advance(scanner);
-  }
+  consume_inline_whitespace(scanner);
 
   if (!is_newline(scanner->lookahead)) {
     return parse_text(scanner, false);
@@ -144,10 +141,7 @@ static bool parse_overline(RSTScanner* scanner)
     underline_length++;
   }
 
-  // Consume all whitespaces.
-  while (is_space(scanner->lookahead) && !is_newline(scanner->lookahead)) {
-    scanner->advance(scanner);
-  }
+  consume_inline_whitespace(scanner);
 
   if (!is_newline(scanner->lookahead)) {
     return parse_text(scanner, false);
@@ -195,10 +189,7 @@ static bool parse_underline(RSTScanner* scanner)
   // Mark the transition token
   lexer->mark_end(lexer);
 
-  // Consume all whitespaces.
-  while (is_space(scanner->lookahead) && !is_newline(scanner->lookahead)) {
-    scanner->advance(scanner);
-  }
+  consume_inline_whitespace(scanner);
 
   if (!is_newline(scanner->lookahead)) {
     return parse_text(scanner, false);
@@ -479,21 +470,11 @@ static bool parse_inner_list_element(RSTScanner* scanner, int consumed_chars, en
         return true;
       }
     } else if (token_type == T_EXPLICIT_MARKUP_START) {
-      // Go to the next line.
-      while (!is_newline(scanner->lookahead)) {
-        scanner->advance(scanner);
-      }
-      scanner->advance(scanner);
+      advance_to_next_line(scanner);
 
       // The first non-empty line after the marker
       // determines the indentation of the body.
-      while (true) {
-        indent = get_indent_level(scanner);
-        if (!is_newline(scanner->lookahead) || scanner->lookahead == CHAR_EOF) {
-          break;
-        }
-        scanner->advance(scanner);
-      }
+      indent = skip_blank_lines_get_indent(scanner);
       if (indent <= scanner->back(scanner)) {
         indent = scanner->back(scanner) + 1;
       }
@@ -612,22 +593,11 @@ static bool parse_field_mark_end(RSTScanner* scanner)
   if (is_space(scanner->lookahead)) {
     // Consume all whitespaces.
     get_indent_level(scanner);
-    // Go to the next line.
-    while (!is_newline(scanner->lookahead)) {
-      scanner->advance(scanner);
-    }
-    scanner->advance(scanner);
+    advance_to_next_line(scanner);
 
     // The first non-empty line after the field name marker
     // determines the indentation of the field body.
-    int indent = 0;
-    while (true) {
-      indent = get_indent_level(scanner);
-      if (!is_newline(scanner->lookahead) || scanner->lookahead == CHAR_EOF) {
-        break;
-      }
-      scanner->advance(scanner);
-    }
+    int indent = skip_blank_lines_get_indent(scanner);
     if (indent > scanner->back(scanner)) {
       scanner->push(scanner, indent);
     } else {
@@ -844,9 +814,9 @@ static bool parse_directive_name(RSTScanner* scanner)
   bool keep_parsing = true;
   while (is_alphanumeric(scanner->lookahead)
       || is_internal_reference_char(scanner->lookahead)
-      || (is_space(scanner->lookahead) && !is_newline(scanner->lookahead))) {
+      || is_inline_space(scanner->lookahead)) {
     // Directive names can have one (and only one) space before `::`.
-    if (is_space(scanner->lookahead)) {
+    if (is_inline_space(scanner->lookahead)) {
       lexer->mark_end(lexer);
       scanner->advance(scanner);
       scanner->advance(scanner);
@@ -937,10 +907,7 @@ static bool parse_innner_literal_block_mark(RSTScanner* scanner)
 
   lexer->mark_end(lexer);
 
-  // Consume all whitespaces.
-  while (is_space(scanner->lookahead) && !is_newline(scanner->lookahead)) {
-    scanner->advance(scanner);
-  }
+  consume_inline_whitespace(scanner);
 
   if (!is_newline(scanner->lookahead)) {
     return parse_text(scanner, false);

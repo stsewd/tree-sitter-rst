@@ -14,7 +14,7 @@ static bool is_newline(int32_t c)
   }
 }
 
-static bool is_space(int32_t c)
+static bool is_inline_space(int32_t c)
 {
   switch (c) {
     case CHAR_SPACE:
@@ -24,8 +24,13 @@ static bool is_space(int32_t c)
     case CHAR_NBSP:
       return true;
     default:
-      return is_newline(c);
+      return false;
   }
+}
+
+static bool is_space(int32_t c)
+{
+  return is_inline_space(c) || is_newline(c);
 }
 
 static bool is_number(int32_t c)
@@ -327,4 +332,38 @@ static bool is_invalid_uri_char(int32_t c)
     default:
       return false;
   }
+}
+
+/// Consume contiguous inline whitespace (spaces/tabs), stopping at a newline or EOF.
+static void consume_inline_whitespace(RSTScanner* scanner)
+{
+  while (is_inline_space(scanner->lookahead)) {
+    scanner->advance(scanner);
+  }
+}
+
+/// Advance the scanner past the current line, so the next lookahead is the
+/// first character of the next line (or EOF).
+static void advance_to_next_line(RSTScanner* scanner)
+{
+  while (!is_newline(scanner->lookahead)) {
+    scanner->advance(scanner);
+  }
+  scanner->advance(scanner);
+}
+
+/// Skip over blank lines and return the indentation of the first non-empty
+/// line. The scanner is left positioned at that line's first non-whitespace
+/// character (or at EOF).
+static int skip_blank_lines_get_indent(RSTScanner* scanner)
+{
+  int indent = 0;
+  while (true) {
+    indent = get_indent_level(scanner);
+    if (!is_newline(scanner->lookahead) || scanner->lookahead == CHAR_EOF) {
+      break;
+    }
+    scanner->advance(scanner);
+  }
+  return indent;
 }
