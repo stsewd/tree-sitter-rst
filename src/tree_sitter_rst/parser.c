@@ -314,7 +314,7 @@ static bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adorn
   return false;
 }
 
-bool parse_char_bullet(RSTScanner* scanner)
+static bool parse_char_bullet(RSTScanner* scanner)
 {
   const bool* valid_symbols = scanner->valid_symbols;
 
