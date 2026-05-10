@@ -1320,17 +1320,14 @@ static bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
 {
   TSLexer* lexer = scanner->lexer;
 
-  const unsigned MAX_SCHEMA_LEN = 20;
-  char* schema = malloc(sizeof(char) * MAX_SCHEMA_LEN);
+  // The cast to (char) is safe: is_alphanumeric is true only for ASCII
+  // [0-9A-Za-z], which all fit in a single byte.
+  enum { MAX_SCHEMA_LEN = 20 };
+  char schema[MAX_SCHEMA_LEN];
   unsigned consumed_chars = 0;
 
-  // TODO: cast this more safely
   schema[consumed_chars++] = (char)scanner->previous;
-  while (consumed_chars < MAX_SCHEMA_LEN) {
-    if (!is_alphanumeric(scanner->lookahead)) {
-      break;
-    }
-    // TODO: cast this more safely
+  while (consumed_chars < MAX_SCHEMA_LEN && is_alphanumeric(scanner->lookahead)) {
     schema[consumed_chars++] = (char)scanner->lookahead;
     scanner->advance(scanner);
   }
@@ -1346,10 +1343,6 @@ static bool parse_inner_standalone_hyperlink(RSTScanner* scanner)
   } else if (scanner->lookahead == '@') {
     is_valid = true;
   }
-
-  // Clean up
-  free(schema);
-  schema = NULL;
 
   if (!is_valid) {
     if ((!is_space(scanner->lookahead) && !is_end_char(scanner->lookahead)) || is_internal_reference_char(scanner->lookahead)) {
