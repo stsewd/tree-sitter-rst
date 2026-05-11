@@ -31,7 +31,7 @@ static bool parse_field_mark_end(RSTScanner* scanner);
 static bool parse_inner_field_mark(RSTScanner* scanner);
 
 static bool parse_literal_block_mark(RSTScanner* scanner);
-static bool parse_innner_literal_block_mark(RSTScanner* scanner);
+static bool parse_inner_literal_block_mark(RSTScanner* scanner);
 static bool parse_quoted_literal_block(RSTScanner* scanner);
 
 static bool parse_line_block_mark(RSTScanner* scanner);
