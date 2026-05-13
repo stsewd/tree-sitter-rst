@@ -1,6 +1,7 @@
 #include "parser.h"
 
 #include "chars.h"
+#include "table.h"
 #include "tokens.h"
 #include <stdio.h>
 
@@ -37,7 +38,10 @@ static bool parse_indent(RSTScanner* scanner)
   }
 
   int current_indent = scanner->back(scanner);
-  if (indent > current_indent && valid_symbols[T_INDENT]) {
+  // T_INDENT is only valid when there are no blank lines preceding the
+  // indented content. With blank lines, T_BLANKLINE must be emitted first.
+  if (indent > current_indent && valid_symbols[T_INDENT]
+      && (newlines == 0 || !valid_symbols[T_BLANKLINE])) {
     scanner->push(scanner, indent);
     lexer->result_symbol = T_INDENT;
     return true;
@@ -73,6 +77,7 @@ static bool parse_overline(RSTScanner* scanner)
   const bool* valid_symbols = scanner->valid_symbols;
   TSLexer* lexer = scanner->lexer;
   int32_t adornment = scanner->lookahead;
+  uint32_t start_col = lexer->get_column(lexer);
 
   if (!is_adornment_char(scanner->lookahead)
       || (!valid_symbols[T_OVERLINE] && !valid_symbols[T_TRANSITION])) {
@@ -92,6 +97,15 @@ static bool parse_overline(RSTScanner* scanner)
       if (is_space(scanner->lookahead)) {
         break;
       }
+      // '+' followed by '-'/'='/'+' is the start of a grid-table border
+      // — try it before giving up to parse_text.
+      if (adornment == '+' && overline_length == 1
+          && (scanner->lookahead == '-' || scanner->lookahead == '='
+              || scanner->lookahead == '+')) {
+        if (try_grid_table_after_plus(scanner, start_col)) {
+          return true;
+        }
+      }
       return parse_text(scanner, false);
     }
     scanner->advance(scanner);
@@ -104,6 +118,12 @@ static bool parse_overline(RSTScanner* scanner)
   consume_inline_whitespace(scanner);
 
   if (!is_newline(scanner->lookahead)) {
+    // '=== ===' is a simple-table border, not a section adornment with
+    // trailing text. Try the table interpretation before parse_text.
+    if (adornment == '=' && scanner->lookahead == '='
+        && try_simple_table_after_run(scanner, start_col)) {
+      return true;
+    }
     return parse_text(scanner, false);
   }
 
@@ -195,10 +215,31 @@ static bool parse_underline(RSTScanner* scanner)
     return parse_text(scanner, false);
   }
 
+  // ``::`` on its own line is the literal-block marker, not a section
+  // underline. The spec requires the underline to be at least as long as
+  // the title text, and a two-character ``::`` is much more often a literal
+  // block marker than a one- or two-letter title's adornment. Hand the token
+  // off to ``parse_inner_literal_block_mark`` if the parser is willing to
+  // accept it. Without this check ``parse_underline`` greedily consumes the
+  // ``::`` and the indented block that follows is parsed as a block_quote
+  // (#27).
   // Transitions need to be at least 4 chars long
   if (underline_length >= 4 && valid_symbols[T_TRANSITION]) {
     lexer->result_symbol = T_TRANSITION;
     return true;
+  }
+
+  // ``::`` on its own line is the literal-block marker, not a section
+  // underline. The spec requires the underline to be at least as long as the
+  // title text, and ``::`` only matches a one- or two-character title --
+  // which essentially never appears in real documents, while the literal
+  // block reading is everywhere. Refuse the underline so the parser doesn't
+  // commit the preceding line to a title (#27). The subsequent indented
+  // block still ends up inside the paragraph rather than a literal_block,
+  // but that's a downstream limitation -- the structural fix here is what
+  // unblocks correct section nesting.
+  if (adornment == ':' && underline_length == 2) {
+    return false;
   }
 
   if (underline_length >= 1 && valid_symbols[T_UNDERLINE]) {
@@ -248,8 +289,8 @@ static bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adorn
         }
         return parse_text(scanner, false);
       }
-      if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_REFERENCE])) {
-        return parse_inner_inline_markup(scanner, IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_REFERENCE);
+      if (adornment == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX])) {
+        return parse_inner_inline_markup(scanner, IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX);
       }
       if (adornment == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
         return parse_inner_inline_markup(scanner, IM_SUBSTITUTION_REFERENCE);
@@ -1015,6 +1056,12 @@ static bool parse_attribution_mark(RSTScanner* scanner)
     }
 
     if (consumed_chars < 2 || consumed_chars > 3) {
+      // A single dash followed by a space is a char bullet, not an attribution.
+      // parse_char_bullet can't be tried after this point because we've already
+      // advanced past the dash, so handle the fallback here.
+      if (consumed_chars == 1 && is_space(scanner->lookahead) && valid_symbols[T_CHAR_BULLET]) {
+        return parse_inner_list_element(scanner, 1, T_CHAR_BULLET);
+      }
       return false;
     }
   } else {
@@ -1063,8 +1110,8 @@ static bool parse_inline_markup(RSTScanner* scanner)
     type = IM_EMPHASIS;
   } else if (scanner->previous == '`' && scanner->lookahead == '`' && valid_symbols[T_LITERAL]) {
     type = IM_LITERAL;
-  } else if (scanner->previous == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX] || valid_symbols[T_REFERENCE])) {
-    type = IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX | IM_REFERENCE;
+  } else if (scanner->previous == '`' && (valid_symbols[T_INTERPRETED_TEXT] || valid_symbols[T_INTERPRETED_TEXT_PREFIX])) {
+    type = IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX;
   } else if (scanner->previous == '|' && valid_symbols[T_SUBSTITUTION_REFERENCE]) {
     type = IM_SUBSTITUTION_REFERENCE;
   } else if (scanner->previous == '_' && scanner->lookahead == '`' && valid_symbols[T_INLINE_TARGET]) {
@@ -1106,6 +1153,13 @@ static bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
   bool word_found = false;
   bool is_escaped = false;
 
+  // If a reference may close this `\``-introduced markup, skip the
+  // word-boundary mark_end calls during the scan so the after-first-backtick
+  // mark_end (set by parse_inline_markup) is preserved. When the close is
+  // `\`_` / `\`__` we emit T_REFERENCE_OPEN_BACKTICK with that span.
+  bool reference_possible = valid_symbols[T_REFERENCE_OPEN_BACKTICK]
+      && (type & (IM_INTERPRETED_TEXT | IM_INTERPRETED_TEXT_PREFIX));
+
   if (type & IM_FOOTNOTE_REFERENCE || type & IM_CITATION_REFERENCE) {
     unsigned final_type = parse_inner_label_name(scanner);
     if ((final_type == IM_FOOTNOTE_REFERENCE && type & IM_FOOTNOTE_REFERENCE)
@@ -1132,7 +1186,9 @@ static bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
     if (is_newline(scanner->lookahead)) {
       if (!word_found) {
         word_found = true;
-        lexer->mark_end(lexer);
+        if (!reference_possible) {
+          lexer->mark_end(lexer);
+        }
       }
       scanner->advance(scanner);
       int indent = get_indent_level(scanner);
@@ -1155,13 +1211,17 @@ static bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
     // Mark the end of the word if a space was found
     if (!word_found && is_space(scanner->lookahead)) {
       word_found = true;
-      lexer->mark_end(lexer);
+      if (!reference_possible) {
+        lexer->mark_end(lexer);
+      }
     }
 
     // Mark the end of the word if a start char was found
     if (!word_found && is_start_char(scanner->lookahead)) {
       word_found = true;
-      lexer->mark_end(lexer);
+      if (!reference_possible) {
+        lexer->mark_end(lexer);
+      }
     }
 
     // Check if it's a terminal character
@@ -1190,16 +1250,16 @@ static bool parse_inner_inline_markup(RSTScanner* scanner, unsigned type)
         }
       } else if ((type & IM_INLINE_TARGET) && scanner->previous == '`') {
         lexer->result_symbol = T_INLINE_TARGET;
-      } else if ((type & IM_REFERENCE) && scanner->previous == '`' && scanner->lookahead == '_') {
-        lexer->result_symbol = T_REFERENCE;
-
-        // Check for annonymous references
-        scanner->advance(scanner);
-        consumed_chars++;
-        if (scanner->lookahead == '_') {
-          advance = true;
-        }
       } else if ((type & IM_INTERPRETED_TEXT || type & IM_INTERPRETED_TEXT_PREFIX) && scanner->previous == '`') {
+        // `\`text\`_` / `\`text\`__` -- emit just the opening backtick as
+        // T_REFERENCE_OPEN_BACKTICK so the name / URI / end mark can be
+        // separated by subsequent scanner calls. mark_end is preserved at
+        // after-first-backtick because reference_possible suppressed the
+        // word-boundary mark_end during the scan.
+        if (scanner->lookahead == '_' && reference_possible) {
+          lexer->result_symbol = T_REFERENCE_OPEN_BACKTICK;
+          return true;
+        }
         if (scanner->lookahead == ':' && type & IM_INTERPRETED_TEXT_PREFIX && valid_symbols[T_INTERPRETED_TEXT_PREFIX]) {
           lexer->mark_end(lexer);
           scanner->advance(scanner);
@@ -1299,6 +1359,157 @@ static bool parse_inner_reference(RSTScanner* scanner)
   }
 
   return parse_text(scanner, !is_word);
+}
+
+// Emit the visible-name portion of a backticked reference. Stops before any
+// trailing whitespace that introduces an embedded `<URI>`, before the
+// closing `\`` of a phrase reference, or returns false for the empty-text
+// embedded form (where the lexer is already at `<`).
+static bool parse_reference_name(RSTScanner* scanner)
+{
+  TSLexer* lexer = scanner->lexer;
+  const bool* valid_symbols = scanner->valid_symbols;
+
+  if (!valid_symbols[T_REFERENCE_NAME]) {
+    return false;
+  }
+
+  // Empty link text (`\`<uri>\`__`) or unexpected close: leave for the
+  // literal `<` / T_REFERENCE_END_MARK paths.
+  if (scanner->lookahead == '<' || scanner->lookahead == '`'
+      || is_space(scanner->lookahead)) {
+    return false;
+  }
+
+  bool is_escaped = false;
+  int consumed = 0;
+
+  while (scanner->lookahead != CHAR_EOF) {
+    // Track candidate end at every non-space-to-whitespace transition so the
+    // trailing separator before `<URI>` (or before the closing `\``) is not
+    // included in the name.
+    if (consumed > 0
+        && is_space(scanner->lookahead)
+        && !is_space(scanner->previous)) {
+      lexer->mark_end(lexer);
+    }
+
+    if (is_newline(scanner->lookahead)) {
+      scanner->advance(scanner);
+      int indent = get_indent_level(scanner);
+      if (indent != scanner->back(scanner) || is_newline(scanner->lookahead)) {
+        return false;
+      }
+      continue;
+    }
+
+    if (scanner->lookahead == '\\' && !is_escaped) {
+      is_escaped = true;
+      scanner->advance(scanner);
+      consumed++;
+      continue;
+    }
+
+    // Candidate embedded URI: `<` after whitespace. Look ahead for the
+    // matching `>` followed by `\`_` / `\`__` -- only then is this an
+    // embedded URI and the name ends here. Otherwise `<` is part of the
+    // name and we keep scanning past it.
+    if (!is_escaped && scanner->lookahead == '<' && is_space(scanner->previous)) {
+      scanner->advance(scanner);
+      consumed++;
+      while (scanner->lookahead != '>' && scanner->lookahead != '`'
+          && !is_newline(scanner->lookahead) && scanner->lookahead != CHAR_EOF) {
+        scanner->advance(scanner);
+        consumed++;
+      }
+      if (scanner->lookahead == '>') {
+        scanner->advance(scanner);
+        consumed++;
+        if (scanner->lookahead == '`') {
+          scanner->advance(scanner);
+          if (scanner->lookahead == '_') {
+            lexer->result_symbol = T_REFERENCE_NAME;
+            return true;
+          }
+        }
+      }
+      // Not an embedded URI; continue scanning -- mark_end will be updated
+      // by subsequent transitions or by the phrase close below.
+      is_escaped = false;
+      continue;
+    }
+
+    // Phrase close: stop right at the closing `\``.
+    if (!is_escaped && scanner->lookahead == '`' && !is_space(scanner->previous)) {
+      lexer->mark_end(lexer);
+      lexer->result_symbol = T_REFERENCE_NAME;
+      return true;
+    }
+
+    is_escaped = false;
+    scanner->advance(scanner);
+    consumed++;
+  }
+
+  return false;
+}
+
+// Emit the URI content of an embedded URI reference, without the surrounding
+// angle brackets. The grammar matches `<` and `>` as literal tokens, so this
+// is invoked only when the lexer is positioned just after `<`, and stops
+// short of `>` (mark_end before consuming it).
+static bool parse_embedded_uri(RSTScanner* scanner)
+{
+  TSLexer* lexer = scanner->lexer;
+
+  if (!scanner->valid_symbols[T_EMBEDDED_URI]) {
+    return false;
+  }
+
+  while (scanner->lookahead != '>'
+      && !is_newline(scanner->lookahead)
+      && scanner->lookahead != '`'
+      && scanner->lookahead != CHAR_EOF) {
+    scanner->advance(scanner);
+  }
+
+  if (scanner->lookahead != '>') {
+    return false;
+  }
+
+  lexer->mark_end(lexer);
+  lexer->result_symbol = T_EMBEDDED_URI;
+  return true;
+}
+
+// Emit the closing `\`_` or `\`__` of an embedded URI reference.
+static bool parse_reference_end_mark(RSTScanner* scanner)
+{
+  TSLexer* lexer = scanner->lexer;
+
+  if (scanner->lookahead != '`' || !scanner->valid_symbols[T_REFERENCE_END_MARK]) {
+    return false;
+  }
+
+  scanner->advance(scanner);
+
+  if (scanner->lookahead != '_') {
+    return false;
+  }
+  scanner->advance(scanner);
+
+  // Anonymous embedded reference: trailing `__`.
+  if (scanner->lookahead == '_') {
+    scanner->advance(scanner);
+  }
+
+  if (!is_space(scanner->lookahead) && !is_end_char(scanner->lookahead)) {
+    return false;
+  }
+
+  lexer->mark_end(lexer);
+  lexer->result_symbol = T_REFERENCE_END_MARK;
+  return true;
 }
 
 static bool parse_standalone_hyperlink(RSTScanner* scanner)
@@ -1413,22 +1624,12 @@ static bool parse_role(RSTScanner* scanner)
     // Consume all whitespaces.
     get_indent_level(scanner);
     lexer->mark_end(lexer);
-    // Go to the next line
-    while (!is_newline(scanner->lookahead)) {
-      scanner->advance(scanner);
-    }
-    scanner->advance(scanner);
+    advance_to_next_line(scanner);
 
     // The first non-empty line after the field name marker
     // determines the indentation of the field body.
-    int indent = 0;
-    while (true) {
-      indent = get_indent_level(scanner);
-      if (!is_newline(scanner->lookahead) || scanner->lookahead == CHAR_EOF) {
-        break;
-      }
-      scanner->advance(scanner);
-    }
+    int indent = skip_blank_lines_get_indent(scanner);
+
     if (indent > scanner->back(scanner)) {
       scanner->push(scanner, indent);
     } else {
@@ -1465,8 +1666,13 @@ static bool parse_inner_role(RSTScanner* scanner)
   if (ok) {
     if (scanner->lookahead == '`' && valid_symbols[T_ROLE_NAME_PREFIX]) {
       lexer->mark_end(lexer);
-      lexer->result_symbol = T_ROLE_NAME_PREFIX;
-      return true;
+      scanner->advance(scanner);
+      if (scanner->lookahead != '`') {
+        // Single backtick: valid role prefix syntax :role:`...`
+        lexer->result_symbol = T_ROLE_NAME_PREFIX;
+        return true;
+      }
+      // Double backtick after role name is literal syntax, not a role prefix.
     }
 
     if (is_space(scanner->lookahead) && valid_symbols[T_FIELD_MARK]) {
@@ -1529,7 +1735,24 @@ static bool parse_text(RSTScanner* scanner, bool mark_end)
   }
 
   if (is_start_char(scanner->lookahead)) {
+    bool was_backslash = scanner->lookahead == '\\';
     scanner->advance(scanner);
+    // Emit a distinct escape_sequence node when the parser expects one,
+    // but only when the backslash actually escapes a character (not before
+    // a newline or EOF, where RST treats the backslash as literal text).
+    if (was_backslash && valid_symbols[T_ESCAPE_SEQUENCE]
+        && !is_newline(scanner->lookahead) && scanner->lookahead != '\0') {
+      scanner->advance(scanner);
+      lexer->mark_end(lexer);
+      lexer->result_symbol = T_ESCAPE_SEQUENCE;
+      return true;
+    }
+    // RST backslash escape: pull the next character into the same text
+    // token so the next scanner dispatch can't read it as inline markup
+    // (e.g. ``\` `` must not open interpreted text).
+    if (was_backslash && !is_newline(scanner->lookahead)) {
+      scanner->advance(scanner);
+    }
   } else {
     while (!is_space(scanner->lookahead)) {
       if (is_start_char(scanner->lookahead)) {

@@ -61,6 +61,8 @@ static bool is_alphanumeric(int32_t c)
 /// Check if it's an adornment char.
 ///
 /// Adornment characters are used for sections and transitions.
+/// These are the ASCII punctuation characters between '!' (0x21) and '~' (0x7e),
+/// excluding the alphanumeric-adjacent characters '0'-'9', 'A'-'Z', 'a'-'z'.
 static bool is_adornment_char(int32_t c)
 {
   switch (c) {
