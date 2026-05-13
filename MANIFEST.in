@@ -1,0 +1,3 @@
+include src/tree_sitter/*.h
+recursive-include src/tree_sitter_rst *
+recursive-include queries *.scm

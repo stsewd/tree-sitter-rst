@@ -21,6 +21,7 @@
 
 static bool is_newline(int32_t c);
 static bool is_space(int32_t c);
+static bool is_inline_space(int32_t c);
 static bool is_number(int32_t c);
 static bool is_abc_lower(int32_t c);
 static bool is_abc_upper(int32_t c);
@@ -43,7 +44,7 @@ static bool is_numeric_bullet_roman_lower(int32_t c);
 static bool is_numeric_bullet_roman_upper(int32_t c);
 static bool is_numeric_bullet_abc_lower(int32_t c);
 static bool is_numeric_bullet_abc_upper(int32_t c);
-static bool is_known_schema(char* string, unsigned string_len);
+static bool is_known_schema(const char* string, unsigned string_len);
 static bool is_invalid_uri_char(int32_t c);
 
 #define CHAR_EMDASH 8212
@@ -51,5 +52,8 @@ static bool is_invalid_uri_char(int32_t c);
 static bool is_attribution_mark(int32_t c);
 
 static int get_indent_level(RSTScanner* scanner);
+static void consume_inline_whitespace(RSTScanner* scanner);
+static void advance_to_next_line(RSTScanner* scanner);
+static int skip_blank_lines_get_indent(RSTScanner* scanner);
 
 #endif /* ifndef TREE_SITTER_RST_CHARS_H_ */

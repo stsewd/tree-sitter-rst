@@ -8,8 +8,6 @@
 typedef struct RSTScanner RSTScanner;
 
 /// Wrapper struct around ``TSLexer`` to track indentation levels.
-///
-/// TODO: track consumed_chars?
 struct RSTScanner {
   // Wrappers around the lexer.
   TSLexer* lexer;

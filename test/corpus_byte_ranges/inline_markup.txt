@@ -1,0 +1,190 @@
+========================================
+Emphasis
+========================================
+
+Hello *world*. *Again*.
+
+---
+
+(document [0..23]
+  (paragraph [0..23]
+    (emphasis [6..13])
+    (emphasis [15..22])))
+
+========================================
+Strong emphasis
+========================================
+
+Hello **world**.
+
+---
+
+(document [0..16]
+  (paragraph [0..16]
+    (strong [6..15])))
+
+========================================
+Interpreted text
+========================================
+
+Hello `world`.
+
+---
+
+(document [0..14]
+  (paragraph [0..14]
+    (interpreted_text [6..13])))
+
+========================================
+Inline literal
+========================================
+
+Hello ``code``.
+
+---
+
+(document [0..15]
+  (paragraph [0..15]
+    (literal [6..14])))
+
+========================================
+Hyperlink reference
+========================================
+
+See `link <http://example.com>`_.
+
+---
+
+(document [0..33]
+  (paragraph [0..33]
+    (reference [4..32]
+      (name [5..9])
+      (uri [11..29]))))
+
+========================================
+Backslash-escaped inline markup start char
+========================================
+
+A \`backtick\` here.
+
+A \`foo with `bar` later.
+
+Use \`x\` and `real` here.
+
+\*not emphasis\* but `real`.
+
+---
+
+(document [0..105]
+  (paragraph [0..20])
+  (paragraph [22..47]
+    (interpreted_text [35..40]))
+  (paragraph [49..75]
+    (interpreted_text [63..69]))
+  (paragraph [77..105]
+    (interpreted_text [98..104])))
+
+========================================
+Backslash-space separator
+========================================
+
+**bold**\ word
+
+word\ **bold**
+
+a\ **b**\ c
+
+---
+
+(document [0..43]
+  (paragraph [0..14]
+    (strong [0..8])
+    (escape_sequence [8..10]))
+  (paragraph [16..30]
+    (escape_sequence [16..22])
+    (strong [22..30]))
+  (paragraph [32..43]
+    (escape_sequence [33..35])
+    (strong [35..40])
+    (escape_sequence [40..42])))
+
+========================================
+Embedded URI reference
+========================================
+
+`Python <http://www.python.org>`_
+
+---
+
+(document [0..33]
+  (paragraph [0..33]
+    (reference [0..33]
+      (name [1..7])
+      (uri [9..30]))))
+
+========================================
+Anonymous embedded URI reference
+========================================
+
+`Python <http://www.python.org>`__
+
+---
+
+(document [0..34]
+  (paragraph [0..34]
+    (reference [0..34]
+      (name [1..7])
+      (uri [9..30]))))
+
+========================================
+Empty-text anonymous embedded URI reference
+========================================
+
+`<http://example.org>`__
+
+---
+
+(document [0..24]
+  (paragraph [0..24]
+    (reference [0..24]
+      (uri [2..20]))))
+
+========================================
+Phrase reference (backticked, no URI)
+========================================
+
+`simple ref`_ and ref_ done.
+
+---
+
+(document [0..28]
+  (paragraph [0..28]
+    (reference [0..13]
+      (name [1..11]))
+    (reference [18..22])))
+
+========================================
+Embedded URI: unclosed angle bracket
+========================================
+
+`text <unclosed`_
+
+---
+
+(document [0..17]
+  (paragraph [0..17]
+    (reference [0..17]
+      (name [1..15]))))
+
+========================================
+Embedded URI: missing closing angle bracket
+========================================
+
+`Python <http://x.org`_ tail
+
+---
+
+(document [0..28]
+  (paragraph [0..28]
+    (reference [0..23]
+      (name [1..21]))))

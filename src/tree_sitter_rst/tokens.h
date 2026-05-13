@@ -36,8 +36,13 @@ enum TokenType {
   // Doctest blocks
   T_DOCTEST_BLOCK_MARK,
 
+  // Tables (flat nodes, scanner gobbles the whole table block)
+  T_GRID_TABLE,
+  T_SIMPLE_TABLE,
+
   // Inline markup
   T_TEXT,
+  T_ESCAPE_SEQUENCE,
   T_EMPHASIS,
   T_STRONG,
   T_INTERPRETED_TEXT,
@@ -50,6 +55,10 @@ enum TokenType {
   T_FOOTNOTE_REFERENCE,
   T_CITATION_REFERENCE,
   T_REFERENCE,
+  T_REFERENCE_OPEN_BACKTICK,
+  T_REFERENCE_NAME,
+  T_EMBEDDED_URI,
+  T_REFERENCE_END_MARK,
   T_STANDALONE_HYPERLINK,
 
   // Markup blocks
@@ -63,6 +72,8 @@ enum TokenType {
   T_EMPTY_COMMENT,
 
   T_INVALID_TOKEN,
+
+  T_CLASSIFIER_INDENT_CHECK,
 };
 
 #endif /* TREE_SITTER_RST_TOKENS_H_ */

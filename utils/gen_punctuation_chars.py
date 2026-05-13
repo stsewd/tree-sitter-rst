@@ -12,10 +12,10 @@ Or call it from the makefile (recommended):
 """
 
 from docutils.utils.punctuation_chars import (
-    openers,
     closers,
-    delimiters,
     closing_delimiters,
+    delimiters,
+    openers,
 )
 
 
@@ -79,9 +79,7 @@ if __name__ == "__main__":
     lines.append("")
 
     lines.extend(
-        generate_c_chars_define(
-            "end_chars", closing_delimiters + closers, expects_range=False
-        )
+        generate_c_chars_define("end_chars", closing_delimiters + closers, expects_range=False)
     )
     lines.append("")
 

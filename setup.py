@@ -4,8 +4,8 @@ from sysconfig import get_config_var
 
 from setuptools import Extension, find_packages, setup
 from setuptools.command.build import build
+from setuptools.command.bdist_wheel import bdist_wheel
 from setuptools.command.egg_info import egg_info
-from wheel.bdist_wheel import bdist_wheel
 
 sources = [
     "bindings/python/tree_sitter_rst/binding.c",
@@ -48,6 +48,7 @@ class EggInfo(egg_info):
         super().find_sources()
         self.filelist.recursive_include("queries", "*.scm")
         self.filelist.include("src/tree_sitter/*.h")
+        self.filelist.recursive_include("src/tree_sitter_rst", "*")
 
 
 setup(
@@ -64,7 +65,7 @@ setup(
             sources=sources,
             extra_compile_args=cflags,
             define_macros=macros,
-            include_dirs=["src"],
+            include_dirs=[path.abspath("src")],
             py_limited_api=limited_api,
         )
     ],

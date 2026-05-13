@@ -49,8 +49,13 @@ module.exports = grammar({
     // Doctest blocks
     $._doctest_block_mark,
 
+    // Tables (single token spanning the whole table block)
+    $._grid_table,
+    $._simple_table,
+
     // Inline markup
     $._text,
+    $.escape_sequence,
     $.emphasis,
     $.strong,
     $._interpreted_text,
@@ -63,6 +68,10 @@ module.exports = grammar({
     $.footnote_reference,
     $.citation_reference,
     $.reference,
+    $._reference_open_backtick,
+    $._reference_name,
+    $._embedded_uri,
+    $._reference_end_mark,
     $.standalone_hyperlink,
 
     // Markup blocks
@@ -76,6 +85,14 @@ module.exports = grammar({
     $._empty_comment,
 
     $._invalid_token,
+
+    // Zero-width guard emitted by the scanner immediately after a
+    // classifier separator (` : `) when the line is followed by a more
+    // deeply indented continuation. Without this, tree-sitter's JS-level
+    // ``<ws>:<ws>`` token greedily commits to the definition-list branch
+    // for any colon with surrounding whitespace -- including those inside
+    // paragraphs, bullet items, and footnote bodies.
+    $._classifier_indent_check,
   ],
 
   extras: $ => [
@@ -185,6 +202,8 @@ module.exports = grammar({
       $.line_block,
       $._block_quote_block,
       $.doctest_block,
+      $.grid_table,
+      $.simple_table,
     ),
 
     // Paragraph
@@ -224,9 +243,20 @@ module.exports = grammar({
     - One
     - Two
 
+    Note: a `_blankline` is allowed *between* list items, so a single
+    bullet_list can span items separated by a blank line. A blank line
+    followed by a non-list construct, or a different bullet character,
+    will still terminate the list (producing separate list nodes in the
+    tree).
     */
     bullet_list: $ => repeat1(
-      alias($._bullet_list_item, $.list_item),
+      choice(
+        seq(
+          alias($._bullet_list_item, $.list_item),
+          $._blankline,
+        ),
+        alias($._bullet_list_item, $.list_item),
+      ),
     ),
 
     _bullet_list_item: $ => seq(
@@ -246,7 +276,13 @@ module.exports = grammar({
 
     */
     enumerated_list: $ => repeat1(
-      alias($._numeric_list_item, $.list_item),
+      choice(
+        seq(
+          alias($._numeric_list_item, $.list_item),
+          $._blankline,
+        ),
+        alias($._numeric_list_item, $.list_item),
+      ),
     ),
 
     _numeric_list_item: $ => seq(
@@ -275,7 +311,13 @@ module.exports = grammar({
 
     */
     definition_list: $ => repeat1(
-      alias($._definition_list_item, $.list_item),
+      choice(
+        seq(
+          alias($._definition_list_item, $.list_item),
+          $._blankline,
+        ),
+        alias($._definition_list_item, $.list_item),
+      ),
     ),
 
     _definition_list_item: $ => seq(
@@ -288,6 +330,7 @@ module.exports = grammar({
     _classifiers: $ => repeat1(
       seq(
         alias(token(seq(repeat1(WHITE_SPACE), ':', repeat1(WHITE_SPACE))), ':'),
+        $._classifier_indent_check,
         alias(repeat1($._inline_markup), $.classifier),
       ),
     ),
@@ -308,7 +351,15 @@ module.exports = grammar({
     :Indentation: Since the field marker may be quite long, the second
       and subsequent lines of the field body do not have to line up.
     */
-    field_list: $ => repeat1($.field),
+    field_list: $ => repeat1(
+      choice(
+        seq(
+          $.field,
+          $._blankline,
+        ),
+        $.field,
+      ),
+    ),
 
     field: $ => seq(
       alias($._field_mark, ':'),
@@ -433,6 +484,38 @@ module.exports = grammar({
       $._text_block,
       $._blankline,
     ),
+
+    // Tables
+    // ======
+
+    /*
+
+    Example (grid table):
+
+    +-----+-----+
+    | A   | B   |
+    +=====+=====+
+    | 1   | 2   |
+    +-----+-----+
+
+    Example (simple table):
+
+    =====  =====
+      A      B
+    =====  =====
+      1      2
+    =====  =====
+
+    Tables are exposed as flat nodes — the scanner consumes the whole
+    block (top border through bottom border) as one token, and
+    individual rows/cells are not modelled. The two flavours are
+    distinguished as separate node names (``grid_table`` and
+    ``simple_table``) so highlighters and editors can target each
+    independently. Richer cell structure can be added later as a
+    sub-grammar without renaming these nodes.
+    */
+    grid_table: $ => $._grid_table,
+    simple_table: $ => $._simple_table,
 
     // Markup blocks
     // =============
@@ -561,6 +644,7 @@ module.exports = grammar({
         $._newline,
         choice(
           seq(alias($.field_list, $.options), $._dedent),
+          seq(alias($.field_list, $.options), $._blankline, $._dedent),
           alias($._indented_text_block, $.content),
           seq(alias($.field_list, $.options), $._blankline, alias($._indented_text_block, $.content)),
         ),
@@ -630,6 +714,7 @@ module.exports = grammar({
     - Citation [python]_
     - reference_
     - `reference`_
+    - `text <http://embedded.uri>`_
     - Hyperlink https://stsewd.dev/
     */
     _line: $ => seq(
@@ -645,6 +730,7 @@ module.exports = grammar({
 
     _inline_markup: $ => choice(
       alias($._text, 'text'),
+      $.escape_sequence,
       $.emphasis,
       $.strong,
       $.interpreted_text,
@@ -654,7 +740,29 @@ module.exports = grammar({
       $.footnote_reference,
       $.citation_reference,
       $.reference,
+      alias($._backticked_reference, $.reference),
       $.standalone_hyperlink,
+    ),
+
+    /*
+
+    Phrase / embedded URI references:
+
+    - `simple phrase`_
+    - `simple phrase`__
+    - `Python <http://www.python.org>`_
+    - `Python <http://www.python.org>`__
+    - `<http://www.example.org>`__
+    */
+    _backticked_reference: $ => seq(
+      alias($._reference_open_backtick, '`'),
+      optional(alias($._reference_name, $.name)),
+      optional(seq(
+        '<',
+        alias($._embedded_uri, $.uri),
+        '>',
+      )),
+      alias($._reference_end_mark, '_'),
     ),
 
     // Interpreted text
