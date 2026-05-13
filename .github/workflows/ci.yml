@@ -82,9 +82,7 @@ jobs:
         run: |
           if ! git diff --exit-code; then
             echo "::error::Generated files are out of date. Run 'make generate-bindings' locally and commit the result."
-            # don't fail for now, regenerating bindings create a lot of noise, we'll do it when we bump tree-sitter and
-            # fix our first bugs
-            exit 0
+            exit 1
           fi
 
   check-wasm:
@@ -105,9 +103,7 @@ jobs:
         run: |
           if ! git diff --exit-code tree-sitter-rst.wasm; then
             echo "::error::tree-sitter-rst.wasm is out of date. Run 'make wasm' locally and commit the result."
-            # don't fail for now, regenerating wasm is expensive repo-size wise
-            # we;ll do it once we have all our bugs and feature ready
-            exit 0
+            exit 1
           fi
 
   build:
@@ -123,7 +119,6 @@ jobs:
       - name: Run tests
         uses: tree-sitter/parser-test-action@v2
         with:
-          generate: false # for now.
           test-rust: true
           test-node: false
           test-python: true
@@ -170,7 +165,6 @@ jobs:
       - name: Run tests
         uses: tree-sitter/parser-test-action@v2
         with:
-          generate: false
           test-rust: true
           test-node: false
           test-python: true
@@ -189,7 +183,6 @@ jobs:
       - name: Run tests
         uses: tree-sitter/parser-test-action@v2
         with:
-          generate: false
           test-rust: true
           test-node: false
           test-python: true
