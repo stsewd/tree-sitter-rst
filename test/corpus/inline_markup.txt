@@ -38,7 +38,8 @@ Test (27:00 minute video) *review* test
     (emphasis)
     (emphasis))
   (paragraph
-    (emphasis))
+    (emphasis)
+    (escape_sequence))
   (paragraph
     (emphasis))
   (paragraph
@@ -211,8 +212,20 @@ Edge cases:
   (paragraph)
   (field_list
     (field
-      (field_name (interpreted_text))
+      (field_name (escape_sequence) (interpreted_text))
       (field_body (paragraph)))))
+
+=======================================================
+Interpreted text with roles - double backtick (invalid)
+=======================================================
+
+:attr:``numpy.ufunc.identity``
+
+---
+
+(document
+  (paragraph
+    (literal)))
 
 ===============
 Inline literals
@@ -322,7 +335,8 @@ I'm in (|parenthesis|)
  (paragraph
   (substitution_reference))
  (paragraph
-  (substitution_reference))
+  (substitution_reference)
+  (escape_sequence))
  (paragraph
   (substitution_reference))
  (paragraph
@@ -363,7 +377,8 @@ I'm in (_`parenthesis`)
   (paragraph
     (inline_target))
   (paragraph
-    (inline_target))
+    (inline_target)
+    (escape_sequence))
   (paragraph
     (inline_target))
   (paragraph
@@ -393,7 +408,8 @@ I'm a [1]_
   (paragraph
     (footnote_reference))
   (paragraph
-    (footnote_reference)))
+    (footnote_reference)
+    (escape_sequence)))
 
 ===================
 Citation references
@@ -420,7 +436,8 @@ Not [a--citation] citation.
   (paragraph
     (citation_reference))
   (paragraph
-    (citation_reference))
+    (citation_reference)
+    (escape_sequence))
   (paragraph))
 
 ====================
@@ -449,13 +466,17 @@ lonely__
   (paragraph
     (reference)
     (reference)
-    (reference)
-    (reference))
+    (reference
+      (name))
+    (reference
+      (name)))
   (paragraph
     (reference)
     (reference))
   (paragraph
-    (reference))
+    (reference
+      (name))
+    (escape_sequence))
   (paragraph
     (reference)
     (reference))
@@ -463,6 +484,61 @@ lonely__
     (reference))
   (paragraph
     (reference)))
+
+=======================================
+Hyperlink references with embedded URIs
+=======================================
+
+`Python <http://www.python.org>`_
+`Python <http://www.python.org>`__
+`<http://www.example.org>`__
+
+A `Python web site <http://www.python.org>`__ link.
+
+`URL with # <http://www.w3.org/XML/Schema#dev>`__
+`file with ^^ <../strange^^name>`__
+
+(`Python <http://www.python.org>`_) wrapped.
+
+`text < not uri here`_
+
+A long paragraph with `Python web site
+<http://www.python.org>`_ that wraps.
+
+---
+
+(document
+  (paragraph
+    (reference
+      (name)
+      (uri))
+    (reference
+      (name)
+      (uri))
+    (reference
+      (uri)))
+  (paragraph
+    (reference
+      (name)
+      (uri)))
+  (paragraph
+    (reference
+      (name)
+      (uri))
+    (reference
+      (name)
+      (uri)))
+  (paragraph
+    (reference
+      (name)
+      (uri)))
+  (paragraph
+    (reference
+      (name)))
+  (paragraph
+    (reference
+      (name)
+      (uri))))
 
 =====================
 Standalone hyperlinks
@@ -493,7 +569,12 @@ This isn't a standalone_hyperlink "http:"
   (paragraph (standalone_hyperlink))
   (paragraph (standalone_hyperlink))
   (paragraph (standalone_hyperlink))
-  (paragraph (standalone_hyperlink))
+  (paragraph
+   (standalone_hyperlink)
+   (escape_sequence)
+   (escape_sequence)
+   (escape_sequence)
+   (escape_sequence))
   (paragraph
    (standalone_hyperlink)
    (standalone_hyperlink)
@@ -523,3 +604,79 @@ Chinese double quote: I'm in “*double quotes*”
     (emphasis))
   (paragraph
     (emphasis)))
+
+================
+Escape sequences
+================
+
+Plain backslash escape: \A
+
+Escaped backslash: \\
+
+Escaped space (backslash-space separator): word\ next
+
+Backslash before newline is not an escape: foo\
+
+---
+
+(document
+  (paragraph
+    (escape_sequence))
+  (paragraph
+    (escape_sequence))
+  (paragraph
+    (escape_sequence))
+  (paragraph))
+
+==========================================
+Backslash-escaped inline markup start char
+==========================================
+
+A \`backtick\` here.
+
+A \`foo with `bar` later.
+
+Use \`x\` and `real` here.
+
+\*not emphasis\* but `real`.
+
+---
+
+(document
+  (paragraph
+    (escape_sequence)
+    (escape_sequence))
+  (paragraph
+    (escape_sequence)
+    (interpreted_text))
+  (paragraph
+    (escape_sequence)
+    (escape_sequence)
+    (interpreted_text))
+  (paragraph
+    (escape_sequence)
+    (interpreted_text)))
+
+=========================
+Backslash-space separator
+=========================
+
+**bold**\ word
+
+word\ **bold**
+
+a\ **b**\ c
+
+---
+
+(document
+  (paragraph
+    (strong)
+    (escape_sequence))
+  (paragraph
+    (escape_sequence)
+    (strong))
+  (paragraph
+    (escape_sequence)
+    (strong)
+    (escape_sequence)))

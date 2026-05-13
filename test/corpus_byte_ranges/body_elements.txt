@@ -1,0 +1,149 @@
+========================================
+Paragraphs
+========================================
+
+Hello world.
+
+Another paragraph.
+
+---
+
+(document [0..32]
+  (paragraph [0..12])
+  (paragraph [14..32]))
+
+========================================
+Bullet list
+========================================
+
+- One
+- Two
+- Three
+
+---
+
+(document [0..19]
+  (bullet_list [0..19]
+    (list_item [0..5]
+      (body [2..5]
+        (paragraph [2..5])))
+    (list_item [6..11]
+      (body [8..11]
+        (paragraph [8..11])))
+    (list_item [12..19]
+      (body [14..19]
+        (paragraph [14..19])))))
+
+========================================
+Enumerated list
+========================================
+
+1. First
+2. Second
+3. Third
+
+---
+
+(document [0..27]
+  (enumerated_list [0..27]
+    (list_item [0..8]
+      (body [3..8]
+        (paragraph [3..8])))
+    (list_item [9..18]
+      (body [12..18]
+        (paragraph [12..18])))
+    (list_item [19..27]
+      (body [22..27]
+        (paragraph [22..27])))))
+
+========================================
+Literal block
+========================================
+
+Example::
+
+    code here
+    more code
+
+---
+
+(document [0..38]
+  (paragraph [0..38]
+    (literal_block [15..38])))
+
+========================================
+Block quote
+========================================
+
+    indented block
+    continued
+
+---
+
+(document [0..32]
+  (block_quote [4..32]
+    (paragraph [4..32])))
+
+========================================
+Line block
+========================================
+
+| line one
+| line two
+
+---
+
+(document [0..21]
+  (line_block [0..21]
+    (line [0..10])
+    (line [11..21])))
+
+========================================
+Grid table
+========================================
+
++---+---+
+| a | b |
++---+---+
+
+---
+
+(document [0..29]
+  (grid_table [0..29]))
+
+========================================
+Simple table
+========================================
+
+=====  =====  ======
+   Inputs     Output
+------------  ------
+  A      B    A or B
+=====  =====  ======
+False  False  False
+True   False  True
+=====  =====  ======
+
+---
+
+(document [0..164]
+  (simple_table [0..164]))
+
+========================================
+Grid table inside list item
+========================================
+
+- Item:
+
+  +---+
+  | x |
+  +---+
+
+---
+
+(document [0..32]
+  (bullet_list [0..32]
+    (list_item [0..32]
+      (body [2..32]
+        (paragraph [2..7])
+        (grid_table [11..32])))))

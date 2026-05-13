@@ -139,3 +139,195 @@ Some text:
       (body (paragraph (strong))))
     (list_item
       (body (paragraph (interpreted_text))))))
+
+================================
+Bullet list in block quote
+================================
+
+Some text
+
+ - item1
+ - item2
+
+---
+
+(document
+  (paragraph)
+  (block_quote
+    (bullet_list
+      (list_item
+        (body (paragraph)))
+      (list_item
+        (body (paragraph))))))
+
+=============================================
+Bullet list in block quote, paragraph first
+=============================================
+
+Some text
+
+  A block quote paragraph
+
+  - item1
+  - item2
+
+---
+
+(document
+  (paragraph)
+  (block_quote
+    (paragraph)
+    (bullet_list
+      (list_item
+        (body (paragraph)))
+      (list_item
+        (body (paragraph))))))
+
+================================================
+Bullet list in block quote, whitespace blank line
+================================================
+
+Some text
+
+ - item1
+ - item2
+
+---
+
+(document
+  (paragraph)
+  (block_quote
+    (bullet_list
+      (list_item
+        (body (paragraph)))
+      (list_item
+        (body (paragraph))))))
+
+================================================
+Long bullet list paragraphs (#14)
+================================================
+
+- there are many variations of passages of lorem ipsum available, but the
+  majority have suffered alteration in some form, by injected humour, or
+  randomised words which don't look even slightly believable.
+
+- there are many variations of passages of lorem ipsum available, but the
+  majority have suffered alteration in some form, by injected humour, or
+  randomised words which don't look even slightly believable.
+
+---
+
+(document
+  (bullet_list
+    (list_item
+      (body (paragraph))))
+  (bullet_list
+    (list_item
+      (body (paragraph)))))
+
+================================================
+Long enumerated list paragraphs (#14)
+================================================
+
+1. There are many variations of passages of Lorem Ipsum available, but the
+   majority have suffered alteration in some form, by injected humour, or
+   randomised words which don't look even slightly believable.
+
+2. There are many variations of Lorem Ipsum available, but the majority have
+   suffered alteration in some form, by injected humour, or randomised words
+   which don't look even slightly believable.
+
+---
+
+(document
+  (enumerated_list
+    (list_item
+      (body (paragraph))))
+  (enumerated_list
+    (list_item
+      (body (paragraph)))))
+
+========================================
+Bullet list with blank lines (#29)
+========================================
+
+- First
+
+- Second
+
+- Third
+
+---
+
+(document
+  (bullet_list
+    (list_item
+      (body (paragraph))))
+  (bullet_list
+    (list_item
+      (body (paragraph))))
+  (bullet_list
+    (list_item
+      (body (paragraph)))))
+
+======================================
+Enumerated list with blank lines (#29)
+======================================
+
+1. First
+
+2. Second
+
+---
+
+(document
+  (enumerated_list
+    (list_item
+      (body (paragraph))))
+  (enumerated_list
+    (list_item
+      (body (paragraph)))))
+
+======================================
+Definition list with blank lines (#29)
+======================================
+
+Term one
+  Def one
+
+Term two
+  Def two
+
+---
+
+(document
+  (definition_list
+    (list_item
+      (term)
+      (definition
+        (paragraph))))
+  (definition_list
+    (list_item
+      (term)
+      (definition
+        (paragraph)))))
+
+==================================
+Field list with blank lines (#29)
+==================================
+
+:Name: John
+
+:Age: 30
+
+---
+
+(document
+  (field_list
+    (field
+      (field_name)
+      (field_body (paragraph))))
+  (field_list
+    (field
+      (field_name)
+      (field_body (paragraph)))))

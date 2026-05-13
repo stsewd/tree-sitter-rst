@@ -1,0 +1,91 @@
+========================================
+Bullet list with blank lines (#29)
+========================================
+
+- First
+
+- Second
+
+- Third
+
+---
+
+(document [0..26]
+  (bullet_list [0..7]
+    (list_item [0..7]
+      (body [2..7]
+        (paragraph [2..7]))))
+  (bullet_list [9..17]
+    (list_item [9..17]
+      (body [11..17]
+        (paragraph [11..17]))))
+  (bullet_list [19..26]
+    (list_item [19..26]
+      (body [21..26]
+        (paragraph [21..26])))))
+
+========================================
+Enumerated list with blank lines (#29)
+========================================
+
+1. First
+
+2. Second
+
+---
+
+(document [0..19]
+  (enumerated_list [0..8]
+    (list_item [0..8]
+      (body [3..8]
+        (paragraph [3..8]))))
+  (enumerated_list [10..19]
+    (list_item [10..19]
+      (body [13..19]
+        (paragraph [13..19])))))
+
+========================================
+Definition list with blank lines (#29)
+========================================
+
+Term one
+  Def one
+
+Term two
+  Def two
+
+---
+
+(document [0..38]
+  (definition_list [0..18]
+    (list_item [0..18]
+      (term [0..8])
+      (definition [11..18]
+        (paragraph [11..18]))))
+  (definition_list [20..38]
+    (list_item [20..38]
+      (term [20..28])
+      (definition [31..38]
+        (paragraph [31..38])))))
+
+========================================
+Field list with blank lines (#29)
+========================================
+
+:Name: John
+
+:Age: 30
+
+---
+
+(document [0..21]
+  (field_list [0..11]
+    (field [0..11]
+      (field_name [1..5])
+      (field_body [7..11]
+        (paragraph [7..11]))))
+  (field_list [13..21]
+    (field [13..21]
+      (field_name [14..17])
+      (field_body [19..21]
+        (paragraph [19..21])))))
