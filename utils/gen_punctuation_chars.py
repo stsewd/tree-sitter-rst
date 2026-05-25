@@ -12,10 +12,10 @@ Or call it from the makefile (recommended):
 """
 
 from docutils.utils.punctuation_chars import (
-    openers,
     closers,
-    delimiters,
     closing_delimiters,
+    delimiters,
+    openers,
 )
 
 

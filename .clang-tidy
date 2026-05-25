@@ -1,0 +1,12 @@
+---
+Checks: >-
+  clang-analyzer-*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-reserved-identifier,
+  -bugprone-suspicious-include,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
+
+# Only report diagnostics from hand-written sources; generated parser.c files
+# are excluded via --line-filter in the Makefile lint-tidy target.
+FormatStyle: none
