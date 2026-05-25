@@ -17,12 +17,8 @@ jobs:
           persist-credentials: false
       - name: Install linting tools
         run: sudo apt-get install -y clang-format clang-tidy cppcheck
-      - name: Check formatting
-        run: make lint-format
-      - name: Run clang-tidy
-        run: make lint-tidy
-      - name: Run cppcheck
-        run: make lint-cppcheck
+      - name: Linting
+        run: make lint
 
   rust:
     runs-on: ubuntu-latest
@@ -57,10 +53,8 @@ jobs:
           python-version: "3.10"
       - name: Install ruff
         run: pip install ruff
-      - name: Check formatting
-        run: make lint-python-format
-      - name: Run ruff
-        run: make lint-python-check
+      - name: Linting
+        run: make lint-python
 
   generate:
     # Re-run `tree-sitter generate` and the pyproject.extra.toml merge, then
@@ -130,6 +124,7 @@ jobs:
           test-go: false
           test-swift: false
       - run: make parse-examples
+
   python-build:
     name: Python build (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
