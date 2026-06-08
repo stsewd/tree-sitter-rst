@@ -89,11 +89,9 @@ static int rst_scanner_back(const RSTScanner* scanner)
 
 static unsigned rst_scanner_serialize(RSTScanner* scanner, char* buffer)
 {
-  unsigned n = scanner->length;
-  unsigned bytes = n * sizeof(int);
+  unsigned bytes = scanner->length * sizeof(int);
   if (bytes > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
-    n = TREE_SITTER_SERIALIZATION_BUFFER_SIZE / sizeof(int);
-    bytes = n * sizeof(int);
+    bytes = TREE_SITTER_SERIALIZATION_BUFFER_SIZE;
   }
   memcpy(buffer, scanner->indent_stack, bytes);
   return bytes;

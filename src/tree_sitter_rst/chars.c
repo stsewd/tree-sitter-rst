@@ -30,7 +30,16 @@ static bool is_inline_space(int32_t c)
 
 static bool is_space(int32_t c)
 {
-  return is_inline_space(c) || is_newline(c);
+  switch (c) {
+    case CHAR_SPACE:
+    case CHAR_FORM_FEED:
+    case CHAR_TAB:
+    case CHAR_VERTICAL_TAB:
+    case CHAR_NBSP:
+      return true;
+    default:
+      return is_newline(c);
+  }
 }
 
 static bool is_number(int32_t c)

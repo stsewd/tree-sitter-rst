@@ -1,4 +1,5 @@
-"""Incremental-parse regression tests.
+"""
+Incremental-parse regression tests.
 
 These cover #44 (AST depends on edit order) and #64 (code-block directive
 breaks in Neovim after an edit). The contract for tree-sitter incremental
@@ -10,6 +11,8 @@ from unittest import TestCase
 
 import tree_sitter
 import tree_sitter_rst
+
+from textwrap import dedent
 
 
 def _lang():
