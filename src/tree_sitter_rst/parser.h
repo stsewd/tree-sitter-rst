@@ -44,7 +44,7 @@ static int parse_inner_label_name(RSTScanner* scanner);
 static bool parse_inner_alphanumeric_label(RSTScanner* scanner);
 static bool parse_target_name(RSTScanner* scanner);
 static bool parse_anonymous_target_mark(RSTScanner* scanner);
-static bool parse_directive_mark(RSTScanner* scanner);
+static bool parse_directive_name(RSTScanner* scanner);
 static bool parse_substitution_mark(RSTScanner* scanner);
 
 static bool parse_inline_markup(RSTScanner* scanner);

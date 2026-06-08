@@ -155,23 +155,9 @@ lint-cppcheck:
 	  -Isrc/ \
 	  src/scanner.c
 
-# Python lint/format targets (use ruff; configured in pyproject.toml).
-# Only hand-written Python is linted/formatted. The bindings under
-# `bindings/python/` and `setup.py` are scaffolded by `tree-sitter init`
-# and are excluded via the [tool.ruff] config in pyproject.toml.
-PYTHON_SOURCES := utils
-
 format-python:
-	ruff format $(PYTHON_SOURCES)
-	ruff check --fix $(PYTHON_SOURCES)
-
-lint-python: lint-python-format lint-python-check
-
-lint-python-format:
-	ruff format --check $(PYTHON_SOURCES)
-
-lint-python-check:
-	ruff check $(PYTHON_SOURCES)
+	ruff format .
+	ruff check --fix .
 
 gen-punctuation-chars:
 	./utils/gen_punctuation_chars.py > ./src/tree_sitter_rst/punctuation_chars.h
@@ -187,4 +173,4 @@ generate-bindings:
 wasm:
 	$(TS) build --wasm
 
-.PHONY: all install uninstall clean test release update-examples parse-examples serve format lint lint-format lint-tidy lint-cppcheck format-python lint-python lint-python-format lint-python-check generate-bindings wasm
+.PHONY: all install uninstall clean test release update-examples parse-examples serve format lint lint-format lint-tidy lint-cppcheck format-python check generate-bindings wasm

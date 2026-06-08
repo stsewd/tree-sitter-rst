@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [master, main]
   pull_request:
-    branches: [ master, main ]
+    branches: [master, main]
 
 jobs:
   lint:
@@ -53,8 +53,10 @@ jobs:
           python-version: "3.10"
       - name: Install ruff
         run: pip install ruff
-      - name: Linting
-        run: make lint-python
+      - name: Format
+        run: ruff format --check .
+      - name: Lint
+        run: ruff check .
 
   generate:
     # Re-run `tree-sitter generate` and the pyproject.extra.toml merge, then
@@ -124,6 +126,7 @@ jobs:
           test-go: false
           test-swift: false
       - run: make parse-examples
+
   python-build:
     name: Python build (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
