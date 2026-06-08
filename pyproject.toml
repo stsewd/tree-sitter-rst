@@ -28,3 +28,12 @@ core = ["tree-sitter~=0.24"]
 [tool.cibuildwheel]
 build = "cp310-*"
 build-frontend = "build"
+
+[tool.ruff]
+exclude = [
+  "build",
+  "dist",
+  # Auto generated files from `tree-sitter init`.
+  "bindings",
+  "setup.py",
+]
