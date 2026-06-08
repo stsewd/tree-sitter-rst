@@ -113,6 +113,9 @@ update-examples:
 parse-examples:
 	npm run parse -- -q test/examples/*.rst
 
+	# Tables aren't supported yet
+	! npm run parse -- -q test/examples/fail/*.rst
+
 serve: all
 	npm run prestart
 	npm run start
