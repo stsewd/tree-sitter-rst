@@ -13,11 +13,17 @@
 static RSTScanner* new_rst_scanner()
 {
   RSTScanner* scanner = malloc(sizeof(RSTScanner));
+  if (!scanner)
+    return NULL;
+
+  scanner->indent_stack = malloc(sizeof(int) * RST_SCANNER_STACK_MAX_CAPACITY);
+  if (!scanner->indent_stack) {
+    free(scanner);
+    return NULL;
+  }
 
   scanner->advance = rst_scanner_advance;
   scanner->skip = rst_scanner_skip;
-
-  scanner->indent_stack = malloc(sizeof(int) * RST_SCANNER_STACK_MAX_CAPACITY);
   scanner->length = 0;
 
   scanner->push = rst_scanner_push;
