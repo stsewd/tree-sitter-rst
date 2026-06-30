@@ -71,7 +71,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up tree-sitter
-        uses: tree-sitter/setup-action/cli@eeb902ac2f1be576edc296309872cf476a209b7f # v2
+        uses: tree-sitter/setup-action/cli@1868a545ffb91bdc221d14a168b5b6d8de4a28b3 # v2
       - name: Regenerate bindings
         run: make generate-bindings
       - name: Check for drift
@@ -94,7 +94,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up tree-sitter
-        uses: tree-sitter/setup-action/cli@eeb902ac2f1be576edc296309872cf476a209b7f # v2
+        uses: tree-sitter/setup-action/cli@1868a545ffb91bdc221d14a168b5b6d8de4a28b3 # v2
       - name: Rebuild wasm
         run: make wasm
       - name: Check for drift
@@ -115,7 +115,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up tree-sitter
-        uses: tree-sitter/setup-action/cli@eeb902ac2f1be576edc296309872cf476a209b7f # v2
+        uses: tree-sitter/setup-action/cli@1868a545ffb91bdc221d14a168b5b6d8de4a28b3 # v2
       - name: Run tests
         uses: tree-sitter/parser-test-action@v2
         with:
@@ -163,7 +163,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up tree-sitter
-        uses: tree-sitter/setup-action/cli@eeb902ac2f1be576edc296309872cf476a209b7f # v2
+        uses: tree-sitter/setup-action/cli@1868a545ffb91bdc221d14a168b5b6d8de4a28b3 # v2
       - name: Run tests
         uses: tree-sitter/parser-test-action@v2
         with:
@@ -182,7 +182,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up tree-sitter
-        uses: tree-sitter/setup-action/cli@eeb902ac2f1be576edc296309872cf476a209b7f # v2
+        uses: tree-sitter/setup-action/cli@1868a545ffb91bdc221d14a168b5b6d8de4a28b3 # v2
       - name: Run tests
         uses: tree-sitter/parser-test-action@v2
         with:
