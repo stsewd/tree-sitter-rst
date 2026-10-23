@@ -11,6 +11,9 @@ static bool parse_indent(RSTScanner* scanner)
 
   lexer->mark_end(lexer);
 
+  // Whitespace in the middle of a line (e.g. between a footnote label and
+  // its text) is a separator, not an indentation.
+  bool at_line_start = lexer->get_column(lexer) == 0;
   int indent = 0;
   int newlines = 0;
   while (true) {
@@ -37,7 +40,7 @@ static bool parse_indent(RSTScanner* scanner)
   }
 
   int current_indent = scanner->back(scanner);
-  if (indent > current_indent && valid_symbols[T_INDENT]) {
+  if (indent > current_indent && valid_symbols[T_INDENT] && (newlines || at_line_start)) {
     scanner->push(scanner, indent);
     lexer->result_symbol = T_INDENT;
     return true;

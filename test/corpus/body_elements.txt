@@ -693,6 +693,32 @@ Footnotes
         (emphasis)))))
 
 ================================================================================
+Footnotes and citations with extra spaces after the label
+================================================================================
+
+.. [1]  Body elements go here.
+
+.. [#]  Body elements go here.
+
+.. [cit]  Body elements go here.
+
+--------------------------------------------------------------------------------
+
+(document
+  (footnote
+    (label)
+    (body
+      (paragraph)))
+  (footnote
+    (label)
+    (body
+      (paragraph)))
+  (citation
+    (label)
+    (body
+      (paragraph))))
+
+================================================================================
 Citations
 ================================================================================
 
