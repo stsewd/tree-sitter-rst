@@ -11,6 +11,9 @@ static bool parse_indent(RSTScanner* scanner)
 
   lexer->mark_end(lexer);
 
+  // Whitespace in the middle of a line (e.g. between a footnote label and
+  // its text) is a separator, not an indentation.
+  bool at_line_start = lexer->get_column(lexer) == 0;
   int indent = 0;
   int newlines = 0;
   while (true) {
@@ -37,7 +40,7 @@ static bool parse_indent(RSTScanner* scanner)
   }
 
   int current_indent = scanner->back(scanner);
-  if (indent > current_indent && valid_symbols[T_INDENT]) {
+  if (indent > current_indent && valid_symbols[T_INDENT] && (newlines || at_line_start)) {
     scanner->push(scanner, indent);
     lexer->result_symbol = T_INDENT;
     return true;
@@ -240,6 +243,13 @@ static bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adorn
         }
       }
     } else {
+      if ((adornment == '-' || adornment == '+' || adornment == '/')
+          && valid_symbols[T_OPTION_MARK]) {
+        bool ok = parse_option_mark(scanner, adornment, 1);
+        if (ok) {
+          return true;
+        }
+      }
       if (adornment == '*' && valid_symbols[T_EMPHASIS]) {
         return parse_inner_inline_markup(scanner, IM_EMPHASIS);
       }
@@ -282,6 +292,14 @@ static bool fallback_adornment(RSTScanner* scanner, int32_t adornment, int adorn
       }
     }
   } else if (adornment_length >= 2) {
+    if (adornment_length == 2 && adornment == '-'
+        && !is_space(scanner->lookahead)
+        && valid_symbols[T_OPTION_MARK]) {
+      bool ok = parse_option_mark(scanner, '-', 2);
+      if (ok) {
+        return true;
+      }
+    }
     if (is_space(scanner->lookahead)) {
       if (adornment_length == 3
           && adornment == '>'
@@ -331,10 +349,26 @@ bool parse_char_bullet(RSTScanner* scanner)
     return false;
   }
 
+  int32_t bullet = scanner->lookahead;
   scanner->advance(scanner);
   bool ok = parse_inner_list_element(scanner, 1, T_CHAR_BULLET);
   if (ok) {
     return true;
+  }
+
+  // Not a bullet (no space followed the mark). A '-' or '+' may instead start
+  // an option list item, e.g. "-a  description" or "--long  description". This
+  // lets option lists be recognized inside block bodies, where sections and
+  // transitions (and hence the adornment fallback) are not valid.
+  if ((bullet == '-' || bullet == '+') && valid_symbols[T_OPTION_MARK]) {
+    int prefix_length = 1;
+    if (bullet == '-' && scanner->lookahead == '-') {
+      scanner->advance(scanner);
+      prefix_length = 2;
+    }
+    if (parse_option_mark(scanner, bullet, prefix_length)) {
+      return true;
+    }
   }
 
   return parse_text(scanner, true);
@@ -639,6 +673,143 @@ static bool parse_field_mark_end(RSTScanner* scanner)
   }
 
   return parse_text(scanner, false);
+}
+
+/// Consume a single option name plus an optional `=argument`, assuming the
+/// option prefix (`-`, `--`, `+`, `/`) has already been consumed.
+///
+/// Short options (`-`, `+`, `/`) take a single alphanumeric name character;
+/// long options (`--`) take a run of alphanumerics, hyphens and underscores.
+/// Returns false if no valid option name follows the prefix.
+static bool parse_inner_option(RSTScanner* scanner, bool long_option)
+{
+  if (!is_alphanumeric(scanner->lookahead)) {
+    return false;
+  }
+  scanner->advance(scanner);
+
+  if (long_option) {
+    while (is_alphanumeric(scanner->lookahead)
+        || scanner->lookahead == '-'
+        || scanner->lookahead == '_') {
+      scanner->advance(scanner);
+    }
+  }
+
+  // Optional `=argument`: consume up to the next whitespace or option separator.
+  if (scanner->lookahead == '=') {
+    scanner->advance(scanner);
+    while (!is_space(scanner->lookahead) && scanner->lookahead != ',') {
+      scanner->advance(scanner);
+    }
+  }
+
+  return true;
+}
+
+/// Parse an option list marker, e.g. `-a`, `--long=file`, `/V` or `-f, --force`.
+///
+/// Called from `fallback_adornment` once the first option's prefix has been
+/// consumed (`prefix`/`prefix_length`: `-`/`+`/`/` with length 1, or `--` with
+/// length 2). The emitted `T_OPTION_MARK` token spans the whole option group;
+/// the following description is parsed as a `body` at the computed indent.
+///
+/// The option group must be followed by either a newline (description on the
+/// next, indented line) or at least two spaces (description on the same line).
+/// A single space followed by text means this is an ordinary paragraph, not an
+/// option list, so we bail out and let the caller fall back to text.
+static bool parse_option_mark(RSTScanner* scanner, int32_t prefix, int prefix_length)
+{
+  const bool* valid_symbols = scanner->valid_symbols;
+  TSLexer* lexer = scanner->lexer;
+
+  if (!valid_symbols[T_OPTION_MARK]) {
+    return false;
+  }
+
+  bool long_option;
+  if (prefix_length == 1 && (prefix == '-' || prefix == '+' || prefix == '/')) {
+    long_option = false;
+  } else if (prefix_length == 2 && prefix == '-') {
+    long_option = true;
+  } else {
+    return false;
+  }
+
+  if (!parse_inner_option(scanner, long_option)) {
+    return false;
+  }
+
+  // Additional options in the same group, separated by `, `.
+  while (scanner->lookahead == ',') {
+    scanner->advance(scanner);
+    if (scanner->lookahead != ' ') {
+      return false;
+    }
+    scanner->advance(scanner);
+
+    if (scanner->lookahead != '-' && scanner->lookahead != '+' && scanner->lookahead != '/') {
+      return false;
+    }
+    int32_t next_prefix = scanner->lookahead;
+    scanner->advance(scanner);
+    bool next_long = false;
+    if (next_prefix == '-' && scanner->lookahead == '-') {
+      scanner->advance(scanner);
+      next_long = true;
+    }
+    if (!parse_inner_option(scanner, next_long)) {
+      return false;
+    }
+  }
+
+  // The option group must be followed by whitespace.
+  if (!is_space(scanner->lookahead)) {
+    return false;
+  }
+  lexer->mark_end(lexer);
+
+  int spaces = get_indent_level(scanner);
+  bool same_line = !is_newline(scanner->lookahead);
+  if (same_line) {
+    // Same-line description: require at least two spaces of separation,
+    // otherwise this is an ordinary paragraph, not an option list.
+    if (spaces < 2) {
+      return false;
+    }
+    // Go to the next line.
+    while (!is_newline(scanner->lookahead)) {
+      scanner->advance(scanner);
+    }
+  }
+  scanner->advance(scanner);
+
+  // The first non-blank line after the option line determines the
+  // indentation of the description, mirroring field bodies: continuation
+  // lines only need to be indented relative to the option.
+  int indent = 0;
+  while (true) {
+    indent = get_indent_level(scanner);
+    if (!is_newline(scanner->lookahead) || scanner->lookahead == CHAR_EOF) {
+      break;
+    }
+    scanner->advance(scanner);
+  }
+  if (indent > scanner->back(scanner)) {
+    scanner->push(scanner, indent);
+  } else if (same_line) {
+    scanner->push(scanner, scanner->back(scanner) + 1);
+  } else {
+    // An option without a description is ordinary text. The lookahead has
+    // moved past the option, so end the text token at the recorded mark.
+    if (!valid_symbols[T_TEXT]) {
+      return false;
+    }
+    lexer->result_symbol = T_TEXT;
+    return true;
+  }
+  lexer->result_symbol = T_OPTION_MARK;
+  return true;
 }
 
 static bool parse_label(RSTScanner* scanner)

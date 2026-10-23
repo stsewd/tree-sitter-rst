@@ -34,6 +34,7 @@ module.exports = grammar({
     $._numeric_bullet,
     $._field_mark,
     $._field_mark_end,
+    $._option_mark,
 
     // Literal blocks
     $._literal_indented_block_mark,
@@ -212,6 +213,7 @@ module.exports = grammar({
       $.enumerated_list,
       $.definition_list,
       $.field_list,
+      $.option_list,
     ),
 
     // Bullet lists
@@ -315,6 +317,29 @@ module.exports = grammar({
       alias(repeat1($._inline_markup), $.field_name),
       alias($._field_mark_end, ':'),
       choice(alias($.body, $.field_body), $._dedent),
+    ),
+
+    // Option lists
+    // ------------
+
+    /*
+
+    Example:
+
+    -a            Output all.
+    --long        A long option.
+    --input=file  An option with an argument.
+    /V            A DOS/VMS option.
+    -f, --force   An option group.
+
+    */
+    option_list: $ => repeat1(
+      alias($._option_list_item, $.list_item),
+    ),
+
+    _option_list_item: $ => seq(
+      alias($._option_mark, $.option_group),
+      alias($.body, $.description),
     ),
 
     // Literal blocks

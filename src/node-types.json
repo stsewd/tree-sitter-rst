@@ -68,6 +68,10 @@
       {
         "type": "field_list",
         "named": true
+      },
+      {
+        "type": "option_list",
+        "named": true
       }
     ]
   },
@@ -330,6 +334,45 @@
       "types": [
         {
           "type": "list_item",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "description",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_list",
+          "named": true
+        },
+        {
+          "type": "_markup_block",
+          "named": true
+        },
+        {
+          "type": "block_quote",
+          "named": true
+        },
+        {
+          "type": "doctest_block",
+          "named": true
+        },
+        {
+          "type": "line_block",
+          "named": true
+        },
+        {
+          "type": "literal_block",
+          "named": true
+        },
+        {
+          "type": "paragraph",
           "named": true
         }
       ]
@@ -609,6 +652,14 @@
           "named": true
         },
         {
+          "type": "description",
+          "named": true
+        },
+        {
+          "type": "option_group",
+          "named": true
+        },
+        {
           "type": "term",
           "named": true
         }
@@ -619,6 +670,21 @@
     "type": "literal_block",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "option_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "list_item",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "options",
@@ -829,6 +895,10 @@
   },
   {
     "type": "name",
+    "named": true
+  },
+  {
+    "type": "option_group",
     "named": true
   },
   {

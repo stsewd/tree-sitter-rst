@@ -1,0 +1,214 @@
+============
+Short, long and DOS/VMS options
+============
+
+-a            Output all.
+--long        A long option.
+/V            A DOS/VMS option.
+
+---
+
+(document
+  (option_list
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))))
+
+============
+Option with an argument
+============
+
+--input=file  An option with an argument.
+
+---
+
+(document
+  (option_list
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))))
+
+============
+Option groups
+============
+
+-f, --force   Force it.
+-o, --output  Output.
+
+---
+
+(document
+  (option_list
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))))
+
+============
+Description on the next line
+============
+
+--verbose
+    Be verbose.
+
+---
+
+(document
+  (option_list
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))))
+
+============
+Description continuation indented less than its first line
+============
+
+-o  out
+   more
+
+---
+
+(document
+  (option_list
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))))
+
+============
+Description continuation aligned with its first line
+============
+
+-o  out
+    more
+
+---
+
+(document
+  (option_list
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))))
+
+============
+An option without a description is text
+============
+
+-a
+
+--------------------------------------------------------------------------------
+
+(document
+  (paragraph))
+
+============
+An option without a description followed by an option
+============
+
+-a
+-b  x
+
+--------------------------------------------------------------------------------
+
+(document
+  (paragraph))
+
+============
+An option without a description in a field body
+============
+
+:opt: --flag
+
+--------------------------------------------------------------------------------
+
+(document
+  (field_list
+    (field
+      (field_name)
+      (field_body
+        (paragraph)))))
+
+============
+An option without a description in a directive option
+============
+
+.. code-block::
+   :west-args: --sysbuild
+
+--------------------------------------------------------------------------------
+
+(document
+  (directive
+    (type)
+    (body
+      (options
+        (field
+          (field_name)
+          (field_body
+            (paragraph)))))))
+
+============
+Short option with the description on the next line
+============
+
+-c
+    Select the configuration.
+
+--------------------------------------------------------------------------------
+
+(document
+  (option_list
+    (list_item
+      (option_group)
+      (description
+        (paragraph)))))
+
+============
+Text after an option without a description
+============
+
+:opt: --flag
+:other: value
+
+.. code-block::
+   :west-args: --sysbuild
+
+After.
+
+--------------------------------------------------------------------------------
+
+(document
+  (field_list
+    (field
+      (field_name)
+      (field_body
+        (paragraph)))
+    (field
+      (field_name)
+      (field_body
+        (paragraph))))
+  (directive
+    (type)
+    (body
+      (options
+        (field
+          (field_name)
+          (field_body
+            (paragraph))))))
+  (paragraph))

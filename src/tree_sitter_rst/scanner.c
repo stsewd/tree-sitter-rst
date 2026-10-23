@@ -132,6 +132,23 @@ static bool rst_scanner_scan(RSTScanner* scanner)
     return parse_quoted_literal_block(scanner);
   }
 
+  // Option list continuation: a second or later item in an option list, where
+  // the grammar expects another option marker but no bullet/section/transition.
+  // (The first item is reached through the adornment fallback above, where a
+  // transition is still valid.) Guarded by !T_CHAR_BULLET so we never shadow a
+  // real bullet, which overlaps the '-'/'+' option prefixes.
+  if ((current == '-' || current == '+' || current == '/')
+      && valid_symbols[T_OPTION_MARK]
+      && !valid_symbols[T_CHAR_BULLET]) {
+    scanner->advance(scanner);
+    int prefix_length = 1;
+    if (current == '-' && scanner->lookahead == '-') {
+      scanner->advance(scanner);
+      prefix_length = 2;
+    }
+    return parse_option_mark(scanner, current, prefix_length);
+  }
+
   if (current == '.' && valid_symbols[T_EXPLICIT_MARKUP_START]) {
     return parse_explict_markup_start(scanner);
   }
