@@ -231,6 +231,10 @@
         {
           "type": "SYMBOL",
           "name": "field_list"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "option_list"
         }
       ]
     },
@@ -516,6 +520,41 @@
               "name": "_dedent"
             }
           ]
+        }
+      ]
+    },
+    "option_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "ALIAS",
+        "content": {
+          "type": "SYMBOL",
+          "name": "_option_list_item"
+        },
+        "named": true,
+        "value": "list_item"
+      }
+    },
+    "_option_list_item": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_option_mark"
+          },
+          "named": true,
+          "value": "option_group"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "body"
+          },
+          "named": true,
+          "value": "description"
         }
       ]
     },
@@ -1641,6 +1680,10 @@
     },
     {
       "type": "SYMBOL",
+      "name": "_option_mark"
+    },
+    {
+      "type": "SYMBOL",
       "name": "_literal_indented_block_mark"
     },
     {
@@ -1761,5 +1804,6 @@
     "_list",
     "_markup_block",
     "_inline_markup"
-  ]
+  ],
+  "reserved": {}
 }

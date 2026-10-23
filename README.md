@@ -17,7 +17,8 @@ Check the playground at <https://stsewd.dev/tree-sitter-rst/>.
 - Allow lists with blank lines between items
 - Refactor parse citation and footer reference
 - Nested line blocks
-- Option lists
+- Option lists: space-separated arguments (`-o file`, `-o <file>`) and
+  recognition inside block quotes
 - Add some nodes to inline?
 - Check if there is a way to re-implement some nodes to JS instead of C?
 - A definition list with classifiers can't be separated by a blank line.

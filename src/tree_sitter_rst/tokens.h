@@ -21,6 +21,7 @@ enum TokenType {
   T_NUMERIC_BULLET,
   T_FIELD_MARK,
   T_FIELD_MARK_END,
+  T_OPTION_MARK,
 
   // Literal blocks
   T_LITERAL_INDENTED_BLOCK_MARK,
